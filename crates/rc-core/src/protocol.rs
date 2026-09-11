@@ -59,6 +59,11 @@ pub struct CreateSession {
     pub rows: u16,
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct RenameSession {
+    pub label: String,
+}
+#[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum Lifecycle {
     Starting,
@@ -82,6 +87,12 @@ pub struct SessionInfo {
     pub output_seq: String,
     pub pid: Option<u32>,
     pub process_created: Option<String>,
+    #[serde(default)]
+    pub program_path: Option<String>,
+    #[serde(default)]
+    pub last_activity_at: Option<String>,
+    #[serde(default)]
+    pub composer_allowed: bool,
     pub lease: Option<LeaseView>,
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]

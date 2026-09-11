@@ -4,7 +4,9 @@ export interface SessionInfo {
   profile: string; agent_epoch: string; generation: number;
   state: 'starting' | 'running' | 'closing' | 'exited' | 'lost';
   cols: number; rows: number; output_seq: string;
-  pid: number | null; process_created: string | null; lease: LeaseView | null;
+  pid: number | null; process_created: string | null;
+  program_path?: string | null; last_activity_at?: string | null;
+  composer_allowed?: boolean; lease: LeaseView | null;
 }
 export interface SnapshotMeta {
   cols: number; rows: number; sequence: string; generation: number;

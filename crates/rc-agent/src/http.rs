@@ -15,7 +15,13 @@ use axum::{
 };
 use rc_core::{error::ErrorCode, protocol::*};
 use serde::Deserialize;
-use std::{sync::Arc, time::Duration};
+use std::{
+    sync::{
+        atomic::{AtomicUsize, Ordering},
+        Arc,
+    },
+    time::Duration,
+};
 use tokio_util::sync::CancellationToken;
 use uuid::Uuid;
 
@@ -27,6 +33,46 @@ pub struct AppState {
     pub previews: PreviewManager,
     pub media: crate::media::MediaManager,
     pub shutdown: CancellationToken,
+    pub remote_connections: RemoteConnectionCounter,
+}
+
+#[derive(Default)]
+pub struct RemoteConnectionCounter(AtomicUsize);
+
+impl RemoteConnectionCounter {
+    pub fn enter(&self) -> RemoteConnectionGuard<'_> {
+        self.0.fetch_add(1, Ordering::AcqRel);
+        RemoteConnectionGuard(&self.0)
+    }
+
+    pub fn active(&self) -> usize {
+        self.0.load(Ordering::Acquire)
+    }
+}
+
+pub struct RemoteConnectionGuard<'a>(&'a AtomicUsize);
+
+impl Drop for RemoteConnectionGuard<'_> {
+    fn drop(&mut self) {
+        self.0.fetch_sub(1, Ordering::AcqRel);
+    }
+}
+
+#[cfg(test)]
+mod connection_counter_tests {
+    use super::RemoteConnectionCounter;
+
+    #[test]
+    fn guards_track_active_connections_and_release_on_drop() {
+        let counter = RemoteConnectionCounter::default();
+        let first = counter.enter();
+        let second = counter.enter();
+        assert_eq!(counter.active(), 2);
+        drop(first);
+        assert_eq!(counter.active(), 1);
+        drop(second);
+        assert_eq!(counter.active(), 0);
+    }
 }
 pub type Shared = Arc<AppState>;
 pub struct Failure(pub ErrorCode);
@@ -82,6 +128,8 @@ pub fn router(state: Shared) -> Router {
         .route("/profiles", get(profiles))
         .route("/sessions", get(sessions).post(create_session))
         .route("/sessions/{id}", delete(close_session))
+        .route("/sessions/{id}/projection", get(session_projection))
+        .route("/sessions/{id}/rename", post(rename_session))
         .route("/history", get(history))
         .route("/tickets/ws", post(ws_ticket))
         .route("/devices", get(devices))
@@ -159,7 +207,7 @@ async fn boundary(State(state): State<Shared>, request: Request, next: Next) -> 
         .as_ref()
         .map(|s| s.replacen("https://", "wss://", 1))
         .unwrap_or_else(|| state.config.local_origin().replacen("http://", "ws://", 1));
-    let policy=format!("default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' {ws_source}; img-src 'self' data:; media-src 'self' blob:; font-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'none'; worker-src 'none'");
+    let policy=format!("default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' {ws_source}; img-src 'self' data:; media-src 'self' blob:; font-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'none'; worker-src 'self'");
     if let Ok(value) = HeaderValue::from_str(&policy) {
         h.insert("content-security-policy", value);
     }
@@ -243,11 +291,9 @@ async fn profiles(
     h: HeaderMap,
 ) -> Result<Json<serde_json::Value>, Failure> {
     principal(&s, &h, Scope::TerminalRead)?;
-    Ok(Json(if cfg!(windows) {
-        serde_json::json!([{"id":"cmd","label":"CMD"},{"id":"powershell","label":"Windows PowerShell"},{"id":"pwsh","label":"PowerShell 7 (must be installed)"}])
-    } else {
-        serde_json::json!([{"id":"test-shell","label":"POSIX fixture ONLY"}])
-    }))
+    Ok(Json(
+        serde_json::to_value(crate::profiles::available()).map_err(|_| ErrorCode::Internal)?,
+    ))
 }
 async fn sessions(
     State(s): State<Shared>,
@@ -256,6 +302,18 @@ async fn sessions(
     principal(&s, &h, Scope::TerminalRead)?;
     Ok(Json(s.sessions.list()))
 }
+async fn session_projection(
+    State(s): State<Shared>,
+    h: HeaderMap,
+    Path(id): Path<Uuid>,
+) -> Result<Json<serde_json::Value>, Failure> {
+    principal(&s, &h, Scope::TerminalRead)?;
+    let session = s.sessions.get(id)?;
+    let value = tokio::task::spawn_blocking(move || session.readable_projection())
+        .await
+        .map_err(|_| ErrorCode::Internal)?;
+    Ok(Json(value))
+}
 async fn create_session(
     State(s): State<Shared>,
     h: HeaderMap,
@@ -263,6 +321,18 @@ async fn create_session(
 ) -> Result<Json<SessionInfo>, Failure> {
     principal(&s, &h, Scope::TerminalCreate)?;
     let info = tokio::task::spawn_blocking(move || s.sessions.create(body))
+        .await
+        .map_err(|_| ErrorCode::Internal)??;
+    Ok(Json(info))
+}
+async fn rename_session(
+    State(s): State<Shared>,
+    h: HeaderMap,
+    Path(id): Path<Uuid>,
+    Json(body): Json<RenameSession>,
+) -> Result<Json<SessionInfo>, Failure> {
+    let p = principal(&s, &h, Scope::TerminalCreate)?;
+    let info = tokio::task::spawn_blocking(move || s.sessions.rename(&p, id, body.label))
         .await
         .map_err(|_| ErrorCode::Internal)??;
     Ok(Json(info))

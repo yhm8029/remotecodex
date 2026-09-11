@@ -87,6 +87,7 @@ fn text(v: serde_json::Value) -> Message {
 }
 
 async fn control(state: Shared, mut p: Principal, socket: WebSocket) {
+    let _remote_connection = state.remote_connections.enter();
     let connection = Uuid::new_v4();
     let (mut sink, mut stream) = socket.split();
     let mut events = state.sessions.events.subscribe();

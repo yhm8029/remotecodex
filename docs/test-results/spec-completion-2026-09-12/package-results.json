@@ -1,0 +1,21 @@
+{
+  "name": "remotecodex",
+  "version": "0.2.0",
+  "unsigned": true,
+  "outputs": [
+    {
+      "kind": "standard",
+      "path": "runtime/artifacts/RemoteCodex-0.2.0-standard.exe",
+      "bytes": 16522844,
+      "sha256": "4758aa1c9297f715414563e44100d277156e8b71037b3c6e73e4d3716c6d4673",
+      "unsigned": true
+    },
+    {
+      "kind": "offline",
+      "path": "runtime/artifacts/RemoteCodex-0.2.0-offline.exe",
+      "bytes": 232037136,
+      "sha256": "2bae0704d961ce1c4fadae71dfd70f57c1cdb5b44cfab1f2515222fbcece473a",
+      "unsigned": true
+    }
+  ]
+}

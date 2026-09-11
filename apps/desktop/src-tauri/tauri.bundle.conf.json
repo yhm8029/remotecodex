@@ -1,0 +1,33 @@
+{
+  "bundle": {
+    "active": true,
+    "targets": [
+      "nsis"
+    ],
+    "resources": {
+      "../../../runtime/package/rc-agent.exe": "rc-agent.exe",
+      "../../../runtime/package/web/": "web/",
+      "../../../runtime/package/media-runtime/": "media-runtime/",
+      "../../../runtime/package/licenses/": "licenses/",
+      "../../../runtime/package/SBOM.json": "SBOM.json"
+    },
+    "icon": [
+      "icons/icon.ico"
+    ],
+    "windows": {
+      "webviewInstallMode": {
+        "type": "downloadBootstrapper",
+        "silent": true
+      },
+      "nsis": {
+        "installMode": "currentUser",
+        "installerHooks": "windows/hooks.nsh",
+        "languages": [
+          "English",
+          "Korean"
+        ],
+        "displayLanguageSelector": true
+      }
+    }
+  }
+}

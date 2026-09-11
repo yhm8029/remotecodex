@@ -1,0 +1,295 @@
+{
+  "scope": "Selected 19 parent-owned M3 calls during package, Next preview and readable-output completion. Not total session/account usage. No prompts, keys or raw model output included.",
+  "calls": [
+    {
+      "task": "package-list-fix",
+      "model": "MiniMax-M3",
+      "disposition": "applied",
+      "finish_reason": "stop",
+      "usage": {
+        "total_tokens": 343,
+        "total_characters": 0,
+        "prompt_tokens": 308,
+        "completion_tokens": 35,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      }
+    },
+    {
+      "task": "next-prepare",
+      "model": "MiniMax-M3",
+      "disposition": "applied_with_integration_corrections",
+      "finish_reason": "stop",
+      "usage": {
+        "total_tokens": 965,
+        "total_characters": 0,
+        "prompt_tokens": 575,
+        "completion_tokens": 390,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      }
+    },
+    {
+      "task": "next-run",
+      "model": "MiniMax-M3",
+      "disposition": "discarded_length_no_code",
+      "finish_reason": "length",
+      "usage": {
+        "total_tokens": 4999,
+        "total_characters": 0,
+        "prompt_tokens": 799,
+        "completion_tokens": 4200,
+        "completion_tokens_details": {
+          "reasoning_tokens": 4199
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      }
+    },
+    {
+      "task": "next-run-disabled",
+      "model": "MiniMax-M3",
+      "disposition": "discarded_api_mismatch",
+      "finish_reason": "stop",
+      "usage": {
+        "total_tokens": 1905,
+        "total_characters": 0,
+        "prompt_tokens": 786,
+        "completion_tokens": 1119,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      }
+    },
+    {
+      "task": "next-hmr-small",
+      "model": "MiniMax-M3",
+      "disposition": "applied",
+      "finish_reason": "stop",
+      "usage": {
+        "total_tokens": 810,
+        "total_characters": 0,
+        "prompt_tokens": 463,
+        "completion_tokens": 347,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      }
+    },
+    {
+      "task": "unicode-regenerate",
+      "model": "MiniMax-M3",
+      "disposition": "applied_with_root_path_correction",
+      "finish_reason": "stop",
+      "usage": {
+        "total_tokens": 1511,
+        "total_characters": 0,
+        "prompt_tokens": 495,
+        "completion_tokens": 1016,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      }
+    },
+    {
+      "task": "next-cleanup",
+      "model": "MiniMax-M3",
+      "disposition": "applied_after_removing_unrequested_commonjs_export",
+      "finish_reason": "stop",
+      "usage": {
+        "total_tokens": 717,
+        "total_characters": 0,
+        "prompt_tokens": 429,
+        "completion_tokens": 288,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      }
+    },
+    {
+      "task": "gui-portable",
+      "model": "MiniMax-M3",
+      "disposition": "applied_with_retry",
+      "finish_reason": "stop",
+      "usage": {
+        "total_tokens": 526,
+        "total_characters": 0,
+        "prompt_tokens": 394,
+        "completion_tokens": 132,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      }
+    },
+    {
+      "task": "gui-portable-fix",
+      "model": "MiniMax-M3",
+      "disposition": "applied",
+      "finish_reason": "stop",
+      "usage": {
+        "total_tokens": 271,
+        "total_characters": 0,
+        "prompt_tokens": 257,
+        "completion_tokens": 14,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      }
+    },
+    {
+      "task": "next-html",
+      "model": "MiniMax-M3",
+      "disposition": "applied_after_removing_unrequested_require",
+      "finish_reason": "stop",
+      "usage": {
+        "total_tokens": 610,
+        "total_characters": 0,
+        "prompt_tokens": 367,
+        "completion_tokens": 243,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      }
+    },
+    {
+      "task": "model-projection",
+      "model": "MiniMax-M3",
+      "disposition": "applied_with_char_api_correction_and_hidden_mask",
+      "finish_reason": "stop",
+      "usage": {
+        "total_tokens": 976,
+        "total_characters": 0,
+        "prompt_tokens": 490,
+        "completion_tokens": 486
+      }
+    },
+    {
+      "task": "model-projection-fix",
+      "model": "MiniMax-M3",
+      "disposition": "discarded_invented_apis",
+      "finish_reason": "stop",
+      "usage": {
+        "total_tokens": 1346,
+        "total_characters": 0,
+        "prompt_tokens": 449,
+        "completion_tokens": 897,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      }
+    },
+    {
+      "task": "projection-route",
+      "model": "MiniMax-M3",
+      "disposition": "applied",
+      "finish_reason": "stop",
+      "usage": {
+        "total_tokens": 689,
+        "total_characters": 0,
+        "prompt_tokens": 434,
+        "completion_tokens": 255
+      }
+    },
+    {
+      "task": "projection-hidden-cell",
+      "model": "MiniMax-M3",
+      "disposition": "applied",
+      "finish_reason": "stop",
+      "usage": {
+        "total_tokens": 451,
+        "total_characters": 0,
+        "prompt_tokens": 351,
+        "completion_tokens": 100,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      }
+    },
+    {
+      "task": "readable-component",
+      "model": "MiniMax-M3",
+      "disposition": "applied_with_tick_retry",
+      "finish_reason": "stop",
+      "usage": {
+        "total_tokens": 2503,
+        "total_characters": 0,
+        "prompt_tokens": 692,
+        "completion_tokens": 1811,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      }
+    },
+    {
+      "task": "projection-tests",
+      "model": "MiniMax-M3",
+      "disposition": "applied_with_correct_screen_row_count",
+      "finish_reason": "stop",
+      "usage": {
+        "total_tokens": 1476,
+        "total_characters": 0,
+        "prompt_tokens": 476,
+        "completion_tokens": 1000,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      }
+    },
+    {
+      "task": "readable-tick-fix",
+      "model": "MiniMax-M3",
+      "disposition": "applied_with_source_literal_and_ts_narrowing_correction",
+      "finish_reason": "stop",
+      "usage": {
+        "total_tokens": 1166,
+        "total_characters": 0,
+        "prompt_tokens": 596,
+        "completion_tokens": 570,
+        "prompt_tokens_details": {
+          "cached_tokens": 204
+        }
+      }
+    },
+    {
+      "task": "projection-e2e",
+      "model": "MiniMax-M3",
+      "disposition": "applied_with_marker_name_and_per_line_control_check_correction",
+      "finish_reason": "stop",
+      "usage": {
+        "total_tokens": 670,
+        "total_characters": 0,
+        "prompt_tokens": 429,
+        "completion_tokens": 241,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      }
+    },
+    {
+      "task": "readable-browser",
+      "model": "MiniMax-M3",
+      "disposition": "applied_with_marker_parameter_integration",
+      "finish_reason": "stop",
+      "usage": {
+        "total_tokens": 1294,
+        "total_characters": 0,
+        "prompt_tokens": 665,
+        "completion_tokens": 629,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      }
+    }
+  ],
+  "total_tokens": 23228,
+  "gpt_tokens": "not available"
+}

@@ -12,12 +12,15 @@ import { writeFile, mkdir } from 'node:fs/promises';
 import WebSocket from 'ws';
 import headless from '@xterm/headless';
 import { decodeFrames, Kind, StreamGuard } from '../../.test-build/core/index.js';
+import { configureUnicode } from '../../.test-build/client/packages/terminal-client/src/unicode.js';
 const {Terminal}=headless;
-const {values}=parseArgs({options:{agent:{type:'string',default:'target/debug/rc-agent.exe'},origin:{type:'string',default:'http://127.0.0.1:3847'}}});
+const {values}=parseArgs({options:{agent:{type:'string',default:'target/debug/rc-agent.exe'},origin:{type:'string',default:'http://127.0.0.1:3847'},eight:{type:'boolean',default:false}}});
+const sessionCount=values.eight?8:2;
 if(process.platform!=='win32')throw new Error('NOT_RUN: production Agent E2E requires Windows. Portable fixtures are not a substitute.');
 const base=new URL(values.origin);if(base.origin!==values.origin||(base.protocol!=='https:'&&base.origin!=='http://127.0.0.1:3847'))throw new Error('Use an exact approved HTTPS origin or http://127.0.0.1:3847');
 const report={started:new Date().toISOString(),environment:{node:process.version,platform:process.platform},checks:[],cleanup:[]};
 const made=[],streams=[];let token='',device,control,renewal;const leases=new Map();let sequence=0;
+const cmdFixtureCwd=resolve(tmpdir());
 async function api(path,body,method,auth=true,origin=base.origin){
  const h={'Origin':origin,...(body===undefined?{}:{'Content-Type':'application/json'}),...(auth?{Authorization:`Bearer ${token}`}:{})};
  const r=await fetch(`${base.origin}/api/v1${path}`,{method:method??(body===undefined?'GET':'POST'),headers:h,...(body===undefined?{}:{body:JSON.stringify(body)}),signal:AbortSignal.timeout(12000)});
@@ -28,9 +31,85 @@ async function socket(channel,id){const t=await api('/tickets/ws',{channel,sessi
 async function controlSocket(){const ws=await socket('control');const messages=[];let failure;ws.on('message',b=>{messages.push(JSON.parse(b.toString()));if(messages.length>1024)messages.shift();});ws.on('error',e=>failure=e);const hello=await waitUntil(()=>{if(failure)throw failure;return messages.find(m=>m.type==='hello');});return{ws,hello,messages};}
 async function rpc(c,m,kind){const request_id=randomUUID();c.ws.send(JSON.stringify({...m,request_id}));return waitUntil(()=>c.messages.find(x=>x.request_id===request_id&&(x.type===kind||x.type==='rejected'||x.type==='delivery_failed'||x.type==='delivery_unknown')));}
 async function terminal(session){
- const ws=await socket('terminal',session.session_id);const term=new Terminal({cols:session.cols,rows:session.rows,scrollback:2000});const guard=new StreamGuard(session.session_id,session.generation,session.agent_epoch);let ready=false,error,queue=Promise.resolve();
+ const ws=await socket('terminal',session.session_id);const term=new Terminal({cols:session.cols,rows:session.rows,scrollback:2000,allowProposedApi:true});configureUnicode(term);const guard=new StreamGuard(session.session_id,session.generation,session.agent_epoch);let ready=false,error,queue=Promise.resolve();
  ws.on('error',e=>error=e);ws.on('message',(b,binary)=>{queue=queue.then(async()=>{assert.ok(binary);for(const frame of decodeFrames(new Uint8Array(b))){guard.accept(frame);if(frame.kind===Kind.SnapshotMeta){term.reset();term.resize(guard.meta.cols,guard.meta.rows);}else if(frame.kind===Kind.Output||frame.kind===Kind.SnapshotChunk){await new Promise(r=>term.write(frame.payload,r));}else if(frame.kind===Kind.Resize){const d=new DataView(frame.payload.buffer,frame.payload.byteOffset,4);term.resize(d.getUint16(0),d.getUint16(2));}else if(frame.kind===Kind.SnapshotEnd)ready=true;if(guard.phase==='live'&&ws.readyState===1)ws.send(JSON.stringify({type:'applied',sequence:guard.sequence.toString(),bytes:frame.payload.length+40}));}}).catch(e=>{error=e;ws.close();});});
  const t={ws,term,get ready(){if(error)throw error;return ready;},text(){if(error)throw error;const b=term.buffer.active;return Array.from({length:b.length},(_,i)=>b.getLine(i)?.translateToString(true)??'').join('\n');},close(){ws.close();term.dispose();}};streams.push(t);await waitUntil(()=>t.ready);return t;
+}
+async function checkReadableBrowser(marker) {
+  if (!process.env.RC_PLAYWRIGHT_MODULE) return;
+
+  const { execFileSync } = await import('node:child_process');
+  const { chromium } = await import(process.env.RC_PLAYWRIGHT_MODULE);
+  const assert = (await import('node:assert')).default;
+
+  const browser = await chromium.launch({
+    executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe',
+    headless: true,
+  });
+
+  let extraDeviceId;
+
+  try {
+    const context = await browser.newContext();
+    const page = await context.newPage();
+
+    const pageErrors = [];
+    page.on('pageerror', (err) => pageErrors.push(err));
+
+    page.on('response', async (response) => {
+      try {
+        if (response.url().endsWith('/api/v1/auth/pair') && response.status() === 200) {
+          const data = await response.json();
+          extraDeviceId = data.client_id;
+        }
+      } catch (_) {}
+    });
+
+    const ticket = JSON.parse(
+      execFileSync(resolve(values.agent), ['pair'], {
+        encoding: 'utf8',
+        windowsHide: true,
+        timeout: 5000,
+      })
+    ).ticket;
+
+    await page.goto(values.origin);
+
+    await page.getByLabel('개발 버전의 검증 제한을 확인했습니다.').check();
+
+    await page.getByLabel('기기 이름').fill('READABLE-' + randomUUID());
+    await page.getByLabel('회사 PC에서 발급한 일회용 티켓').fill(ticket);
+
+    await page.getByRole('button', { name: '이 브라우저 등록' }).click();
+
+    await page.getByRole('complementary', { name: '터미널 목록' }).waitFor();
+    await page
+      .getByRole('complementary', { name: '터미널 목록' })
+      .getByRole('button', { name: made[0].label, exact: true })
+      .click();
+
+    const pane = page.getByRole('group', { name: made[0].label, exact: true });
+
+    await pane.getByRole('button', { name: '읽기 쉬운 출력', exact: true }).click();
+
+    const pre = pane.locator('pre[data-source="terminal_projection"]');
+    await pre.waitFor({ state: 'visible', timeout: 10000 });
+
+    const text = await pre.textContent();
+    assert(text && text.includes(marker));
+
+    assert(!(await pane.locator('.terminal-scroll').isVisible()));
+
+    await pane.getByRole('button', { name: '전체 터미널' }).click();
+    assert(await pane.locator('.terminal-scroll').isVisible());
+
+    assert(pageErrors.length === 0);
+  } finally {
+    await browser.close();
+    if (extraDeviceId) {
+      await api(`/devices/${extraDeviceId}`, undefined, 'DELETE');
+    }
+  }
 }
 async function check(name,fn){await fn();report.checks.push({name,status:'PASS'});console.log(`PASS ${name}`);}
 async function input(session,text,id=randomUUID(),seq=++sequence){const l=leases.get(session.session_id);return rpc(control,{type:'input',session_id:session.session_id,agent_epoch:session.agent_epoch,generation:session.generation,lease_epoch:l.epoch,input_id:id,input_seq:seq,payload:{kind:'utf8',text}},'written');}
@@ -48,11 +127,52 @@ ${device.client_id}
  });
  await check('unapproved Origin rejected even with authenticated bearer',async()=>{await assert.rejects(api('/sessions',undefined,'GET',true,'https://unapproved.invalid'),e=>e.status===403);});
  control=await controlSocket();assert.equal(control.hello.client_id,device.client_id);
- await check('create two isolated real CMD PTYs',async()=>{for(let i=0;i<2;i++){made.push(await api('/sessions',{label:`E2E-CMD-${i}-${randomUUID()}`,project_id:null,cwd:tmpdir(),profile:'cmd',cols:100,rows:24}));}assert.notEqual(made[0].session_id,made[1].session_id);assert.notEqual(made[0].pid,made[1].pid);});
+await check('create '+sessionCount+' isolated real CMD PTYs',async()=>{for(let i=0;i<sessionCount;i++){made.push(await api('/sessions',{label:`E2E-CMD-${sessionCount}-${randomUUID()}`,project_id:null,cwd:cmdFixtureCwd,profile:'cmd',cols:100,rows:24}));}assert.equal(new Set(made.map(m=>m.session_id)).size,sessionCount);assert.equal(new Set(made.map(m=>m.pid)).size,sessionCount);});
  for(const s of made){const r=await rpc(control,{type:'lease_acquire',session_id:s.session_id,takeover:false},'lease');assert.equal(r.type,'lease');leases.set(s.session_id,r.lease);}
  renewal=setInterval(()=>{for(const [id,l]of leases)if(control?.ws.readyState===1)control.ws.send(JSON.stringify({type:'lease_renew',request_id:randomUUID(),session_id:id,lease_epoch:l.epoch}));},5000);
  const a=await terminal(made[0]),b=await terminal(made[1]);const nonce=randomUUID().replaceAll('-','');const marker=`RC_${nonce}_RESULT`;
+if (values.eight) {
+  await check('eight PTYs keep all input and output isolated', async () => {
+    const views = [a, b];
+    for (let i = 2; i < sessionCount; i++) views.push(await terminal(made[i]));
+    const nonces = made.map(() => randomUUID().replaceAll('-', ''));
+    const expected = nonces.map(n => n + '_RESULT');
+    for (let i = 0; i < sessionCount; i++) {
+      const r = await input(made[i], '@set "RC_MULTI=' + nonces[i] + '"\r\n@echo %RC_MULTI%_RESULT\r\n');
+      assert.equal(r.type, 'written');
+      await waitUntil(() => views[i].text().includes(expected[i]));
+    }
+    for (const i of made.keys()) {
+      for (const j of made.keys()) {
+        assert.equal(views[i].text().includes(expected[j]), i === j);
+      }
+    }
+  });
+}
+ await check('CMD starts in the requested fixture directory',async()=>{const marker=`RC_CWD=${cmdFixtureCwd}`;await input(made[0],'@echo RC_CWD=%CD%\r\n');await waitUntil(()=>a.text().toLowerCase().includes(marker.toLowerCase()));});
  await check('selected PTY receives real output, not echoed command text',async()=>{const r=await input(made[0],`@set "RC_E2E=RC_${nonce}"\r\n@echo %RC_E2E%_RESULT\r\n`);assert.equal(r.type,'written');await waitUntil(()=>a.text().includes(marker));assert.equal(b.text().includes(marker),false);});
+await check('projection endpoint requires bearer authentication', async () => {
+  await assert.rejects(
+    api(`/sessions/${made[0].session_id}/projection`, undefined, 'GET', false),
+    e => e.status === 401
+  );
+});
+
+await check('server projection identifies current screen and preserves actual output', async () => {
+  const p = await api(`/sessions/${made[0].session_id}/projection`);
+  assert.equal(p.session_id, made[0].session_id);
+  assert.equal(p.agent_epoch, made[0].agent_epoch);
+  assert.equal(p.generation, made[0].generation);
+  assert.match(p.sequence, /^\d+$/);
+  assert.equal(p.projection.source, 'terminal_projection');
+  assert.equal(p.projection.scope, 'current_screen');
+  assert.equal(p.projection.truncated, false);
+  const lines = p.projection.lines.join('\n');
+  assert(lines.includes(marker));
+  assert.equal(p.projection.lines.length, made[0].rows);
+  assert(p.projection.lines.every(line=>!/[\x00-\x1f\x7f-\x9f]/.test(line)));
+});
+ if(process.env.RC_PLAYWRIGHT_MODULE) await check('actual browser readable projection and raw toggle',()=>checkReadableBrowser(marker));
  await check('second writer connection cannot interleave without taking lease',async()=>{const other=await controlSocket();try{const r=await rpc(other,{type:'lease_acquire',session_id:made[0].session_id,takeover:false},'lease');assert.equal(r.type,'rejected');}finally{other.ws.close();}});
  await check('duplicate input identifier cannot execute twice',async()=>{const id=randomUUID();const first=await input(made[1],'@echo safe-e2e\r\n',id);assert.equal(first.type,'written');const next=await input(made[1],'@echo must-not-execute\r\n',id);assert.equal(next.type,'rejected');});
  await check('closing terminal view keeps PID and snapshot reconnect restores output',async()=>{a.close();const list=await api('/sessions');assert.equal(list.find(s=>s.session_id===made[0].session_id).pid,made[0].pid);const restored=await terminal(made[0]);await waitUntil(()=>restored.text().includes(marker));});

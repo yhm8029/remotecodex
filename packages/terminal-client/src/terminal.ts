@@ -1,9 +1,11 @@
 import { Terminal, type IDisposable } from '@xterm/xterm';
 import { decodeFrames, Kind, StreamGuard, RenderBudget, type SessionInfo } from '@remotecodex/core';
 import { Controller } from './controller.js';
+import { configureUnicode } from './unicode.js';
+
 export class TerminalView {
   readonly terminal: Terminal;
-  ready = false; warnings: string[] = [];
+  ready = false; warnings: string[] = []; unread = 0; atBottom = true;
   private socket: WebSocket | null = null; private stopped = false;
   private retryTimer: ReturnType<typeof setTimeout> | undefined;
   private retry = 0; private epoch = 0;
@@ -12,10 +14,11 @@ export class TerminalView {
   constructor(private element: HTMLElement, readonly session: SessionInfo, readonly controller: Controller,
     private focused: () => boolean, private notify: () => void) {
     this.terminal = new Terminal({ cols: session.cols, rows: session.rows, scrollback: 2000,
-      cursorBlink: false, convertEol: false, allowProposedApi: false, allowTransparency: false,
+      cursorBlink: false, convertEol: false, allowProposedApi: true, allowTransparency: false,
       fontFamily: 'Cascadia Mono, Consolas, monospace', fontSize: 14,
       disableStdin: true, theme: { background: '#0b1017', foreground: '#d8e1ed', cursor: '#70dab2' } });
-    const t = this.terminal;
+    configureUnicode(this.terminal);
+      const t = this.terminal;
     // The server is the single terminal-query responder. These hooks prevent N viewers replying N times.
     for (const prefix of ['', '?', '>', '=']) for (const final of ['n', 'c', 't']) {
       this.disposables.push(t.parser.registerCsiHandler(prefix ? { prefix, final } : { final }, () => true));
@@ -36,6 +39,12 @@ export class TerminalView {
     element.addEventListener('paste', paste, true);
     this.subscriptions.push(() => element.removeEventListener('paste', paste, true));
     t.open(element);
+    this.disposables.push(t.onScroll(() => {
+      const bottom = this.isAtBottom();
+      this.atBottom = bottom;
+      if (bottom) this.unread = 0;
+      this.notify();
+    }));
     const change = () => { t.options.disableStdin = !this.canInput(); };
     const credentials = () => { void this.refreshAuth().catch(() => this.socket?.close()); };
     controller.addEventListener('change', change); controller.addEventListener('credentials', credentials);
@@ -44,6 +53,16 @@ export class TerminalView {
   }
   canInput(): boolean { return this.ready && this.focused() && this.controller.owns(this.session.session_id); }
   updateInputGate(): void { this.terminal.options.disableStdin = !this.canInput(); }
+  private isAtBottom(): boolean {
+    const buffer = this.terminal.buffer.active;
+    return buffer.viewportY >= buffer.baseY;
+  }
+  scrollToBottom(): void {
+    this.terminal.scrollToBottom();
+    this.atBottom = true;
+    this.unread = 0;
+    this.notify();
+  }
   focus(): void { this.updateInputGate(); this.terminal.focus(); }
   async paste(text: string, enter: boolean): Promise<void> {
     if (!this.canInput()) throw new Error('제어권과 활성 터미널이 필요합니다.');
@@ -69,7 +88,13 @@ export class TerminalView {
             if (frame.kind === Kind.SnapshotMeta) {
               const m = guard.meta!; this.warnings = m.warnings; this.terminal.reset(); this.terminal.resize(m.cols, m.rows);
             } else if (frame.kind === Kind.Output || frame.kind === Kind.SnapshotChunk) {
+              const liveOutput = frame.kind === Kind.Output;
+              const shouldCount = liveOutput && (!this.atBottom || !this.focused());
               await new Promise<void>(resolve => this.terminal.write(frame.payload, resolve));
+              this.atBottom = this.isAtBottom();
+              if (shouldCount) this.unread += 1;
+              if (liveOutput && this.atBottom && this.focused()) this.unread = 0;
+              if (liveOutput) this.notify();
             } else if (frame.kind === Kind.Resize) {
               const d = new DataView(frame.payload.buffer, frame.payload.byteOffset, 4); this.terminal.resize(d.getUint16(0), d.getUint16(2));
             } else if (frame.kind === Kind.SnapshotEnd) {

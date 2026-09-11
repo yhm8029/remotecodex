@@ -1,7 +1,7 @@
 # RemoteCodex 인수·회귀 테스트 매트릭스
 
 > 기준: SPEC.md v1.2 · 작성일: 2026-09-11
-> **이 매트릭스는 제품 통합 인수 계획이다. 모든 제품 인수 항목은 NOT_RUN이다. 별도의 portable/client 단위 테스트 125개 결과는 IMPLEMENTATION_STATUS.md에 기록했으며 제품 전체 통과로 승격하지 않는다.**
+> **이 매트릭스는 제품 통합 인수 계획이다. 2026-09-12 로컬 실제 실행 증거를 반영했다. ID 전체 조건을 충족한 항목만 PASS로 변경했고, 부분 검증과 실기기·장시간 조건은 아래 증거 표로 분리했다. 단위 테스트 수를 제품 전체 인수 통과로 승격하지 않는다.**
 
 ## 사용 규칙
 
@@ -18,7 +18,7 @@
 | ID | 검사 항목 | 절차 | 합격 기준 | 초기 상태 |
 |---|---|---|---|---|
 | BASE-001 | 실제 ConPTY 왕복 | Windows에서 CMD와 PowerShell을 각각 생성하고 echo/dir 명령 입력 | 실제 자식 PID와 출력 증거가 있고 메시지마다 프로세스를 다시 만들지 않음 | NOT_RUN |
-| BASE-002 | 독립 Agent 수명 | 터미널 작업 중 회사 Tauri UI를 종료·재실행 | Agent/PTY PID·generation이 유지되고 작업 계속 진행 | NOT_RUN |
+| BASE-002 | 독립 Agent 수명 | 터미널 작업 중 회사 Tauri UI를 종료·재실행 | Agent/PTY PID·generation이 유지되고 작업 계속 진행 | PASS |
 | BASE-003 | 외부 터미널 비탈취 | 일반 Windows Terminal 탭 실행 후 RemoteCodex 시작 | 기존 탭을 몰래 attach/종료/재시작하지 않음 | NOT_RUN |
 | BASE-004 | Agent 단일 인스턴스 | 동일 사용자에서 앱을 빠르게 두 번 시작 | Agent 1개, 소유 PTY 중복 생성 없음 | NOT_RUN |
 | BASE-005 | 사용자 경계 | 다른 Windows 사용자로 named-pipe 관리 명령 시도 | 허용되지 않은 사용자는 거절, 정보 노출 없음 | NOT_RUN |
@@ -57,7 +57,7 @@
 | TERM-001 | 한글 조합 | 한글 입력·변환·Backspace·조합 중 Enter를 반복 | 중복 문자·조기 전송·분해 입력 없음 | NOT_RUN |
 | TERM-002 | 한글 경로 | 공백/한글/괄호가 포함된 cwd에서 명령 실행 | 경로 손실·인자 잘못 해석 없음 | NOT_RUN |
 | TERM-003 | UTF-8 분할 | 한글/emoji bytes를 모든 가능한 경계로 나눠 전송 | 연결된 원문과 동일한 문자 출력 | NOT_RUN |
-| TERM-004 | 문자 폭 | CJK/emoji/조합문자/혼합 ASCII fixture 출력 | 선언한 Unicode profile에서 커서·열 정합 | NOT_RUN |
+| TERM-004 | 문자 폭 | CJK/emoji/조합문자/혼합 ASCII fixture 출력 | 선언한 Unicode profile에서 커서·열 정합 | PASS |
 | TERM-005 | 기본 제어키 | Tab·방향키·Home/End·Delete·PgUp/PgDn 테스트 | 대상 터미널 동작과 일치 | NOT_RUN |
 | TERM-006 | Ctrl+C | 출력이 있는 장기 실행 fixture에 Ctrl+C 전송 | 입력 전달 시간 측정, Agent/다른 세션은 종료되지 않음 | NOT_RUN |
 | TERM-007 | 붙여넣기 | 한 줄/여러 줄/큰 텍스트를 붙여넣기 | bracketed paste 정책 준수, 중복 Enter·잘림 없음 | NOT_RUN |
@@ -77,7 +77,7 @@
 
 | ID | 검사 항목 | 절차 | 합격 기준 | 초기 상태 |
 |---|---|---|---|---|
-| MULTI-001 | 8세션 분리 | 8개 PTY에서 고유 식별자 출력·입력 | cross-session 출력/입력 0건 | NOT_RUN |
+| MULTI-001 | 8세션 분리 | 8개 PTY에서 고유 식별자 출력·입력 | cross-session 출력/입력 0건 | PASS |
 | MULTI-002 | 동일 label | 서로 같은 이름의 세션을 여러 개 생성 | UUID 기준으로 정확히 구분 | NOT_RUN |
 | MULTI-003 | 프로젝트 다중 PTY | 프로젝트 하나에 Codex·개발 서버 세션 생성 | 프로젝트 그룹은 같고 실행 수명은 독립 | NOT_RUN |
 | MULTI-004 | writer 경쟁 | 두 클라이언트가 동시에 lease 획득/입력 | 서버 원자적 단일 writer, 이전 lease 입력 차단 | NOT_RUN |
@@ -310,3 +310,22 @@ P1~P6의 각 gate와 모바일 검사는 SPEC의 단계 순서를 따른다. 이
 | V02-016 | 성능 회귀 | 원본 SPEC CPU/RAM/p95/soak 기준 유지, 영상 비용 포함 | NOT_RUN |
 
 단위 테스트 증거: `docs/test-results/v0.2.0/all-tests.tap.txt` (96 core + 29 client). Fake transport/decoder를 실제 native/WebRTC로 표시하지 않는다.
+
+## 2026-09-12 실제 증거와 판정 범위
+
+기준 소스는 이 문서와 함께 커밋되는 `work/spec-completion` 체크포인트다. 상세 결과: [로컬 검증](docs/test-results/spec-completion-2026-09-12/local-checks.json). 최종 패키지와 전 기기 인수 완료를 뜻하지 않는다.
+
+| 인수 ID | 확인된 범위 | 남은 조건 / 증거 |
+|---|---|---|
+| BASE-002 | 실제 Tauri 닫기·재실행 후 Agent/PTY UUID와 PID 보존 | [native lifecycle](docs/test-results/spec-completion-2026-09-12/tauri-lifecycle.json) |
+| MULTI-001 | 실제 8개 CMD PTY의 고유 입력/출력 분리, 별도 PID/UUID | [Windows Agent](docs/test-results/spec-completion-2026-09-12/windows-agent.json) |
+| TERM-004 | 선언된 Unicode 17 two-cell profile 전체 scalar 대조, 실제 snapshot golden | 15개 테스트. 완전한 grapheme/모든 터미널 동등성 인증 아님 |
+| SEC-001/006/007, MULTI-004/009 | 실제 API 인증·origin 거부, 중복 입력/lease·snapshot 복원, 기기 철회 UI | 전체 scope/미디어/2PC 조건은 NOT_RUN. [기기 UI](docs/test-results/spec-completion-2026-09-12/device-admin-chrome.json) |
+| TERM-010/014 | 설치된 Codex TUI 시작과 실제 PID·이미지·생성시간, 종료 후 composer metadata 차단 | 실제 대화/도구/승인 전체 흐름은 NOT_RUN. [Codex](docs/test-results/spec-completion-2026-09-12/codex-tui-chrome.json) |
+| PREV 계열 | 실제 HTTP/WS/SSE, cookie 격리·철회, Vite 6.4.3/Next 16.3.3 HMR | Node gateway 테스트. 실제 tailnet HTTPS/브라우저 HMR은 NOT_RUN. [gateway](docs/test-results/spec-completion-2026-09-12/preview-gateway.json), [Vite](docs/test-results/spec-completion-2026-09-12/preview-vite.json), [Next](docs/test-results/spec-completion-2026-09-12/preview-next.json) |
+| INPUT-005/006/007 | 소유 Win32 시험 창에서 구 geometry 거부, 실제 foreground 전환 거부, 관측한 key-down의 해제 | 합성 frame 통지 사용. WebRTC·modifier/네트워크 종료·실기기 전체 조건은 NOT_RUN. [GUI](docs/test-results/spec-completion-2026-09-12/gui-safety.json) |
+| CAP/MEDIA 계열 | 실제 WGC source → hardware H264, 캐시 반복은 새 frame proof로 세지 않음 | WebRTC/ICE/2PC 화면 수신은 NOT_RUN. [capture/encode](docs/test-results/spec-completion-2026-09-12/capture-encode-bridge.json) |
+| MOB-008 | 서버의 bounded current-screen projection, 숨김 문자 마스킹, 실제 desktop Chrome 원문 전환 | Android/iOS 실기기 전체 조건은 NOT_RUN. [Windows Agent의 browser check](docs/test-results/spec-completion-2026-09-12/windows-agent.json) |
+| PWA 관련 | Desktop Chrome service worker와 offline shell 캐시 3경로 | 물리 모바일 설치/백그라운드 검증은 NOT_RUN. [PWA](docs/test-results/spec-completion-2026-09-12/pwa-chrome.json) |
+| INSTALL 계열 | 표준/오프라인 unsigned NSIS 빌드, 패키지 리소스/해시/SBOM 검사 | 새 VM 설치·제거·WebView2 없는 오프라인 인수는 NOT_RUN |
+| PERF 전체 | 짧은 Agent-only 관측과 로컬 harness만 존재 | SPEC의 10분/분포/합산·24시간 gate는 NOT_RUN |

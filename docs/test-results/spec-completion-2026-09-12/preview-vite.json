@@ -1,0 +1,35 @@
+{
+  "checks": [
+    {
+      "name": "registered actual Vite fixture on approved preview port",
+      "status": "PASS"
+    },
+    {
+      "name": "gateway served real Vite HTML and client adapter",
+      "status": "PASS"
+    },
+    {
+      "name": "real Vite HMR update crossed gateway WebSocket",
+      "status": "PASS"
+    }
+  ],
+  "cleanup": [
+    {
+      "type": "preview",
+      "status": "removed"
+    },
+    {
+      "type": "session",
+      "status": "removed"
+    },
+    {
+      "type": "device",
+      "status": "revoked"
+    },
+    {
+      "type": "device",
+      "status": "revoked"
+    }
+  ],
+  "overall": "PASS"
+}

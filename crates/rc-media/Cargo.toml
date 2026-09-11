@@ -6,7 +6,7 @@ license.workspace = true
 
 [features]
 default = []
-native-media = ["dep:gstreamer", "dep:gstreamer-webrtc", "dep:gstreamer-sdp"]
+native-media = ["dep:gstreamer", "dep:gstreamer-webrtc", "dep:gstreamer-sdp", "dep:gstreamer-app"]
 
 [dependencies]
 rc-core = { path = "../rc-core" }
@@ -22,3 +22,4 @@ crossbeam-channel = "0.5"
 gstreamer = { version = "0.24", features = ["v1_24"], optional = true }
 gstreamer-webrtc = { version = "0.24", features = ["v1_24"], optional = true }
 gstreamer-sdp = { version = "0.24", features = ["v1_24"], optional = true }
+gstreamer-app = { version = "0.24", features = ["v1_24"], optional = true }

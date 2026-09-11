@@ -1,0 +1,15 @@
+{
+  "date": "2026-09-11T16:14:38.533Z",
+  "checks": [
+    "installed native Codex profile discovered",
+    "actual Codex TUI output rendered through ConPTY and browser",
+    "live native process image and creation identity allow managed composer",
+    "managed process termination disables composer metadata"
+  ],
+  "cleanup": [
+    "owned Codex PTY removed",
+    "test device revoked"
+  ],
+  "overall": "PASS",
+  "pageErrors": []
+}

@@ -1,0 +1,19 @@
+{
+  "name": "RemoteCodex",
+  "short_name": "RemoteCodex",
+  "description": "원격 코드 실행 및 터미널 환경을 위한 한국어 RemoteCodex 설치형 웹 앱",
+  "lang": "ko-KR",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0b1017",
+  "theme_color": "#0b1017",
+  "icons": [
+    {
+      "src": "/icons/remotecodex.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "date": "2026-09-11T15:51:47.470Z",
+  "checks": [
+    "native WebView2 host attach via SID verified IPC",
+    "native UI close preserves Agent and exact PTY UUID/PID",
+    "native UI reopen reauthenticates persisted device and restores existing PTY",
+    "owned fixture PTY closed and device revoked"
+  ],
+  "pageErrors": [],
+  "overall": "PASS"
+}

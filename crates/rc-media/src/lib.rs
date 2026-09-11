@@ -1,7 +1,11 @@
 //! P4/P6 native media implementation. Only this optional helper links the multimedia SDK.
 //! Agent/terminal-only builds never load GStreamer DLLs or start a capture thread.
+pub(crate) mod adaptation;
+pub(crate) mod encoder;
 #[cfg(all(windows, feature = "native-media"))]
 pub mod native;
+#[cfg(all(windows, feature = "native-media"))]
+pub(crate) mod pump;
 #[derive(Debug, serde::Serialize)]
 pub struct Capabilities {
     pub protocol: u16,

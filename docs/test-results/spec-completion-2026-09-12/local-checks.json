@@ -1,0 +1,47 @@
+{
+  "date": "2026-09-11T17:22:46.033Z",
+  "scope": "Local Windows implementation checkpoint, not full SPEC release acceptance",
+  "commands": [
+    {
+      "command": "cargo test --workspace --locked",
+      "exit_code": 0
+    },
+    {
+      "command": "cargo test --manifest-path apps/desktop/src-tauri/Cargo.toml --locked",
+      "exit_code": 0,
+      "tests": 32
+    },
+    {
+      "command": "npm test",
+      "exit_code": 0
+    },
+    {
+      "command": "npm run check:web",
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "command": "npm run build:web",
+      "exit_code": 0,
+      "warning": "Tauri API is both statically and dynamically imported"
+    },
+    {
+      "command": "node --test tests/e2e/terminal-golden.mjs tests/e2e/unicode-width.mjs",
+      "exit_code": 0,
+      "tests": 15
+    },
+    {
+      "command": "node scripts/generate-unicode-width.mjs --check",
+      "exit_code": 0,
+      "ranges": 522
+    }
+  ],
+  "external_gates_not_run": [
+    "two-PC Tailscale HTTPS/WSS and ICE",
+    "physical Android/iOS IME and background transitions",
+    "24h soak and full SPEC performance distributions",
+    "clean VM install/uninstall and offline WebView2 absence",
+    "DPI, rotation, multimonitor, lock and elevated desktop scenarios"
+  ]
+}

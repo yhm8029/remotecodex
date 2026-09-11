@@ -24,6 +24,7 @@
     "packages/core/src/**/*.ts",
     "packages/terminal-client/src/api.ts",
     "packages/terminal-client/src/controller.ts",
-    "packages/terminal-client/src/media-client.ts"
+    "packages/terminal-client/src/media-client.ts",
+    "packages/terminal-client/src/unicode.ts"
   ]
 }

@@ -1,0 +1,63 @@
+{
+  "checks": [
+    {
+      "name": "isolated Agent public_origin is exact",
+      "status": "PASS"
+    },
+    {
+      "name": "owned CMD project and preview gateway registered",
+      "status": "PASS"
+    },
+    {
+      "name": "unauthenticated gateway request rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "launch ticket is single-use",
+      "status": "PASS"
+    },
+    {
+      "name": "application cookies are namespaced and security headers preserved",
+      "status": "PASS"
+    },
+    {
+      "name": "management credentials are stripped and app cookie is decoded",
+      "status": "PASS"
+    },
+    {
+      "name": "WebSocket echo and subprotocol passed through gateway",
+      "status": "PASS"
+    },
+    {
+      "name": "SSE first event streamed before connection end",
+      "status": "PASS"
+    },
+    {
+      "name": "revoking paired device cancels active WebSocket and SSE",
+      "status": "PASS"
+    },
+    {
+      "name": "revoked preview credential is rejected",
+      "status": "PASS"
+    }
+  ],
+  "cleanup": [
+    {
+      "type": "preview",
+      "status": "removed"
+    },
+    {
+      "type": "session",
+      "status": "removed"
+    },
+    {
+      "type": "device",
+      "status": "revoked"
+    },
+    {
+      "type": "device",
+      "status": "revoked"
+    }
+  ],
+  "overall": "PASS"
+}

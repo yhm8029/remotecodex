@@ -1,0 +1,11 @@
+{
+  "scope": "owned fixture capture and encode only; WebRTC, ICE, Tailscale, input, and two-PC behavior are not covered",
+  "command": "scripts/native-pipeline-fixture.ps1",
+  "encoder": "hardware",
+  "source_serial": 1,
+  "fresh_proofs": 1,
+  "encoded_buffers": 3,
+  "cached_repeat_proofs": 0,
+  "stale_capture_age_ms": 859,
+  "stopped_cleanly": true
+}

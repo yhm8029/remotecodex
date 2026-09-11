@@ -19,7 +19,7 @@
       }
     ],
     "security": {
-      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src ipc: http://ipc.localhost http://127.0.0.1:3847 ws://127.0.0.1:3847; img-src 'self' data:; object-src 'none'; base-uri 'none'; frame-src 'none'; worker-src 'none'; media-src 'self' blob:",
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src ipc: http://ipc.localhost http://127.0.0.1:3847 ws://127.0.0.1:3847 https://*.ts.net wss://*.ts.net; img-src 'self' data:; object-src 'none'; base-uri 'none'; frame-src 'none'; worker-src 'none'; media-src 'self' blob:",
       "capabilities": [
         "main"
       ]

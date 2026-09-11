@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "scope": "Actual Win32 GuiSession with same-process owned fixture windows; synthetic frame notification",
+  "received_text": "owned fixture text",
+  "button_count": 1,
+  "key_down_observed": true,
+  "key_released": true,
+  "foreground_verified_as_owned_secondary": true,
+  "foreground_rejected": true,
+  "both_text_sinks_unchanged_on_rejection": true,
+  "unchanged_geometry_control_armed": true,
+  "stale_geometry_error": "Geometry changed",
+  "source_identity_rejected": true,
+  "limitations": "No two-PC WebRTC, physical mobile, lock/UIPI, DPI, or multimonitor acceptance. SendInput is a global Windows mechanism guarded here to owned test windows."
+}

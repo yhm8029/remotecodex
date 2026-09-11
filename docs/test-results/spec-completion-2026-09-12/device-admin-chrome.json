@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "scope": "Actual desktop Chrome device-management UI with owned Release Agent fixture",
+  "otherDeviceRevoked": true,
+  "activePtyPidPreserved": true,
+  "selfRevocationStopsConnection": true,
+  "pageErrors": [],
+  "cleanup": "owned PTY closed and both devices revoked"
+}

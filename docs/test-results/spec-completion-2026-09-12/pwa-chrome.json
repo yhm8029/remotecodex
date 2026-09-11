@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "scope": "Desktop Chrome service-worker cache and offline fallback only; physical mobile installation not tested",
+  "staticCachePaths": [
+    "/icons/remotecodex.svg",
+    "/manifest.webmanifest",
+    "/offline.html"
+  ],
+  "offlineFallback": true,
+  "noCredentialForm": true
+}

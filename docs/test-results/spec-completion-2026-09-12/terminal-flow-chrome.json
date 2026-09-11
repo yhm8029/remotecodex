@@ -1,0 +1,17 @@
+{
+  "at": "2026-09-11T15:28:10.846Z",
+  "browser": "152.0.7977.83",
+  "checks": [
+    "rename preserves UUID/PID",
+    "exit row becomes history",
+    "explicit restart creates new UUID/PID",
+    "restart preserves project ID",
+    "390px viewport no page overflow",
+    "session deletion emits no page error"
+  ],
+  "overall": "PASS",
+  "limits": [
+    "Desktop Chrome emulation, not a physical mobile device",
+    "Native Tauri host startup not covered"
+  ]
+}

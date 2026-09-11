@@ -93,6 +93,27 @@ impl Store {
         self.conn.lock().execute("INSERT INTO sessions(session_id,metadata_json,lifecycle) VALUES(?1,?2,?3) ON CONFLICT(session_id) DO UPDATE SET metadata_json=excluded.metadata_json,lifecycle=excluded.lifecycle",params![s.session_id.to_string(),serde_json::to_string(s)?,state])?;
         Ok(())
     }
+    pub fn rename_session_label(&self, session_id: Uuid, label: &str) -> anyhow::Result<()> {
+        use rusqlite::OptionalExtension;
+        let mut connection = self.conn.lock();
+        let transaction = connection.transaction()?;
+        let metadata: Option<String> = transaction
+            .query_row(
+                "SELECT metadata_json FROM sessions WHERE session_id=?1",
+                [session_id.to_string()],
+                |row| row.get(0),
+            )
+            .optional()?;
+        let metadata = metadata.ok_or_else(|| anyhow::anyhow!("session not found"))?;
+        let mut info: SessionInfo = serde_json::from_str(&metadata)?;
+        info.label = label.to_owned();
+        transaction.execute(
+            "UPDATE sessions SET metadata_json=?1 WHERE session_id=?2",
+            params![serde_json::to_string(&info)?, session_id.to_string()],
+        )?;
+        transaction.commit()?;
+        Ok(())
+    }
     pub fn history(&self) -> anyhow::Result<Vec<serde_json::Value>> {
         let c = self.conn.lock();
         let mut st = c.prepare(
@@ -169,5 +190,64 @@ impl Store {
         )?;
         c.execute("DELETE FROM audit_events WHERE at < datetime('now','-7 days') OR event_id < (SELECT COALESCE(MAX(event_id),0)-10000 FROM audit_events)",[])?;
         Ok(())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use rc_core::protocol::Lifecycle;
+
+    fn session_info() -> SessionInfo {
+        SessionInfo {
+            session_id: Uuid::new_v4(),
+            project_id: Some(Uuid::new_v4()),
+            label: "before".into(),
+            initial_cwd: "C:\\work".into(),
+            profile: "pwsh".into(),
+            agent_epoch: Uuid::new_v4(),
+            generation: 7,
+            state: Lifecycle::Running,
+            cols: 120,
+            rows: 40,
+            output_seq: "19".into(),
+            pid: Some(4242),
+            process_created: Some("123456".into()),
+            program_path: Some("C:\\Windows\\System32\\cmd.exe".into()),
+            last_activity_at: Some("1700000000000".into()),
+            composer_allowed: false,
+            lease: None,
+        }
+    }
+
+    #[test]
+    fn rename_session_label_persists_only_the_label() {
+        let directory = tempfile::tempdir().unwrap();
+        let store = Store::open(&directory.path().join("state.sqlite3")).unwrap();
+        let before = session_info();
+        store.save_session(&before).unwrap();
+        store
+            .rename_session_label(before.session_id, "after")
+            .unwrap();
+
+        let history = store.history().unwrap();
+        let after: SessionInfo =
+            serde_json::from_value(history.into_iter().next().unwrap()).unwrap();
+        assert_eq!(after.label, "after");
+        assert_eq!(after.session_id, before.session_id);
+        assert_eq!(after.project_id, before.project_id);
+        assert_eq!(after.agent_epoch, before.agent_epoch);
+        assert_eq!(after.generation, before.generation);
+        assert_eq!(after.pid, before.pid);
+        assert_eq!(after.process_created, before.process_created);
+        assert_eq!(after.output_seq, before.output_seq);
+        assert!(matches!(after.state, Lifecycle::Running));
+    }
+
+    #[test]
+    fn rename_unknown_session_fails() {
+        let directory = tempfile::tempdir().unwrap();
+        let store = Store::open(&directory.path().join("state.sqlite3")).unwrap();
+        assert!(store.rename_session_label(Uuid::new_v4(), "after").is_err());
     }
 }

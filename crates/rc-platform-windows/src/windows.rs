@@ -4,7 +4,7 @@ use sha2::{Digest, Sha256};
 use std::{
     ffi::c_void,
     mem::{size_of, zeroed},
-    path::Path,
+    path::{Path, PathBuf},
     ptr::{null, null_mut},
 };
 use windows_sys::Win32::{
@@ -13,7 +13,10 @@ use windows_sys::Win32::{
     Networking::WinSock::AF_INET,
     Security::Authorization::*,
     Security::*,
-    System::{Pipes::*, RemoteDesktop::ProcessIdToSessionId, Threading::*},
+    System::{
+        Pipes::*, RemoteDesktop::ProcessIdToSessionId, SystemInformation::GetTickCount64,
+        Threading::*,
+    },
 };
 
 struct Handle(HANDLE);
@@ -39,6 +42,20 @@ pub fn process_created(pid: u32) -> Result<u64> {
         bail!("GetProcessTimes failed");
     }
     Ok(((created.dwHighDateTime as u64) << 32) | created.dwLowDateTime as u64)
+}
+pub fn monotonic_millis() -> u64 {
+    unsafe { GetTickCount64() }
+}
+pub fn process_image_path(pid: u32) -> Result<PathBuf> {
+    let h = process(pid)?;
+    let mut buffer = vec![0u16; 32_768];
+    let mut length = buffer.len() as u32;
+    if unsafe { QueryFullProcessImageNameW(h.0, 0, buffer.as_mut_ptr(), &mut length) } == 0 {
+        bail!("QueryFullProcessImageNameW failed");
+    }
+    Ok(PathBuf::from(String::from_utf16_lossy(
+        &buffer[..length as usize],
+    )))
 }
 fn token_sid(pid: u32) -> Result<Vec<u8>> {
     let h = process(pid)?;
@@ -93,6 +110,9 @@ fn sid_string(sid: &[u8]) -> Result<String> {
         LocalFree(text.cast());
         Ok(out)
     }
+}
+pub fn current_user_sid_string() -> Result<String> {
+    sid_string(&token_sid(std::process::id())?)
 }
 pub fn pipe_name() -> Result<String> {
     let sid = token_sid(std::process::id())?;

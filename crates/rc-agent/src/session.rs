@@ -1,6 +1,7 @@
 use crate::{
     auth::Principal,
     config::Config,
+    profiles,
     store::Store,
     terminal::{Size, TerminalModel},
 };
@@ -25,7 +26,7 @@ use std::{
         atomic::{AtomicBool, Ordering},
         Arc, Weak,
     },
-    time::Instant,
+    time::{Duration, Instant, SystemTime, UNIX_EPOCH},
 };
 use tokio::sync::{broadcast, oneshot};
 use uuid::Uuid;
@@ -73,6 +74,7 @@ pub struct Session {
     pub output_events: broadcast::Sender<Arc<Frame>>,
     events: broadcast::Sender<serde_json::Value>,
     store: Arc<Store>,
+    managed_codex: bool,
 }
 impl SessionManager {
     pub fn new(config: Config, store: Arc<Store>, epoch: Uuid) -> Self {
@@ -92,6 +94,14 @@ impl SessionManager {
             .cloned()
             .ok_or(ErrorCode::SessionLost)
     }
+    pub fn rename(&self, p: &Principal, id: Uuid, label: String) -> Result<SessionInfo, ErrorCode> {
+        p.require(Scope::TerminalCreate)?;
+        let label = label.trim();
+        if label.is_empty() || label.len() > 160 {
+            return Err(ErrorCode::InvalidRequest);
+        }
+        self.get(id)?.rename_label(label)
+    }
     pub fn list(&self) -> Vec<SessionInfo> {
         self.sessions.lock().values().map(|s| s.info()).collect()
     }
@@ -105,9 +115,10 @@ impl SessionManager {
         {
             return Err(ErrorCode::InvalidRequest);
         }
-        let cwd = PathBuf::from(&req.cwd)
+        let canonical_cwd = PathBuf::from(&req.cwd)
             .canonicalize()
             .map_err(|_| ErrorCode::InvalidRequest)?;
+        let cwd = normalize_pty_cwd(&canonical_cwd)?;
         if !cwd.is_dir() {
             return Err(ErrorCode::InvalidRequest);
         }
@@ -134,9 +145,9 @@ impl SessionManager {
                 pixel_height: 0,
             })
             .map_err(|_| ErrorCode::Internal)?;
-        let (program, args) = profile(&req.profile)?;
-        let mut cmd = CommandBuilder::new(program);
-        cmd.args(args);
+        let launch = profiles::resolve(&req.profile)?;
+        let mut cmd = CommandBuilder::new(launch.program.clone());
+        cmd.args(launch.args.clone());
         cmd.cwd(&cwd);
         cmd.env("TERM", "xterm-256color");
         cmd.env("COLORTERM", "truecolor");
@@ -156,6 +167,10 @@ impl SessionManager {
             .map_err(|_| ErrorCode::InvalidRequest)?;
         let pid = child.process_id();
         let created = pid.and_then(|p| rc_platform_windows::process_created(p).ok());
+        if launch.managed_codex && (pid.is_none() || created.is_none()) {
+            let _ = child.kill();
+            return Err(ErrorCode::Internal);
+        }
         let killer = child.clone_killer();
         drop(pair.slave);
         let (tx, rx) = crossbeam_channel::bounded(64);
@@ -178,6 +193,9 @@ impl SessionManager {
             output_seq: "0".into(),
             pid,
             process_created: created.map(|v| v.to_string()),
+            program_path: Some(launch.program.to_string_lossy().into_owned()),
+            last_activity_at: Some(activity_timestamp()),
+            composer_allowed: false,
             lease: None,
         };
         let s = Arc::new(Session {
@@ -202,6 +220,7 @@ impl SessionManager {
             output_events,
             events: self.events.clone(),
             store: self.store.clone(),
+            managed_codex: launch.managed_codex,
         });
         let weak = Arc::downgrade(&s);
         std::thread::Builder::new()
@@ -269,15 +288,56 @@ impl SessionManager {
     }
 }
 impl Session {
+    pub fn readable_projection(&self) -> serde_json::Value {
+        let o = self.output.lock();
+        let m = self.meta.lock();
+        serde_json::json!({
+            "session_id": m.session_id,
+            "agent_epoch": m.agent_epoch,
+            "generation": m.generation,
+            "sequence": o.seq.to_string(),
+            "projection": o.model.readable_projection()
+        })
+    }
     pub fn info(&self) -> SessionInfo {
         let o = self.output.lock();
         let mut m = self.meta.lock().clone();
         m.output_seq = o.seq.to_string();
         m.lease = self.input.lock().lease.view(Instant::now());
+        m.composer_allowed = self.managed_codex && self.identity_matches(&m);
         m
+    }
+    fn identity_matches(&self, meta: &SessionInfo) -> bool {
+        let current_created = meta
+            .pid
+            .and_then(|pid| rc_platform_windows::process_created(pid).ok());
+        let current_program = meta
+            .pid
+            .and_then(|pid| rc_platform_windows::process_image_path(pid).ok());
+        identity_matches_values(
+            self.running.load(Ordering::Acquire),
+            meta.pid,
+            meta.process_created.as_deref(),
+            meta.program_path.as_deref(),
+            current_created,
+            current_program.as_deref(),
+        )
     }
     fn changed(&self, reason: &str) {
         let _=self.events.send(serde_json::json!({"type":"session_changed","session_id":self.meta.lock().session_id,"reason":reason}));
+    }
+    fn rename_label(&self, label: &str) -> Result<SessionInfo, ErrorCode> {
+        let mut meta = self.meta.lock();
+        if !self.running.load(Ordering::Acquire) {
+            return Err(ErrorCode::SessionLost);
+        }
+        self.store
+            .rename_session_label(meta.session_id, label)
+            .map_err(|_| ErrorCode::Internal)?;
+        meta.label = label.to_owned();
+        drop(meta);
+        self.changed("renamed");
+        Ok(self.info())
     }
     pub fn acquire(&self, p: &Principal, c: Uuid, takeover: bool) -> Result<LeaseView, ErrorCode> {
         p.require(Scope::TerminalWrite)?;
@@ -534,6 +594,7 @@ fn reader_loop(session: Weak<Session>, mut reader: Box<dyn Read + Send>) {
 }
 fn emit(s: &Session, m: &SessionInfo, o: &mut OutputState, data: Vec<u8>) {
     o.seq += 1;
+    s.meta.lock().last_activity_at = Some(activity_timestamp());
     let seq = o.seq;
     let event = o.ring.push(Frame {
         kind: frame::OUTPUT,
@@ -633,6 +694,9 @@ fn write_job(
         });
     }
     let result = result.map(|_| job.received.elapsed().as_micros() as u64);
+    if result.is_ok() {
+        s.meta.lock().last_activity_at = Some(activity_timestamp());
+    }
     s.input.lock().ledger.finish(
         job.id,
         if result.is_ok() {
@@ -657,25 +721,144 @@ impl Drop for Session {
         self.master.get_mut().take();
     }
 }
-fn profile(name: &str) -> Result<(String, Vec<String>), ErrorCode> {
-    #[cfg(windows)]
-    {
-        let root = std::env::var("SystemRoot").unwrap_or_else(|_| r"C:\Windows".into());
-        match name {
-            "cmd" => Ok((format!(r"{}\System32\cmd.exe", root), vec!["/D".into()])),
-            "powershell" => Ok((
-                format!(r"{}\System32\WindowsPowerShell\v1.0\powershell.exe", root),
-                vec!["-NoLogo".into()],
-            )),
-            "pwsh" => Ok(("pwsh.exe".into(), vec!["-NoLogo".into()])),
-            _ => Err(ErrorCode::InvalidRequest),
-        }
+fn activity_timestamp() -> String {
+    SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .unwrap_or(Duration::ZERO)
+        .as_millis()
+        .to_string()
+}
+
+fn identity_matches_values(
+    running: bool,
+    pid: Option<u32>,
+    process_created: Option<&str>,
+    program_path: Option<&str>,
+    current_created: Option<u64>,
+    current_program: Option<&std::path::Path>,
+) -> bool {
+    if !running || pid.is_none() || process_created.is_none() || current_created.is_none() {
+        return false;
     }
-    #[cfg(not(windows))]
-    {
-        match name {
-            "test-shell" => Ok(("/bin/sh".into(), vec![])),
-            _ => Err(ErrorCode::CaptureUnsupported),
+    let Some(program_path) = program_path else {
+        return false;
+    };
+    std::path::Path::new(program_path).is_file()
+        && current_program
+            .is_some_and(|current| current.to_string_lossy().eq_ignore_ascii_case(program_path))
+        && current_created
+            .map(|value| Some(value.to_string()) == process_created.map(str::to_owned))
+            .unwrap_or(false)
+}
+
+#[cfg(windows)]
+fn normalize_pty_cwd(cwd: &PathBuf) -> Result<PathBuf, ErrorCode> {
+    let value = cwd.as_os_str().to_string_lossy();
+    let path = if let Some(path) = value.strip_prefix("\\\\?\\") {
+        if path
+            .get(..4)
+            .is_some_and(|prefix| prefix.eq_ignore_ascii_case("UNC\\"))
+        {
+            return Err(ErrorCode::InvalidRequest);
         }
+        path
+    } else {
+        if value.starts_with("\\\\") {
+            return Err(ErrorCode::InvalidRequest);
+        }
+        value.as_ref()
+    };
+    let bytes = path.as_bytes();
+    if bytes.len() < 3
+        || !bytes[0].is_ascii_alphabetic()
+        || bytes[1] != b':'
+        || !matches!(bytes[2], b'\\' | b'/')
+        || path.encode_utf16().count() + 1 > 260
+    {
+        return Err(ErrorCode::InvalidRequest);
+    }
+    Ok(PathBuf::from(path))
+}
+
+#[cfg(not(windows))]
+fn normalize_pty_cwd(cwd: &PathBuf) -> Result<PathBuf, ErrorCode> {
+    Ok(cwd.clone())
+}
+
+#[cfg(all(test, windows))]
+mod pty_cwd_tests {
+    use super::*;
+
+    #[test]
+    fn canonical_temp_directory_is_normalized_for_cmd() {
+        let canonical = std::fs::canonicalize(std::env::temp_dir()).unwrap();
+        let normalized = normalize_pty_cwd(&canonical).unwrap();
+        assert!(normalized.is_dir());
+        assert!(!normalized.to_string_lossy().starts_with(r"\\?\"));
+    }
+
+    #[test]
+    fn unc_paths_are_rejected_instead_of_falling_back() {
+        assert_eq!(
+            normalize_pty_cwd(&PathBuf::from(r"\\?\UNC\server\share")),
+            Err(ErrorCode::InvalidRequest)
+        );
+        assert_eq!(
+            normalize_pty_cwd(&PathBuf::from(r"\\server\share")),
+            Err(ErrorCode::InvalidRequest)
+        );
+    }
+}
+
+#[cfg(test)]
+mod identity_tests {
+    use super::*;
+
+    #[test]
+    fn managed_identity_fails_closed_for_missing_or_stale_identity() {
+        let directory = tempfile::tempdir().unwrap();
+        let program = directory.path().join("codex.exe");
+        std::fs::write(&program, b"fixture").unwrap();
+        let path = program.to_string_lossy();
+        assert!(identity_matches_values(
+            true,
+            Some(42),
+            Some("123"),
+            Some(&path),
+            Some(123),
+            Some(program.as_path()),
+        ));
+        assert!(!identity_matches_values(
+            true,
+            Some(42),
+            Some("123"),
+            Some(&path),
+            Some(124),
+            Some(program.as_path()),
+        ));
+        assert!(!identity_matches_values(
+            true,
+            Some(42),
+            None,
+            Some(&path),
+            Some(123),
+            Some(program.as_path()),
+        ));
+        assert!(!identity_matches_values(
+            false,
+            Some(42),
+            Some("123"),
+            Some(&path),
+            Some(123),
+            Some(program.as_path()),
+        ));
+        assert!(!identity_matches_values(
+            true,
+            Some(42),
+            Some("123"),
+            Some("missing-codex.exe"),
+            Some(123),
+            Some(program.as_path()),
+        ));
     }
 }

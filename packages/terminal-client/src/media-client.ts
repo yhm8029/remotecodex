@@ -12,6 +12,10 @@ export type GuiAction =
 export class MediaClient extends EventTarget {
   source: MediaSource | null = null;
   notice = ''; state = 'idle'; lease: string | null = null;
+  mode: 'hardware' | 'software_view_only_slow' | null = null;
+  captureState: 'starting' | 'live' | 'minimized_or_stalled' | null = null;
+  awaitingFreshFrame = true;
+  effectiveFps = 0; effectiveBitrateKbps = 0; adaptiveIdle = false; controlAllowed = false;
   private socket: WebSocket | null = null;
   private peer: RTCPeerConnection | null = null;
   private attempt = 0; private seq = 0n;
@@ -25,6 +29,7 @@ export class MediaClient extends EventTarget {
   private changed(): void { this.dispatchEvent(new Event('change')); }
   async open(source: MediaSource): Promise<void> {
     this.stop(); const attempt = ++this.attempt; this.source = source; this.state = 'connecting';
+    this.captureState = 'starting'; this.awaitingFreshFrame = true; this.controlAllowed = false;
     this.notice = ''; this.gate.reset(source.generation, source.geometry_version); this.changed();
     try {
       const ws = await this.api.websocket('media', source.id);
@@ -97,6 +102,20 @@ export class MediaClient extends EventTarget {
         if (m.lease_epoch !== null && (typeof m.lease_epoch !== 'string' || !/^[1-9][0-9]*$/.test(m.lease_epoch))) throw new ProtocolError('INVALID_LEASE');
         this.lease = m.lease_epoch as string | null; this.seq = 0n;
         this.notice = this.lease ? '회사 PC 원격 입력 중. 회사의 마우스·키보드 사용 시 해제됩니다.' : String(m.reason ?? '보기 전용'); this.changed(); break;
+      case 'status': {
+        if (m.mode !== 'hardware' && m.mode !== 'software_view_only_slow') throw new ProtocolError('INVALID_MEDIA_STATUS');
+        if (m.capture_state !== 'starting' && m.capture_state !== 'live' && m.capture_state !== 'minimized_or_stalled') throw new ProtocolError('INVALID_MEDIA_STATUS');
+        if (!Number.isInteger(m.fps) || Number(m.fps) < 1 || Number(m.fps) > 30) throw new ProtocolError('INVALID_MEDIA_STATUS');
+        if (!Number.isInteger(m.bitrate_kbps) || Number(m.bitrate_kbps) < 128 || Number(m.bitrate_kbps) > 12000) throw new ProtocolError('INVALID_MEDIA_STATUS');
+        if (typeof m.adaptive_idle !== 'boolean' || typeof m.control_allowed !== 'boolean' || typeof m.awaiting_fresh_frame !== 'boolean') throw new ProtocolError('INVALID_MEDIA_STATUS');
+        if (m.mode === 'software_view_only_slow' && m.control_allowed) throw new ProtocolError('INVALID_MEDIA_STATUS');
+        this.mode = m.mode; this.captureState = m.capture_state; this.effectiveFps = m.fps as number;
+        this.effectiveBitrateKbps = m.bitrate_kbps as number; this.adaptiveIdle = m.adaptive_idle; this.awaitingFreshFrame = m.awaiting_fresh_frame;
+        this.controlAllowed = m.control_allowed && !this.awaitingFreshFrame && m.capture_state === 'live';
+        if (!this.controlAllowed || this.captureState === 'minimized_or_stalled') this.release();
+        if (this.captureState === 'minimized_or_stalled') { this.state = 'stalled'; this.notice = '화면이 최소화되거나 멈춰 원격 입력을 해제했습니다.'; }
+        this.changed(); break;
+      }
       case 'error':
         // A rejected acquire is recoverable; pipeline/source failures require a fresh view.
         if (['GUI_CONTROL_NOT_READY_OR_FORBIDDEN', 'FOREGROUND_OR_NATIVE_SAFETY_DENIED'].includes(String(m.code))) {
@@ -125,7 +144,7 @@ export class MediaClient extends EventTarget {
   }
   canControl(): boolean {
     const s = this.source;
-    return !!s && this.gate.canControl(performance.now(), s.generation, s.geometry_version);
+    return !!s && this.controlAllowed && this.captureState === 'live' && this.gate.canControl(performance.now(), s.generation, s.geometry_version);
   }
   acquire(): void {
     if (!this.source?.control_allowed || !this.canControl()) throw new ProtocolError('GUI_FRAME_NOT_READY');
@@ -166,6 +185,6 @@ export class MediaClient extends EventTarget {
     ws?.close(); const pc = this.peer; this.peer = null; pc?.close();
     const stream = this.video.srcObject;
     if (stream && typeof (stream as MediaStream).getTracks === 'function') for (const t of (stream as MediaStream).getTracks()) t.stop();
-    this.video.srcObject = null; this.gate.stop(); this.state = 'stopped'; this.source = null; this.changed();
+    this.video.srcObject = null; this.gate.stop(); this.state = 'stopped'; this.source = null; this.mode = null; this.captureState = null; this.awaitingFreshFrame = true; this.effectiveFps = 0; this.effectiveBitrateKbps = 0; this.adaptiveIdle = false; this.controlAllowed = false; this.changed();
   }
 }

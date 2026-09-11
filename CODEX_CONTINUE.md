@@ -1,47 +1,122 @@
-# RemoteCodex 0.2.0 — 실제 Windows에서 이어가기
+# RemoteCodex — continuation guide
 
-이 저장소는 v0.1의 빈 scaffold가 아니다. 기존 소스를 보존한 상태에서 `SPEC.md`(1.2), `IMPLEMENTATION_STATUS.md`, `ACCEPTANCE_MATRIX.md`, `CODEX_START.md`, `docs/adr/003-native-media-adapter.md`를 읽고 이어서 구현하라. 제품 범위는 P1→P6이며 모바일 CLI/경량 요구를 유지한다. 설치 패키지부터 만들지 않는다.
+This checkout is at a **SPEC-completion-in-progress** checkpoint. Current local
+fixtures cover real Windows PTYs, the readable projection UI, preview adapters,
+native safety fixtures, device administration, PWA offline behavior, and several
+Tauri flows. Source and evidence are recorded together in this checkpoint. Do not report the project as
+complete while the gates in `IMPLEMENTATION_STATUS.md` remain open.
 
-## 현재 증거
+## 1. Establish the checkout and dependencies
 
-Windows 기본 검증은 [2026-09-11 기록](docs/test-results/windows-baseline-2026-09-11/README.md)을 기준으로 이어간다. Node/TypeScript 125개, Rust 35개, 실제 ConPTY 1개와 workspace/Tauri cargo check, Svelte 검사·웹 빌드를 통과했다. transport/video/IndexedDB는 여전히 테스트 대역이며 실제 GUI·native GStreamer·두 PC·모바일·성능은 미검증이다. 아래 1번은 재현 절차이고 다음 기능 검증 게이트는 2번이다. 원본 로그를 유지하고 예상 결과를 테스트 결과에 채우지 마라.
+Run from the repository root on Windows:
 
-## 1. 컴파일부터 실제로 수행
+```powershell
+git status --short
+.\scripts\bootstrap.ps1
+```
 
-사용자 변경을 확인하고 작업 branch에서 시작한다. force push/임의 publish/GitHub Actions를 사용하지 않는다. `scripts/bootstrap.ps1`은 실제 dependency lock을 생성한다. lockfile을 검토·커밋하고 실제 Rust/Node/SDK/Codex/Tailscale 버전을 기록한다. npm/Cargo API가 맞지 않으면 소스를 수정하며 버전/라이선스 변경을 문서화한다.
+Keep the existing lockfiles. Use `npm ci --ignore-scripts` when a clean Node
+install is needed, and do not silently change dependency versions.
 
-`cargo fmt --all` → `cargo check --workspace --all-targets --locked` → `cargo test --workspace --locked` → `npm test` → `npm run check:web` → `npm run build:web` → Tauri Cargo check 순서다. 125개 테스트를 삭제하거나 실패 검사를 비활성화해 통과시키지 않는다. NativeMedia feature on/off도 각각 빌드한다.
+## 2. Run the baseline checks
 
-## 2. 실제 핵심 PTY 세로 경로
+```powershell
+npm test
+npm run check:web
+npm run build:web
+cargo fmt --all -- --check
+cargo check --workspace --all-targets --locked
+cargo test --workspace --locked
+```
 
-사용자가 실행한 Agent와 테스트 전용 임시 프로젝트/PTY를 이용한다. `scripts/test-windows.ps1 -AgentE2E -AgentPath target/release/rc-agent.exe`를 실행한다. 이 검사는 임시 기기/CMD 두 개만 생성·정리한다. echo된 입력이 아니라 실제 실행 출력으로 판단한다. 테스트 정리 실패를 숨기지 마라.
+For a real Agent/browser pass, use a fresh fixture config and an Agent build:
 
-실제 PowerShell/Codex TUI, Tauri UI 종료와 Agent 생존, 같은 기기 두 브라우저 탭의 lease, 빠른 분할 focus, 256KiB paste 중 Ctrl+C, 연결 종료/reconnect/기기 해지를 검증하라. 기존 회사 업무 세션을 몰래 종료하지 않는다.
+```powershell
+.\scripts\test-windows.ps1 -AgentE2E -AgentPath target\release\rc-agent.exe
+```
 
-## 3. TerminalModel 완전성
+The current evidence for this flow is
+`docs/test-results/spec-completion-2026-09-12/windows-agent.json`. It includes eight isolated
+real CMD PTYs, authenticated projection access, current-screen projection, and
+the actual Chrome readable-output/raw-terminal toggle. Do not replace it with a
+home-page or DOM-only smoke check.
 
-`terminal.rs`에는 headless synchronized-update flush, pending-wrap 복원, dynamic palette export를 추가했고 기존 Rust 단위 테스트를 실행해 통과했다. saved charset/cursor shape/reset/alt-screen/Unicode 폭/resize 순서 등의 누락은 여전히 실측 golden으로 채워야 한다. raw 문자열 재생이나 private memory 접근으로 full-state 문제를 숨기지 않는다. query 응답은 서버 단일 소유자다.
+## 3. Terminal state and readable output
 
-## 4. 웹 프리뷰
+The terminal model now exposes a bounded current-screen projection. The API is:
 
-기존 `preview.rs`와 PREVIEW.md의 제한을 실제 Vite/Next/WS/SSE/HTTP streaming/쿠키/Origin/revoke/process-replacement fixture에서 검증하라. 관리 bearer와 프리뷰 cookie 경계, loopback allowlist, registered-port 제약을 약화하지 않는다. Oauth/service-worker/document.cookie 호환을 모두 해결했다고 가정하지 않는다.
+```text
+GET /api/v1/sessions/{session_id}/projection
+Authorization: Bearer <token>
+scope: TerminalRead
+```
 
-## 5. P4~P6 네이티브 경로
+The response includes session identity, Agent epoch, model generation, sequence,
+and either `terminal_projection` lines or a `terminal_raw` fallback. Physical
+screen limits are 150 rows, 400 columns, and 256 KiB. Alternate-screen and
+over-limit states fall back to raw xterm output. The web client validates the
+response, allows one request in flight, validates sequence encoding and rejects stale identities and late responses, and
+uses a 2.5-second freshness window.
 
-소스 경로는 `local source approval → scoped media WS → rc-media(native-media) → WGC/D3D11/MF H264/webrtcbin → MediaClient/video → Presented → global GUI lease → GuiSession/SendInput`이다. 단순 provider 계약만 남은 상태가 아니다. 같은 경로를 실제 컴파일하고 고쳐라.
+Current terminal golden and Unicode evidence includes 12 terminal snapshot golden checks plus 3 Unicode checks,
+full Unicode 17 width data, and normalized two-cell behavior. When debugging a
+regression, use the model tests and the local Agent E2E result together; a
+projection is a view of the current physical screen, not a reconstructed shell
+history.
 
-GStreamer Rust 0.24와 Windows x64 MSVC 1.24+ SDK의 실제 호환 버전을 고정한다. SDK/플러그인은 source ZIP에 없다. `scripts/test-media.ps1` probe는 factory 존재만 확인한다. `scripts/gui-fixture.ps1`에서 실제 창/모니터/키보드/마우스/기기2대/타임아웃/physical-preemption/긴급 정지를 확인하기 전 available을 runtime VERIFIED로 승격하지 마라.
+## 4. Preview adapters and PWA
 
-현재 한 source/한 video viewer와 geometry 변경 시 재승인 방식, 숫자형 승인 tailnet ICE만 허용하는 제약이 있다. 필요하면 명시적인 ADR로 호환성을 확장하되 외부 STUN/TURN·공개 주소·광범위 포트를 몰래 추가하지 않는다. 현재 정지 화면 적응형 fps와 인코더 fallback은 미완료다. 원본 성능 요구에 맞게 구현·측정한다.
+The local preview evidence is split by concern:
 
-Win32 소스 확인 우선순위: source identity/physical DPI 일치, foreground/UIPI 실패, 임계구간 local hook preemption, stale queued action 거절, own injected down의 해제, named pipe/data-dir ACL. BlockInput/UAC/잠금 우회는 금지한다. `SendInput` 성공과 의도한 창에서의 효과는 별도로 검증한다.
+- `docs/test-results/spec-completion-2026-09-12/preview-gateway.json` covers authenticated tickets,
+  cookie and security-header handling, WS/SSE forwarding, revoke cancellation,
+  and cleanup.
+- `docs/test-results/spec-completion-2026-09-12/preview-vite.json` covers real Vite 6.4.3
+  HMR through the gateway.
+- `docs/test-results/spec-completion-2026-09-12/preview-next.json` covers real Next 16.3.3
+  HTML changes and HMR through the gateway.
+- `docs/test-results/spec-completion-2026-09-12/pwa-chrome.json` covers actual desktop Chrome
+  service-worker caching and offline fallback.
 
-## 6. 출시 잔여와 최적화
+These results do not prove HTTPS/browser-HMR on the final Tailscale path,
+physical mobile behavior, or OAuth/service-worker behavior outside the fixtures.
 
-Agent tray/명시적 로그인 자동 시작/업데이트 수명 UX를 원본 명세대로 보완한다. UI와 Agent/PTY의 종료를 연결하지 마라. 모바일은 CLI-first와 초안/IME/열람-only size 정책을 실제 iOS/Android로 확인한다.
+## 5. Native and desktop checks
 
-SPEC의 Release 장비/측정 정의대로 idle CPU/RAM, terminal input p95/p99, 폭주 출력/Ctrl+C, 웹·영상 동시 회귀, MediaHelper 종료/orphan, 24h soak를 검증한다. 정지 화면 적응형 동작을 구현하라. SDK 전체 번들 용량과 활성 helper 메모리도 보고한다. 미달이면 기준을 낮추지 말고 프로파일로 원인을 수정하라.
+The native fixture commands remain:
 
-## 결과 보고
+```powershell
+.\scripts\build-source.ps1 -NativeMedia -Desktop
+.\scripts\test-media.ps1
+.\scripts\gui-fixture.ps1
+```
 
-실제 코드 수정, 실행 명령, raw 로그, PASS/FAIL/NOT_RUN, 남은 gate를 남긴다. 모든 P1~P6 제품 인수 조건을 통과해야 완료다. 인터페이스·컴파일·단위 테스트만으로 원격 프로그램 전체가 동작한다고 주장하지 않는다. 원격 Git 저장소는 사용자가 지정하기 전 임의 생성/업로드하지 않는다. EXE 설치형 패키지는 사용자 요청 시 별도로 만든다.
+Current evidence shows owned foreground/geometry and key ordering checks, a
+WGC/H.264 capture/encode bridge, and Tauri close/reopen lifecycle behavior. The
+bridge does not cover full WebRTC/ICE/Tailscale, and the GUI fixture does not
+cover physical lock, DPI, multi-monitor, UIPI, or two-PC acceptance.
+
+## 6. Remaining mandatory work
+
+Before a release claim, run and record the gates below with isolated fixtures and
+sanitized result files:
+
+- two-PC Tailscale HTTPS/WSS/ICE and remote media;
+- physical iOS/Android IME, composition, resize, and viewport;
+- 24-hour soak plus aggregate p95/p99 CPU, memory, input, output, and cleanup;
+- clean-VM offline install, upgrade, uninstall, and owned-resource cleanup;
+- hardware DPI, lock-screen, multi-monitor, and UIPI acceptance;
+- remaining performance instrumentation/stress harness and license inventory closure.
+
+Latest unsigned installers are 16,522,844 bytes (standard) and 232,037,136 bytes
+(offline). Their archive checks, resource hashes, and 605-component SBOM schema
+validation passed. See the checked-in package-results and package-inspection
+JSON files. This does not replace clean-VM installation acceptance.
+
+## 7. Reporting discipline
+
+For every command, record the exact command, PASS/FAIL/NOT_RUN status, fixture
+scope, and result path. Keep credentials, bearer tokens, cookie values, private
+paths, and raw public URLs out of logs. Treat local fixture success as bounded
+evidence and preserve the distinction between implementation, local validation,
+and the remaining external acceptance gates.

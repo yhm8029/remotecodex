@@ -1,0 +1,39 @@
+{
+  "checks": [
+    {
+      "name": "registered actual Next fixture on approved preview port",
+      "status": "PASS"
+    },
+    {
+      "name": "real Next HTML served through gateway",
+      "status": "PASS"
+    },
+    {
+      "name": "real Next HMR and changed HTML through gateway",
+      "status": "PASS"
+    }
+  ],
+  "cleanup": [
+    {
+      "type": "preview",
+      "status": "removed"
+    },
+    {
+      "type": "session",
+      "status": "removed"
+    },
+    {
+      "type": "device",
+      "status": "revoked"
+    },
+    {
+      "type": "device",
+      "status": "revoked"
+    },
+    {
+      "type": "fixture_tree",
+      "status": "removed"
+    }
+  ],
+  "overall": "PASS"
+}

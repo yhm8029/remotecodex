@@ -4,9 +4,12 @@ mod http;
 mod local;
 mod media;
 mod preview;
+mod profiles;
 mod session;
 mod store;
 mod terminal;
+#[cfg(windows)]
+mod tray;
 mod ws;
 use clap::{Parser, Subcommand};
 use fs2::FileExt;
@@ -44,6 +47,7 @@ enum Command {
     },
     MediaClear,
     Status,
+    StatusProbe,
     BlockRemote,
     ResumeRemote,
     Shutdown,
@@ -51,6 +55,13 @@ enum Command {
 #[tokio::main(flavor = "multi_thread", worker_threads = 2)]
 async fn main() -> anyhow::Result<()> {
     let args = Args::parse();
+    if matches!(&args.command, Command::StatusProbe) {
+        std::process::exit(match local::probe_status().await {
+            local::ProbeStatus::Active => 0,
+            local::ProbeStatus::Missing => 3,
+            local::ProbeStatus::Unsafe => 4,
+        });
+    }
     tracing_subscriber::fmt()
         .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
         .with_target(false)
@@ -79,6 +90,7 @@ async fn main() -> anyhow::Result<()> {
         Command::BlockRemote => Some(local::LocalCommand::BlockRemote),
         Command::ResumeRemote => Some(local::LocalCommand::ResumeRemote),
         Command::Shutdown => Some(local::LocalCommand::Shutdown),
+        Command::StatusProbe => unreachable!(),
     };
     if let Some(cmd) = cmd {
         let response =
@@ -111,10 +123,12 @@ async fn main() -> anyhow::Result<()> {
             previews: Default::default(),
             media: media::MediaManager::new(config.media.clone()),
             shutdown: Default::default(),
+            remote_connections: Default::default(),
             config: config.clone(),
             store,
         });
         let listener = tokio::net::TcpListener::bind(config.bind).await?;
+        tray::start(state.clone())?;
         let local_state = state.clone();
         let pipe = tokio::spawn(async move { local::serve(local_state).await });
         println!(

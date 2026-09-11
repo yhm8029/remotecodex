@@ -8,10 +8,18 @@
   let client: MediaClient;
   let sources: MediaSource[] = [], selected = '', notice = '', state = 'idle', lease: string | null = null;
   let allowed = false, loading = false, text = '', composing = false, source: MediaSource | null = null;
+  let mode: MediaClient['mode'] = null, captureState: MediaClient['captureState'] = null;
+  let effectiveFps = 0, effectiveBitrateKbps = 0, adaptiveIdle = false, controlAllowed = false;
   let pendingFrame = 0;
   const moves = new PointerCoalescer<GuiAction>();
   const keys = new Set<string>();
-  function change() { notice = client.notice; state = client.state; lease = client.lease; source = client.source; if (!lease) { keys.clear(); moves.clear(); } }
+  function change() {
+    notice = client.notice; state = client.state; lease = client.lease; source = client.source;
+    mode = client.mode; captureState = client.captureState; effectiveFps = client.effectiveFps;
+    effectiveBitrateKbps = client.effectiveBitrateKbps; adaptiveIdle = client.adaptiveIdle;
+    controlAllowed = client.controlAllowed;
+    if (!lease) { keys.clear(); moves.clear(); }
+  }
   async function refresh() {
     loading = true;
     try { const c = await controller.api.request<{ available: boolean; reason?: string }>('/media/capabilities'); allowed = c.available;
@@ -64,6 +72,11 @@
   <video bind:this={video} autoplay muted playsinline tabindex="0" aria-label="회사 프로그램 또는 모니터 영상"
     on:pointermove={move} on:pointerdown={e => button(e, true)} on:pointerup={e => button(e, false)} on:pointercancel={release}
     on:wheel|nonpassive={wheel} on:keydown={e => key(e, true)} on:keyup={e => key(e, false)} on:contextmenu={e => { if (lease) e.preventDefault(); }}></video>
+  <div class="media-telemetry" data-testid="media-telemetry">
+    mode={mode ?? 'unknown'} · capture={captureState ?? 'starting'} · {effectiveFps}fps · {effectiveBitrateKbps}kbps ·
+    {adaptiveIdle ? 'adaptive idle' : 'full rate'} · {controlAllowed ? 'control eligible' : 'view-only'}
+    {#if captureState !== 'live'} · awaiting fresh frame{/if}
+  </div>
   <div class="media-controls"><button on:click={() => video.play()}>영상 재생</button><button on:click={() => video.requestFullscreen()}>영상 확대</button></div>
   <label>한글·긴 텍스트 입력 (명시적 전송)<textarea bind:value={text} maxlength="1024" on:compositionstart={() => composing = true} on:compositionend={() => composing = false}></textarea></label>
   <button on:click={sendText} disabled={!lease || !text || composing}>회사 창에 텍스트 전송</button>
@@ -71,5 +84,5 @@
   <p class="hint">회사 표시창을 닫거나 Ctrl+Alt+F12를 누르면 영상·제어가 중단됩니다. 창 이동·크기 변경 후에는 입력을 중지하고 새 승인으로 다시 엽니다. UAC·잠금 해제는 지원하지 않습니다.</p>
 </section>
 <style>
- .media-panel{padding:20px;overflow:auto;height:100%}.media-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:10px 0}.media-controls select{min-width:220px;max-width:480px}.media-state{font-size:13px;min-height:24px}video{display:block;width:100%;height:min(62vh,720px);background:#080b12;object-fit:contain;touch-action:none;border:1px solid #334155;border-radius:8px}video:focus{outline:2px solid #2dd4bf}textarea{width:100%;min-height:60px}.danger{background:#702c39}
+ .media-panel{padding:20px;overflow:auto;height:100%}.media-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:10px 0}.media-controls select{min-width:220px;max-width:480px}.media-state{font-size:13px;min-height:24px}.media-telemetry{font:12px ui-monospace,monospace;color:#a7f3d0;min-height:20px;margin:4px 0 8px}video{display:block;width:100%;height:min(62vh,720px);background:#080b12;object-fit:contain;touch-action:none;border:1px solid #334155;border-radius:8px}video:focus{outline:2px solid #2dd4bf}textarea{width:100%;min-height:60px}.danger{background:#702c39}
 </style>

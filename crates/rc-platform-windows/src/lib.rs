@@ -1,14 +1,31 @@
 //! Windows-only operations. Unsupported targets are explicit, never success-shaped mocks.
 use std::path::Path;
+pub mod autostart;
 #[cfg(windows)]
 pub mod gui_input;
 #[cfg(windows)]
+mod transaction;
+pub mod tray;
+#[cfg(windows)]
 mod windows;
+#[cfg(windows)]
+pub use transaction::TransactionGuard;
 #[cfg(windows)]
 pub use windows::*;
 #[cfg(not(windows))]
 pub fn process_created(_: u32) -> anyhow::Result<u64> {
     anyhow::bail!("Windows process identity unavailable")
+}
+#[cfg(not(windows))]
+pub fn process_image_path(_: u32) -> anyhow::Result<std::path::PathBuf> {
+    anyhow::bail!("Windows process identity unavailable")
+}
+#[cfg(not(windows))]
+pub fn monotonic_millis() -> u64 {
+    use std::sync::OnceLock;
+    use std::time::Instant;
+    static START: OnceLock<Instant> = OnceLock::new();
+    START.get_or_init(Instant::now).elapsed().as_millis() as u64
 }
 #[cfg(not(windows))]
 pub fn pipe_name() -> anyhow::Result<String> {

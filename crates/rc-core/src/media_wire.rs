@@ -105,6 +105,21 @@ pub struct MediaInit {
     pub min_port: u16,
     pub max_port: u16,
 }
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum MediaMode {
+    Hardware,
+    SoftwareViewOnlySlow,
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum CaptureState {
+    Starting,
+    Live,
+    MinimizedOrStalled,
+}
 impl MediaInit {
     pub fn validate(&self) -> Result<(), String> {
         self.profile.validate()?;
@@ -132,11 +147,32 @@ pub enum HelperIn {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(tag = "type", rename_all = "snake_case", deny_unknown_fields)]
 pub enum HelperOut {
-    Ready { protocol: u16 },
-    Offer { sdp: String },
-    Ice { candidate: String, mline: u32 },
-    Frame { sequence: String },
-    Error { code: String },
+    Ready {
+        protocol: u16,
+    },
+    Offer {
+        sdp: String,
+    },
+    Ice {
+        candidate: String,
+        mline: u32,
+    },
+    Frame {
+        sequence: String,
+        captured_at_ms: u64,
+    },
+    Status {
+        mode: MediaMode,
+        capture_state: CaptureState,
+        fps: u32,
+        bitrate_kbps: u32,
+        adaptive_idle: bool,
+        control_allowed: bool,
+        awaiting_fresh_frame: bool,
+    },
+    Error {
+        code: String,
+    },
     Stopped,
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -342,6 +378,24 @@ pub fn read_json_line<R: std::io::BufRead, T: serde::de::DeserializeOwned>(
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn helper_status_serializes_stable_mode_and_state() {
+        let value = serde_json::to_value(HelperOut::Status {
+            mode: MediaMode::SoftwareViewOnlySlow,
+            capture_state: CaptureState::MinimizedOrStalled,
+            fps: 3,
+            bitrate_kbps: 256,
+            adaptive_idle: true,
+            control_allowed: false,
+            awaiting_fresh_frame: true,
+        })
+        .unwrap();
+        assert_eq!(value["type"], "status");
+        assert_eq!(value["mode"], "software_view_only_slow");
+        assert_eq!(value["capture_state"], "minimized_or_stalled");
+        assert_eq!(value["control_allowed"], false);
+        assert_eq!(value["awaiting_fresh_frame"], true);
+    }
     #[test]
     fn numeric_tailnet_only() {
         for ip in ["100.64.0.1", "100.127.255.254"] {

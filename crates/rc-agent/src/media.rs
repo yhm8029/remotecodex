@@ -18,8 +18,12 @@ use rc_core::{error::ErrorCode, media_wire::*, protocol::Scope};
 use serde::{Deserialize, Serialize};
 use std::{
     collections::HashMap,
-    path::PathBuf,
-    sync::Arc,
+    ffi::OsString,
+    path::{Path, PathBuf},
+    sync::{
+        atomic::{AtomicBool, Ordering},
+        Arc,
+    },
     time::{Duration, Instant},
 };
 use tokio_util::sync::CancellationToken;
@@ -78,13 +82,88 @@ impl MediaConfig {
     pub fn helper(&self) -> anyhow::Result<PathBuf> {
         Ok(match &self.helper_path {
             Some(p) => p.clone(),
-            None => std::env::current_exe()?.with_file_name(if cfg!(windows) {
-                "rc-media.exe"
-            } else {
-                "rc-media"
-            }),
+            None => {
+                let exe = std::env::current_exe()?;
+                let packaged = exe
+                    .parent()
+                    .map(|p| {
+                        p.join("media-runtime")
+                            .join("bin")
+                            .join(helper_name(&exe))
+                            .is_file()
+                    })
+                    .unwrap_or(false);
+                default_helper_from(&exe, packaged)
+            }
         })
     }
+}
+fn helper_name(exe: &Path) -> &'static str {
+    if exe
+        .extension()
+        .is_some_and(|x| x.eq_ignore_ascii_case("exe"))
+    {
+        "rc-media.exe"
+    } else {
+        "rc-media"
+    }
+}
+fn default_helper_from(exe: &Path, packaged: bool) -> PathBuf {
+    let parent = exe.parent().unwrap_or_else(|| Path::new("."));
+    if packaged {
+        parent
+            .join("media-runtime")
+            .join("bin")
+            .join(helper_name(exe))
+    } else {
+        parent.join(helper_name(exe))
+    }
+}
+fn bundled_runtime(helper: &Path) -> Option<PathBuf> {
+    let bin = helper.parent()?;
+    if !bin
+        .file_name()?
+        .to_string_lossy()
+        .eq_ignore_ascii_case("bin")
+    {
+        return None;
+    }
+    let runtime = bin.parent()?;
+    if !runtime
+        .file_name()?
+        .to_string_lossy()
+        .eq_ignore_ascii_case("media-runtime")
+    {
+        return None;
+    }
+    Some(runtime.to_path_buf())
+}
+fn configure_helper_command(command: &mut tokio::process::Command, helper: &Path, arg: &str) {
+    command.arg(arg);
+    let Some(runtime) = bundled_runtime(helper) else {
+        return;
+    };
+    let bin = runtime.join("bin");
+    let mut path = OsString::new();
+    path.push(&bin);
+    if let Some(existing) = std::env::var_os("PATH") {
+        path.push(if cfg!(windows) { ";" } else { ":" });
+        path.push(existing);
+    }
+    command
+        .env("PATH", path)
+        .env("GST_PLUGIN_SYSTEM_PATH_1_0", "")
+        .env(
+            "GST_PLUGIN_PATH_1_0",
+            runtime.join("lib").join("gstreamer-1.0"),
+        )
+        .env(
+            "GST_PLUGIN_SCANNER",
+            runtime
+                .join("libexec")
+                .join("gstreamer-1.0")
+                .join("gst-plugin-scanner.exe"),
+        );
 }
 #[derive(Clone)]
 pub struct Approved {
@@ -97,6 +176,30 @@ struct Active {
     client: Uuid,
     cancel: CancellationToken,
 }
+
+fn helper_control_ready(
+    helper_control_allowed: bool,
+    capture_state: CaptureState,
+    last_encoded: Instant,
+    last_presented: Instant,
+    now: Instant,
+) -> bool {
+    helper_control_allowed
+        && capture_state == CaptureState::Live
+        && now.duration_since(last_encoded) <= Duration::from_millis(500)
+        && now.duration_since(last_presented) <= Duration::from_millis(500)
+}
+
+fn capture_age_ms(now_ms: u64, captured_at_ms: u64) -> Result<u64, &'static str> {
+    if captured_at_ms > now_ms {
+        return Err("Captured frame timestamp is in the future");
+    }
+    let age = now_ms - captured_at_ms;
+    if age > 60_000 {
+        return Err("Captured frame age exceeded safety bound");
+    }
+    Ok(age)
+}
 #[derive(Default)]
 struct Inner {
     sources: HashMap<Uuid, Approved>,
@@ -107,6 +210,7 @@ pub struct MediaManager {
     config: MediaConfig,
     inner: Arc<Mutex<Inner>>,
     probe: Arc<tokio::sync::Mutex<Option<(Instant, serde_json::Value)>>>,
+    gui_controlled: Arc<AtomicBool>,
 }
 impl MediaManager {
     pub fn new(config: MediaConfig) -> Self {
@@ -114,7 +218,11 @@ impl MediaManager {
             config,
             inner: Default::default(),
             probe: Default::default(),
+            gui_controlled: Default::default(),
         }
+    }
+    pub fn gui_controlled(&self) -> bool {
+        self.gui_controlled.load(Ordering::Acquire)
     }
     pub fn approve(&self, kind: &str, handle: &str, control: bool) -> anyhow::Result<SourceView> {
         if !self.config.enabled {
@@ -242,8 +350,9 @@ impl MediaManager {
         }
         let result = async {
             let path = self.config.helper()?;
-            let mut c = tokio::process::Command::new(path);
-            c.arg("--probe").kill_on_drop(true);
+            let mut c = tokio::process::Command::new(&path);
+            configure_helper_command(&mut c, &path, "--probe");
+            c.kill_on_drop(true);
             let out = tokio::time::timeout(Duration::from_secs(5), c.output()).await??;
             if !out.status.success() || out.stdout.len() > 32768 {
                 anyhow::bail!("Media helper probe failed");
@@ -351,9 +460,10 @@ async fn run(state: Shared, mut p: Principal, source: Approved, socket: WebSocke
     let startup = async {
         let local = source.local.clone();
         let gui = tokio::task::spawn_blocking(move || GuiSession::start(local)).await??;
-        let mut command = tokio::process::Command::new(helper?);
+        let helper = helper?;
+        let mut command = tokio::process::Command::new(&helper);
+        configure_helper_command(&mut command, &helper, "--stdio");
         command
-            .arg("--stdio")
             .stdin(std::process::Stdio::piped())
             .stdout(std::process::Stdio::piped())
             .stderr(std::process::Stdio::inherit())
@@ -425,6 +535,7 @@ async fn run(state: Shared, mut p: Principal, source: Approved, socket: WebSocke
   let mut tick=tokio::time::interval(Duration::from_millis(100));tick.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Skip);
   let mut last_encoded=Instant::now()-Duration::from_secs(60);let mut last_presented=last_encoded;let mut lease_until=last_encoded;
   let mut lease:Option<u64>=None;let mut last_seq=0u64;let mut last_frame_seq=0u64;let mut input_window=Instant::now();let mut input_count=0;
+  let mut helper_control_allowed=false;let mut helper_capture_state=CaptureState::Starting;
   let started=Instant::now();let mut negotiated=false;
   loop{tokio::select!{
    biased;
@@ -433,13 +544,18 @@ async fn run(state: Shared, mut p: Principal, source: Approved, socket: WebSocke
     if p.require(Scope::TerminalRead).is_err()||source.until<=Instant::now()||gui.closed(){break;}
     if rc_platform_windows::validate_source(&source.local).map_or(true,|r|r!=source.local.rect){send!(serde_json::json!({"type":"error","code":"SOURCE_CHANGED_REOPEN_REQUIRED"}));break;}
     if !negotiated&&started.elapsed()>Duration::from_secs(20){send!(serde_json::json!({"type":"error","code":"WEBRTC_NEGOTIATION_TIMEOUT"}));break;}
-    if lease.is_some()&&(lease_until<=Instant::now()||last_encoded.elapsed()>Duration::from_millis(500)||last_presented.elapsed()>Duration::from_millis(500)||!gui.armed()||lease!=Some(gui.revision())){gui.disarm();lease=None;send!(serde_json::json!({"type":"lease","lease_epoch":null,"reason":"LOCAL_INPUT_OR_STALE_FRAME_OR_EXPIRED"}));}
+    if lease.is_some()&&(!helper_control_ready(helper_control_allowed,helper_capture_state,last_encoded,last_presented,Instant::now())||lease_until<=Instant::now()||!gui.armed()||lease!=Some(gui.revision())){gui.disarm();state.media.gui_controlled.store(false,Ordering::Release);lease=None;send!(serde_json::json!({"type":"lease","lease_epoch":null,"reason":"LOCAL_INPUT_OR_STALE_FRAME_OR_EXPIRED"}));}
    },
    event=events.recv()=>match event{
-    Some(HelperOut::Frame{sequence})=>{let seq=sequence.parse::<u64>()?;if seq<=last_frame_seq{anyhow::bail!("Non-monotonic encoded frame");}last_frame_seq=seq;last_encoded=Instant::now();},
+    Some(HelperOut::Frame{sequence,captured_at_ms})=>{let seq=sequence.parse::<u64>()?;if seq<=last_frame_seq{anyhow::bail!("Non-monotonic encoded frame");}let age_ms=capture_age_ms(rc_platform_windows::monotonic_millis(),captured_at_ms).map_err(anyhow::Error::msg)?;last_frame_seq=seq;let now=Instant::now();last_encoded=now.checked_sub(Duration::from_millis(age_ms)).unwrap_or(now);},
     Some(HelperOut::Offer{sdp})=>send!(serde_json::json!({"type":"offer","sdp":sanitize_sdp(&sdp).map_err(anyhow::Error::msg)?})),
     Some(HelperOut::Ice{candidate,mline})=>{if mline!=0||!candidate_allowed(&candidate,config.tailnet_ip.as_deref()){anyhow::bail!("Unexpected helper ICE");}send!(serde_json::json!({"type":"ice","candidate":candidate,"mline":mline}));},
     Some(HelperOut::Ready{protocol})=>{if protocol!=1{anyhow::bail!("Helper protocol mismatch");}},
+    Some(HelperOut::Status{mode,capture_state,fps,bitrate_kbps,adaptive_idle,control_allowed,awaiting_fresh_frame})=>{
+      helper_capture_state=capture_state;helper_control_allowed=control_allowed&&!awaiting_fresh_frame&&capture_state==CaptureState::Live;
+      if !helper_control_allowed { gui.disarm(); state.media.gui_controlled.store(false,Ordering::Release); lease=None; }
+      send!(serde_json::json!({"type":"status","mode":mode,"capture_state":capture_state,"fps":fps,"bitrate_kbps":bitrate_kbps,"adaptive_idle":adaptive_idle,"control_allowed":helper_control_allowed,"awaiting_fresh_frame":awaiting_fresh_frame}));
+    },
     Some(HelperOut::Error{code})=>{send!(serde_json::json!({"type":"error","code":code}));break;},
     Some(HelperOut::Stopped)|None=>break,
    },
@@ -453,14 +569,14 @@ async fn run(state: Shared, mut p: Principal, source: Approved, socket: WebSocke
      MediaClientMessage::Presented{generation,geometry_version}=>{if generation!=source.view.generation||geometry_version!=source.view.geometry_version{anyhow::bail!("Stale presentation geometry");}if last_encoded.elapsed()<=Duration::from_millis(500){last_presented=Instant::now();gui.frame()?;}},
      MediaClientMessage::Acquire{generation,geometry_version}=>{
       let scope=if source.view.kind=="window"{Scope::WindowControl}else{Scope::DesktopControl};
-      if !config.allow_control||!source.view.control_allowed||p.require(scope).is_err()||generation!=source.view.generation||geometry_version!=source.view.geometry_version||last_encoded.elapsed()>Duration::from_millis(500)||last_presented.elapsed()>Duration::from_millis(500){send!(serde_json::json!({"type":"error","code":"GUI_CONTROL_NOT_READY_OR_FORBIDDEN"}));continue;}
-      let g=gui.clone();match tokio::task::spawn_blocking(move||g.arm()).await?{Ok(n)=>{lease=Some(n);lease_until=Instant::now()+Duration::from_secs(15);last_seq=0;send!(serde_json::json!({"type":"lease","lease_epoch":n.to_string()}));},Err(_)=>{gui.disarm();lease=None;send!(serde_json::json!({"type":"error","code":"FOREGROUND_OR_NATIVE_SAFETY_DENIED"}));}}
+      if !helper_control_ready(helper_control_allowed,helper_capture_state,last_encoded,last_presented,Instant::now())||!config.allow_control||!source.view.control_allowed||p.require(scope).is_err()||generation!=source.view.generation||geometry_version!=source.view.geometry_version{send!(serde_json::json!({"type":"error","code":"GUI_CONTROL_NOT_READY_OR_FORBIDDEN"}));continue;}
+      let g=gui.clone();match tokio::task::spawn_blocking(move||g.arm()).await?{Ok(n)=>{lease=Some(n);state.media.gui_controlled.store(true,Ordering::Release);lease_until=Instant::now()+Duration::from_secs(15);last_seq=0;send!(serde_json::json!({"type":"lease","lease_epoch":n.to_string()}));},Err(_)=>{gui.disarm();state.media.gui_controlled.store(false,Ordering::Release);lease=None;send!(serde_json::json!({"type":"error","code":"FOREGROUND_OR_NATIVE_SAFETY_DENIED"}));}}
      },
-     MediaClientMessage::Renew{lease_epoch}=>{if lease.is_some()&&lease==Some(lease_epoch.parse::<u64>()?)&&gui.armed(){lease_until=Instant::now()+Duration::from_secs(15);}},
-     MediaClientMessage::Release=>{gui.disarm();lease=None;send!(serde_json::json!({"type":"lease","lease_epoch":null}));},
+     MediaClientMessage::Renew{lease_epoch}=>{if helper_control_ready(helper_control_allowed,helper_capture_state,last_encoded,last_presented,Instant::now())&&lease.is_some()&&lease==Some(lease_epoch.parse::<u64>()?)&&gui.armed(){lease_until=Instant::now()+Duration::from_secs(15);}},
+     MediaClientMessage::Release=>{gui.disarm();state.media.gui_controlled.store(false,Ordering::Release);lease=None;send!(serde_json::json!({"type":"lease","lease_epoch":null}));},
      MediaClientMessage::Input{lease_epoch,generation,geometry_version,seq,action}=>{
       let n=seq.parse::<u64>()?;let e=lease_epoch.parse::<u64>()?;
-      if lease!=Some(e)||!gui.armed()||lease_until<=Instant::now()||generation!=source.view.generation||geometry_version!=source.view.geometry_version||n<=last_seq||last_encoded.elapsed()>Duration::from_millis(500)||last_presented.elapsed()>Duration::from_millis(500){gui.disarm();lease=None;send!(serde_json::json!({"type":"lease","lease_epoch":null,"reason":"STALE_INPUT_REJECTED"}));continue;}
+      if !helper_control_ready(helper_control_allowed,helper_capture_state,last_encoded,last_presented,Instant::now())||lease!=Some(e)||!gui.armed()||lease_until<=Instant::now()||generation!=source.view.generation||geometry_version!=source.view.geometry_version||n<=last_seq{gui.disarm();state.media.gui_controlled.store(false,Ordering::Release);lease=None;send!(serde_json::json!({"type":"lease","lease_epoch":null,"reason":"STALE_INPUT_REJECTED"}));continue;}
       action.validate().map_err(anyhow::Error::msg)?;last_seq=n;gui.action(e,action)?;
      },
      MediaClientMessage::RefreshAuth{ticket}=>{let(next,id)=state.auth.consume_ws(&ticket,"media").map_err(|e|anyhow::anyhow!("{e:?}"))?;if next.client_id!=p.client_id||id!=Some(source.view.id){anyhow::bail!("Refresh identity mismatch");}state.media.get(source.view.id,&next).map_err(|e|anyhow::anyhow!("{e:?}"))?;p=next;},
@@ -471,6 +587,7 @@ async fn run(state: Shared, mut p: Principal, source: Approved, socket: WebSocke
  }.await;
     // Every exit, including codec failure, reader failure, revoke and slow client, releases injected keys.
     gui.disarm();
+    state.media.gui_controlled.store(false, Ordering::Release);
     let _ = helper_send(&mut input, &HelperIn::Stop).await;
     drop(input);
     if tokio::time::timeout(Duration::from_secs(2), child.wait())
@@ -495,4 +612,93 @@ async fn run(state: Shared, mut p: Principal, source: Approved, socket: WebSocke
         .await;
     }
     let _ = sink.close().await;
+}
+
+#[cfg(test)]
+mod tray_state_tests {
+    use super::*;
+
+    #[test]
+    fn helper_control_predicate_requires_live_helper_authority() {
+        let now = Instant::now();
+        assert!(helper_control_ready(
+            true,
+            CaptureState::Live,
+            now,
+            now,
+            now
+        ));
+        for state in [CaptureState::Starting, CaptureState::MinimizedOrStalled] {
+            assert!(!helper_control_ready(true, state, now, now, now));
+        }
+        assert!(!helper_control_ready(
+            false,
+            CaptureState::Live,
+            now,
+            now,
+            now
+        ));
+        assert!(!helper_control_ready(
+            true,
+            CaptureState::Live,
+            now - Duration::from_millis(501),
+            now,
+            now
+        ));
+        assert!(!helper_control_ready(
+            true,
+            CaptureState::Live,
+            now,
+            now - Duration::from_millis(501),
+            now
+        ));
+    }
+
+    #[test]
+    fn capture_timestamp_rejects_future_and_stale_frames() {
+        assert_eq!(capture_age_ms(10_000, 9_500), Ok(500));
+        assert_eq!(
+            capture_age_ms(10_000, 10_001),
+            Err("Captured frame timestamp is in the future")
+        );
+        assert_eq!(
+            capture_age_ms(70_001, 10_000),
+            Err("Captured frame age exceeded safety bound")
+        );
+    }
+
+    #[test]
+    fn gui_control_state_starts_clear_and_is_shared_by_clones() {
+        let media = MediaManager::new(MediaConfig::default());
+        let clone = media.clone();
+        assert!(!clone.gui_controlled());
+        media.gui_controlled.store(true, Ordering::Release);
+        assert!(clone.gui_controlled());
+    }
+
+    #[test]
+    fn installed_media_helper_wins_over_source_layout() {
+        let exe = PathBuf::from(r"C:\Program Files\RemoteCodex\rc-agent.exe");
+        assert_eq!(
+            default_helper_from(&exe, true),
+            PathBuf::from(r"C:\Program Files\RemoteCodex\media-runtime\bin\rc-media.exe")
+        );
+        assert_eq!(
+            default_helper_from(&exe, false),
+            PathBuf::from(r"C:\Program Files\RemoteCodex\rc-media.exe")
+        );
+    }
+
+    #[test]
+    fn bundled_runtime_is_derived_only_from_packaged_helper_layout() {
+        let packaged = PathBuf::from(r"C:\RemoteCodex\media-runtime\bin\rc-media.exe");
+        assert_eq!(
+            bundled_runtime(&packaged),
+            Some(PathBuf::from(r"C:\RemoteCodex\media-runtime"))
+        );
+        assert_eq!(
+            bundled_runtime(&PathBuf::from(r"C:\dev\target\release\rc-media.exe")),
+            None
+        );
+    }
 }

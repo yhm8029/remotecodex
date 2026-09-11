@@ -1,0 +1,105 @@
+{
+  "started": "2026-09-11T17:25:44.702Z",
+  "environment": {
+    "node": "v24.13.1",
+    "platform": "win32"
+  },
+  "checks": [
+    {
+      "name": "same-user CLI pairing and P-256 authentication",
+      "status": "PASS"
+    },
+    {
+      "name": "unapproved Origin rejected even with authenticated bearer",
+      "status": "PASS"
+    },
+    {
+      "name": "create 8 isolated real CMD PTYs",
+      "status": "PASS"
+    },
+    {
+      "name": "eight PTYs keep all input and output isolated",
+      "status": "PASS"
+    },
+    {
+      "name": "CMD starts in the requested fixture directory",
+      "status": "PASS"
+    },
+    {
+      "name": "selected PTY receives real output, not echoed command text",
+      "status": "PASS"
+    },
+    {
+      "name": "projection endpoint requires bearer authentication",
+      "status": "PASS"
+    },
+    {
+      "name": "server projection identifies current screen and preserves actual output",
+      "status": "PASS"
+    },
+    {
+      "name": "actual browser readable projection and raw toggle",
+      "status": "PASS"
+    },
+    {
+      "name": "second writer connection cannot interleave without taking lease",
+      "status": "PASS"
+    },
+    {
+      "name": "duplicate input identifier cannot execute twice",
+      "status": "PASS"
+    },
+    {
+      "name": "closing terminal view keeps PID and snapshot reconnect restores output",
+      "status": "PASS"
+    },
+    {
+      "name": "resize affects only chosen PTY",
+      "status": "PASS"
+    },
+    {
+      "name": "control disconnect leaves both processes running",
+      "status": "PASS"
+    }
+  ],
+  "cleanup": [
+    {
+      "type": "test_session",
+      "status": "removed"
+    },
+    {
+      "type": "test_session",
+      "status": "removed"
+    },
+    {
+      "type": "test_session",
+      "status": "removed"
+    },
+    {
+      "type": "test_session",
+      "status": "removed"
+    },
+    {
+      "type": "test_session",
+      "status": "removed"
+    },
+    {
+      "type": "test_session",
+      "status": "removed"
+    },
+    {
+      "type": "test_session",
+      "status": "removed"
+    },
+    {
+      "type": "test_session",
+      "status": "removed"
+    },
+    {
+      "type": "test_device",
+      "status": "revoked"
+    }
+  ],
+  "finished": "2026-09-11T17:25:48.500Z",
+  "overall": "PASS"
+}
