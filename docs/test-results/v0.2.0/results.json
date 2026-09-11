@@ -1,0 +1,26 @@
+{
+  "version": "0.2.0",
+  "command": "npm test",
+  "status": "PASS",
+  "total_tests": 125,
+  "passed": 125,
+  "failed": 0,
+  "skipped": 0,
+  "suites": [
+    {
+      "name": "core",
+      "tests": 96
+    },
+    {
+      "name": "client",
+      "tests": 29
+    }
+  ],
+  "evidence": "all-tests.tap.txt",
+  "limitations": [
+    "TypeScript core/API/Controller/MediaClient are compiled and tested.",
+    "Transport, video and browser storage are test doubles, not real Windows/WebRTC evidence.",
+    "Rust and complete Svelte/Tauri/native-media builds have NOT been run.",
+    "No CPU/RAM/latency/GPU/soak measurements were taken."
+  ]
+}

@@ -1,0 +1,338 @@
+
+> remotecodex@0.1.0 test
+> npm run test:core && npm run test:client
+
+
+> remotecodex@0.1.0 test:core
+> tsc -p tsconfig.core.json && node --test tests/core/*.test.mjs
+
+TAP version 13
+# Subtest: WIRE-01 40-byte network-order header and UTF-8 survive round trip
+ok 1 - WIRE-01 40-byte network-order header and UTF-8 survive round trip
+  ---
+  duration_ms: 2.371748
+  type: 'test'
+  ...
+# Subtest: WIRE-02 sequence beyond Number.MAX_SAFE_INTEGER stays exact BigInt
+ok 2 - WIRE-02 sequence beyond Number.MAX_SAFE_INTEGER stays exact BigInt
+  ---
+  duration_ms: 0.246292
+  type: 'test'
+  ...
+# Subtest: WIRE-03 decoder supports multiple complete records in one message
+ok 3 - WIRE-03 decoder supports multiple complete records in one message
+  ---
+  duration_ms: 0.225572
+  type: 'test'
+  ...
+# Subtest: WIRE-04 magic rejected
+ok 4 - WIRE-04 magic rejected
+  ---
+  duration_ms: 0.259532
+  type: 'test'
+  ...
+# Subtest: WIRE-04 version rejected
+ok 5 - WIRE-04 version rejected
+  ---
+  duration_ms: 0.117833
+  type: 'test'
+  ...
+# Subtest: WIRE-04 kind rejected
+ok 6 - WIRE-04 kind rejected
+  ---
+  duration_ms: 0.1357
+  type: 'test'
+  ...
+# Subtest: WIRE-04 reserved_flags rejected
+ok 7 - WIRE-04 reserved_flags rejected
+  ---
+  duration_ms: 0.100398
+  type: 'test'
+  ...
+# Subtest: WIRE-04 length_overflow rejected
+ok 8 - WIRE-04 length_overflow rejected
+  ---
+  duration_ms: 0.230969
+  type: 'test'
+  ...
+# Subtest: WIRE-05 every truncation boundary rejects, without partial success
+ok 9 - WIRE-05 every truncation boundary rejects, without partial success
+  ---
+  duration_ms: 0.675073
+  type: 'test'
+  ...
+# Subtest: WIRE-06 byteOffset views are decoded without reading adjacent memory
+ok 10 - WIRE-06 byteOffset views are decoded without reading adjacent memory
+  ---
+  duration_ms: 0.373289
+  type: 'test'
+  ...
+# Subtest: WIRE-07 maximum payload works; oversized payload and message reject
+ok 11 - WIRE-07 maximum payload works; oversized payload and message reject
+  ---
+  duration_ms: 0.242467
+  type: 'test'
+  ...
+# Subtest: WIRE-08 deterministic randomized round trips (1,000 records)
+ok 12 - WIRE-08 deterministic randomized round trips (1,000 records)
+  ---
+  duration_ms: 29.055622
+  type: 'test'
+  ...
+# Subtest: WIRE-09 Python/Rust/TypeScript common golden fixture
+ok 13 - WIRE-09 Python/Rust/TypeScript common golden fixture
+  ---
+  duration_ms: 0.601204
+  type: 'test'
+  ...
+# Subtest: RESTORE-01 snapshot must finish before live output is accepted
+ok 14 - RESTORE-01 snapshot must finish before live output is accepted
+  ---
+  duration_ms: 0.503601
+  type: 'test'
+  ...
+# Subtest: RESTORE-02 cross-session output rejected
+ok 15 - RESTORE-02 cross-session output rejected
+  ---
+  duration_ms: 0.206644
+  type: 'test'
+  ...
+# Subtest: RESTORE-03 missing chunk/end does not become live
+ok 16 - RESTORE-03 missing chunk/end does not become live
+  ---
+  duration_ms: 0.164552
+  type: 'test'
+  ...
+# Subtest: RESTORE-04 output gaps and duplicates require resync
+ok 17 - RESTORE-04 output gaps and duplicates require resync
+  ---
+  duration_ms: 0.164992
+  type: 'test'
+  ...
+# Subtest: RESTORE-05 restart epoch and changed generation reject restoration
+ok 18 - RESTORE-05 restart epoch and changed generation reject restoration
+  ---
+  duration_ms: 0.120728
+  type: 'test'
+  ...
+# Subtest: RESTORE-06 oversize snapshot refuses allocation
+ok 19 - RESTORE-06 oversize snapshot refuses allocation
+  ---
+  duration_ms: 0.219573
+  type: 'test'
+  ...
+# Subtest: FLOW-01 render credit is bounded, rejects forged negative acknowledgement
+ok 20 - FLOW-01 render credit is bounded, rejects forged negative acknowledgement
+  ---
+  duration_ms: 0.16989
+  type: 'test'
+  ...
+# Subtest: FLOW-02 slow peer cannot silently discard bytes and continue
+ok 21 - FLOW-02 slow peer cannot silently discard bytes and continue
+  ---
+  duration_ms: 0.546564
+  type: 'test'
+  ...
+# Subtest: GUI-01 negative monitor origin and inclusive edge coordinates
+ok 22 - GUI-01 negative monitor origin and inclusive edge coordinates
+  ---
+  duration_ms: 1.612942
+  type: 'test'
+  ...
+# Subtest: GUI-02 black letterbox must not click another window
+ok 23 - GUI-02 black letterbox must not click another window
+  ---
+  duration_ms: 0.282375
+  type: 'test'
+  ...
+# Subtest: GUI-03 DPI/scale sizes preserve logical center
+ok 24 - GUI-03 DPI/scale sizes preserve logical center
+  ---
+  duration_ms: 0.513515
+  type: 'test'
+  ...
+# Subtest: GUI-04 out-of-range/NaN/Infinity clicks rejected
+ok 25 - GUI-04 out-of-range/NaN/Infinity clicks rejected
+  ---
+  duration_ms: 0.402512
+  type: 'test'
+  ...
+# Subtest: GUI-05 stale geometry, old source and future/stale frames refused
+ok 26 - GUI-05 stale geometry, old source and future/stale frames refused
+  ---
+  duration_ms: 0.214696
+  type: 'test'
+  ...
+# Subtest: GUI-06 normalized grid stays inside original source (10,201 points)
+ok 27 - GUI-06 normalized grid stays inside original source (10,201 points)
+  ---
+  duration_ms: 10.786743
+  type: 'test'
+  ...
+# Subtest: MULTI-01 keyboard target is the requested independent session
+ok 28 - MULTI-01 keyboard target is the requested independent session
+  ---
+  duration_ms: 1.453137
+  type: 'test'
+  ...
+# Subtest: MULTI-02 same registered device in a second tab is not the writer
+ok 29 - MULTI-02 same registered device in a second tab is not the writer
+  ---
+  duration_ms: 0.338488
+  type: 'test'
+  ...
+# Subtest: MULTI-03 expired lease and exited process reject new input
+ok 30 - MULTI-03 expired lease and exited process reject new input
+  ---
+  duration_ms: 0.244009
+  type: 'test'
+  ...
+# Subtest: INPUT-01 UTF-8 byte ceiling, not character count
+ok 31 - INPUT-01 UTF-8 byte ceiling, not character count
+  ---
+  duration_ms: 0.284929
+  type: 'test'
+  ...
+# Subtest: INPUT-02 acknowledgement lost: mark unknown, never keep retry command
+ok 32 - INPUT-02 acknowledgement lost: mark unknown, never keep retry command
+  ---
+  duration_ms: 0.991138
+  type: 'test'
+  ...
+# Subtest: INPUT-03 accepted is not written or executed
+ok 33 - INPUT-03 accepted is not written or executed
+  ---
+  duration_ms: 0.252181
+  type: 'test'
+  ...
+# Subtest: INPUT-04 unacknowledged writes cannot grow without bound
+ok 34 - INPUT-04 unacknowledged writes cannot grow without bound
+  ---
+  duration_ms: 1.673751
+  type: 'test'
+  ...
+# Subtest: MOUSE-01 selecting UI tab never moves company cursor
+ok 35 - MOUSE-01 selecting UI tab never moves company cursor
+  ---
+  duration_ms: 0.147056
+  type: 'test'
+  ...
+# Subtest: MOUSE-02 plain terminal selection/scroll stays local
+ok 36 - MOUSE-02 plain terminal selection/scroll stays local
+  ---
+  duration_ms: 0.322084
+  type: 'test'
+  ...
+# Subtest: MOUSE-03 mouse-aware TUI uses PTY, not Windows desktop injection
+ok 37 - MOUSE-03 mouse-aware TUI uses PTY, not Windows desktop injection
+  ---
+  duration_ms: 0.394339
+  type: 'test'
+  ...
+# Subtest: MOUSE-04 Windows app and desktop require GUI lease
+ok 38 - MOUSE-04 Windows app and desktop require GUI lease
+  ---
+  duration_ms: 0.192062
+  type: 'test'
+  ...
+# Subtest: SPLIT-01 split pane focus switches without replacing sessions
+ok 39 - SPLIT-01 split pane focus switches without replacing sessions
+  ---
+  duration_ms: 0.256417
+  type: 'test'
+  ...
+# Subtest: SPLIT-02 closing view preserves other pane and is not process termination
+ok 40 - SPLIT-02 closing view preserves other pane and is not process termination
+  ---
+  duration_ms: 0.157291
+  type: 'test'
+  ...
+# Subtest: SPLIT-03 invisible pane cannot receive focus
+ok 41 - SPLIT-03 invisible pane cannot receive focus
+  ---
+  duration_ms: 0.110673
+  type: 'test'
+  ...
+# Subtest: SPLIT-04 selecting third pane replaces only secondary visible slot
+ok 42 - SPLIT-04 selecting third pane replaces only secondary visible slot
+  ---
+  duration_ms: 0.09497
+  type: 'test'
+  ...
+# Subtest: MOBILE-01 mobile has one active visible session, no implicit desktop preview
+ok 43 - MOBILE-01 mobile has one active visible session, no implicit desktop preview
+  ---
+  duration_ms: 0.203629
+  type: 'test'
+  ...
+# Subtest: MOBILE-02 viewing on phone never resizes company PTY
+ok 44 - MOBILE-02 viewing on phone never resizes company PTY
+  ---
+  duration_ms: 0.130191
+  type: 'test'
+  ...
+# Subtest: IME-01 composition Enter and keyCode229 cannot submit
+ok 45 - IME-01 composition Enter and keyCode229 cannot submit
+  ---
+  duration_ms: 0.148378
+  type: 'test'
+  ...
+# Subtest: DRAFT-01 independent per-session drafts survive tab changes, no auto send
+ok 46 - DRAFT-01 independent per-session drafts survive tab changes, no auto send
+  ---
+  duration_ms: 0.168978
+  type: 'test'
+  ...
+1..46
+# tests 46
+# suites 0
+# pass 46
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 102.52767
+
+> remotecodex@0.1.0 test:client
+> node scripts/build-portable-client-tests.mjs && node --test tests/client/*.test.mjs
+
+TAP version 13
+# Subtest: AUTH-CLIENT-01 actual WebCrypto P-256 signs the exact challenge, private key nonextractable
+ok 1 - AUTH-CLIENT-01 actual WebCrypto P-256 signs the exact challenge, private key nonextractable
+  ---
+  duration_ms: 24.747534
+  type: 'test'
+  ...
+# Subtest: AUTH-CLIENT-02 HTTP uses Authorization, not cookie or query secret
+ok 2 - AUTH-CLIENT-02 HTTP uses Authorization, not cookie or query secret
+  ---
+  duration_ms: 2.202793
+  type: 'test'
+  ...
+# Subtest: AUTH-CLIENT-03 WS ticket is subprotocol scoped, no URL query
+ok 3 - AUTH-CLIENT-03 WS ticket is subprotocol scoped, no URL query
+  ---
+  duration_ms: 3.006154
+  type: 'test'
+  ...
+# Subtest: AUTH-CLIENT-04 unsafe agent addresses rejected
+ok 4 - AUTH-CLIENT-04 unsafe agent addresses rejected
+  ---
+  duration_ms: 0.356114
+  type: 'test'
+  ...
+# Subtest: AUTH-CLIENT-05 device key is audience-bound and missing origin needs pairing
+ok 5 - AUTH-CLIENT-05 device key is audience-bound and missing origin needs pairing
+  ---
+  duration_ms: 0.875398
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 94.739055

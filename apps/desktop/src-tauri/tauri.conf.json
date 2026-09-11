@@ -1,0 +1,31 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "RemoteCodex",
+  "version": "0.2.0",
+  "identifier": "dev.remotecodex.desktop",
+  "build": {
+    "frontendDist": "../../web/dist",
+    "devUrl": "http://127.0.0.1:1420"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "RemoteCodex \u2014 \ud68c\uc0ac PC \ud130\ubbf8\ub110",
+        "width": 1320,
+        "height": 900,
+        "minWidth": 800,
+        "minHeight": 600
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src ipc: http://ipc.localhost http://127.0.0.1:3847 ws://127.0.0.1:3847; img-src 'self' data:; object-src 'none'; base-uri 'none'; frame-src 'none'; worker-src 'none'; media-src 'self' blob:",
+      "capabilities": [
+        "main"
+      ]
+    }
+  },
+  "bundle": {
+    "active": false
+  }
+}

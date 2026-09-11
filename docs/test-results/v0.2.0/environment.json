@@ -1,0 +1,38 @@
+{
+  "date": "2026-09-11",
+  "platform": "Linux-6.18.35-x86_64-with-glibc2.41",
+  "node": {
+    "exit_code": 0,
+    "stdout": "v22.16.0",
+    "stderr": ""
+  },
+  "npm": {
+    "exit_code": 0,
+    "stdout": "10.9.2",
+    "stderr": ""
+  },
+  "typescript": {
+    "exit_code": 0,
+    "stdout": "Version 5.8.3",
+    "stderr": ""
+  },
+  "cargo": {
+    "status": "NOT_AVAILABLE"
+  },
+  "rustc": {
+    "status": "NOT_AVAILABLE"
+  },
+  "rustfmt": {
+    "status": "NOT_AVAILABLE"
+  },
+  "powershell": {
+    "status": "NOT_AVAILABLE"
+  },
+  "windows_runtime": false,
+  "native_build_run": false,
+  "full_svelte_tauri_build_run": false,
+  "real_agent_e2e_run": false,
+  "gstreamer_runtime_test_run": false,
+  "two_pc_test_run": false,
+  "performance_measurement_run": false
+}

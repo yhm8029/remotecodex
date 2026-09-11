@@ -1,0 +1,129 @@
+{
+  "scope": "Basic file/manifest/module/reference checks only; NOT Rust compilation, NOT Svelte compilation, NOT security audit",
+  "checked_at_utc": "2026-09-11T10:36:27.374549+00:00",
+  "tools": {
+    "node": "v22.16.0",
+    "rustc": null,
+    "cargo": null
+  },
+  "checks": [
+    {
+      "check": ".json manifest syntax",
+      "status": "PASS",
+      "detail": {
+        "parsed": [
+          "tsconfig.core.json",
+          "tsconfig.client-portable.json",
+          "package.json",
+          "packages/core/package.json",
+          "packages/terminal-client/package.json",
+          "apps/web/tsconfig.json",
+          "apps/web/package.json",
+          "apps/desktop/src-tauri/tauri.conf.json",
+          "apps/desktop/src-tauri/capabilities/main.json",
+          "tests/fixtures/wire.json"
+        ],
+        "errors": []
+      }
+    },
+    {
+      "check": ".toml manifest syntax",
+      "status": "PASS",
+      "detail": {
+        "parsed": [
+          "Cargo.toml",
+          "rust-toolchain.toml",
+          "config/agent.example.toml",
+          "crates/rc-platform-windows/Cargo.toml",
+          "crates/rc-core/Cargo.toml",
+          "crates/rc-media/Cargo.toml",
+          "crates/rc-agent/Cargo.toml",
+          "apps/desktop/src-tauri/Cargo.toml"
+        ],
+        "errors": []
+      }
+    },
+    {
+      "check": "Cargo workspace/local dependency paths",
+      "status": "PASS",
+      "detail": {
+        "count": 9,
+        "missing": []
+      }
+    },
+    {
+      "check": "npm workspace paths",
+      "status": "PASS",
+      "detail": {
+        "workspaces": [
+          "apps/web",
+          "packages/core",
+          "packages/terminal-client"
+        ],
+        "missing": []
+      }
+    },
+    {
+      "check": "ErrorCode references resolve by name",
+      "status": "PASS",
+      "detail": {
+        "enum_count": 25,
+        "reference_count": 23,
+        "undefined": []
+      }
+    },
+    {
+      "check": "Rust external module files",
+      "status": "PASS",
+      "detail": {
+        "checked": 10,
+        "missing": []
+      }
+    },
+    {
+      "check": "Node .mjs syntax checks",
+      "status": "PASS",
+      "detail": {
+        "checked": 5,
+        "errors": []
+      }
+    },
+    {
+      "check": "Recorded portable test result totals",
+      "status": "PASS",
+      "detail": [
+        {
+          "tests": 46,
+          "pass": 46,
+          "fail": 0,
+          "skipped": 0,
+          "file": "core.tap.txt"
+        },
+        {
+          "tests": 5,
+          "pass": 5,
+          "fail": 0,
+          "skipped": 0,
+          "file": "client.tap.txt"
+        }
+      ]
+    },
+    {
+      "check": "Product gates remain separate from unit-test pass counts",
+      "status": "PASS",
+      "detail": {
+        "rows": 161,
+        "not_run": 161
+      }
+    },
+    {
+      "check": "No installer/binary/credential artifact in source",
+      "status": "PASS",
+      "detail": "Source only; does not audit every possible secret string"
+    }
+  ],
+  "summary": {
+    "pass": 10,
+    "fail": 0
+  }
+}

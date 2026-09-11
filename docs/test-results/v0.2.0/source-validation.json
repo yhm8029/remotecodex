@@ -1,0 +1,252 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "path": "ACCEPTANCE_MATRIX.md",
+      "kind": "Markdown local links",
+      "status": "PASS"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "kind": "Markdown local links",
+      "status": "PASS"
+    },
+    {
+      "path": "CODEX_CONTINUE.md",
+      "kind": "Markdown local links",
+      "status": "PASS"
+    },
+    {
+      "path": "CODEX_START.md",
+      "kind": "Markdown local links",
+      "status": "PASS"
+    },
+    {
+      "path": "Cargo.toml",
+      "kind": "TOML parse",
+      "status": "PASS"
+    },
+    {
+      "path": "IMPLEMENTATION_STATUS.md",
+      "kind": "Markdown local links",
+      "status": "PASS"
+    },
+    {
+      "path": "README.md",
+      "kind": "Markdown local links",
+      "status": "PASS"
+    },
+    {
+      "path": "REFERENCE_PROJECTS.md",
+      "kind": "Markdown local links",
+      "status": "PASS"
+    },
+    {
+      "path": "SOURCE_MANIFEST.json",
+      "kind": "JSON parse",
+      "status": "PASS"
+    },
+    {
+      "path": "SPEC.md",
+      "kind": "Markdown local links",
+      "status": "PASS"
+    },
+    {
+      "path": "apps/desktop/src-tauri/Cargo.toml",
+      "kind": "TOML parse",
+      "status": "PASS"
+    },
+    {
+      "path": "apps/desktop/src-tauri/capabilities/main.json",
+      "kind": "JSON parse",
+      "status": "PASS"
+    },
+    {
+      "path": "apps/desktop/src-tauri/tauri.conf.json",
+      "kind": "JSON parse",
+      "status": "PASS"
+    },
+    {
+      "path": "apps/web/package.json",
+      "kind": "JSON parse",
+      "status": "PASS"
+    },
+    {
+      "path": "apps/web/tsconfig.json",
+      "kind": "JSON parse",
+      "status": "PASS"
+    },
+    {
+      "path": "config/agent.example.toml",
+      "kind": "TOML parse",
+      "status": "PASS"
+    },
+    {
+      "path": "crates/rc-agent/Cargo.toml",
+      "kind": "TOML parse",
+      "status": "PASS"
+    },
+    {
+      "path": "crates/rc-core/Cargo.toml",
+      "kind": "TOML parse",
+      "status": "PASS"
+    },
+    {
+      "path": "crates/rc-media/Cargo.toml",
+      "kind": "TOML parse",
+      "status": "PASS"
+    },
+    {
+      "path": "crates/rc-platform-windows/Cargo.toml",
+      "kind": "TOML parse",
+      "status": "PASS"
+    },
+    {
+      "path": "docs/TRACEABILITY.md",
+      "kind": "Markdown local links",
+      "status": "PASS"
+    },
+    {
+      "path": "docs/adr/001-input-and-lifetime.md",
+      "kind": "Markdown local links",
+      "status": "PASS"
+    },
+    {
+      "path": "docs/adr/002-source-stage-and-gates.md",
+      "kind": "Markdown local links",
+      "status": "PASS"
+    },
+    {
+      "path": "docs/adr/003-native-media-adapter.md",
+      "kind": "Markdown local links",
+      "status": "PASS"
+    },
+    {
+      "path": "docs/compatibility/MEDIA.md",
+      "kind": "Markdown local links",
+      "status": "PASS"
+    },
+    {
+      "path": "docs/compatibility/PREVIEW.md",
+      "kind": "Markdown local links",
+      "status": "PASS"
+    },
+    {
+      "path": "docs/compatibility/TERMINAL_ENGINE.md",
+      "kind": "Markdown local links",
+      "status": "PASS"
+    },
+    {
+      "path": "docs/test-results/README.md",
+      "kind": "Markdown local links",
+      "status": "PASS"
+    },
+    {
+      "path": "docs/test-results/source-structure.json",
+      "kind": "JSON parse",
+      "status": "PASS"
+    },
+    {
+      "path": "docs/test-results/v0.2.0/environment.json",
+      "kind": "JSON parse",
+      "status": "PASS"
+    },
+    {
+      "path": "docs/test-results/v0.2.0/results.json",
+      "kind": "JSON parse",
+      "status": "PASS"
+    },
+    {
+      "path": "licenses/THIRD_PARTY_NOTICES.md",
+      "kind": "Markdown local links",
+      "status": "PASS"
+    },
+    {
+      "path": "package.json",
+      "kind": "JSON parse",
+      "status": "PASS"
+    },
+    {
+      "path": "packages/core/package.json",
+      "kind": "JSON parse",
+      "status": "PASS"
+    },
+    {
+      "path": "packages/terminal-client/package.json",
+      "kind": "JSON parse",
+      "status": "PASS"
+    },
+    {
+      "path": "rust-toolchain.toml",
+      "kind": "TOML parse",
+      "status": "PASS"
+    },
+    {
+      "path": "scripts/build-portable-client-tests.mjs",
+      "kind": "Node syntax only",
+      "status": "PASS"
+    },
+    {
+      "path": "tests/client/auth.test.mjs",
+      "kind": "Node syntax only",
+      "status": "PASS"
+    },
+    {
+      "path": "tests/client/controller-regression.test.mjs",
+      "kind": "Node syntax only",
+      "status": "PASS"
+    },
+    {
+      "path": "tests/client/media-client.test.mjs",
+      "kind": "Node syntax only",
+      "status": "PASS"
+    },
+    {
+      "path": "tests/core/frame.test.mjs",
+      "kind": "Node syntax only",
+      "status": "PASS"
+    },
+    {
+      "path": "tests/core/geometry.test.mjs",
+      "kind": "Node syntax only",
+      "status": "PASS"
+    },
+    {
+      "path": "tests/core/input.test.mjs",
+      "kind": "Node syntax only",
+      "status": "PASS"
+    },
+    {
+      "path": "tests/core/media.test.mjs",
+      "kind": "Node syntax only",
+      "status": "PASS"
+    },
+    {
+      "path": "tests/e2e/windows-agent.mjs",
+      "kind": "Node syntax only",
+      "status": "PASS"
+    },
+    {
+      "path": "tests/fixtures/wire.json",
+      "kind": "JSON parse",
+      "status": "PASS"
+    },
+    {
+      "path": "tests/windows-integration/README.md",
+      "kind": "Markdown local links",
+      "status": "PASS"
+    },
+    {
+      "path": "tsconfig.client-portable.json",
+      "kind": "JSON parse",
+      "status": "PASS"
+    },
+    {
+      "path": "tsconfig.core.json",
+      "kind": "JSON parse",
+      "status": "PASS"
+    }
+  ],
+  "scope_note": "Static syntax/manifests/links only; NOT a Rust/PowerShell/Svelte/Windows compile or integration test.",
+  "check_count": 49
+}

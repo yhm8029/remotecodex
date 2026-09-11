@@ -1,0 +1,1 @@
+{"$schema":"../gen/schemas/desktop-schema.json","identifier":"main","description":"Local UI only. No remote website receives Tauri permissions.","windows":["main"],"permissions":["core:default"]}

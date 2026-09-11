@@ -1,0 +1,782 @@
+
+> remotecodex@0.2.0 test
+> npm run test:core && npm run test:client
+
+
+> remotecodex@0.2.0 test:core
+> tsc -p tsconfig.core.json && node --test tests/core/*.test.mjs
+
+TAP version 13
+# Subtest: WIRE-01 40-byte network-order header and UTF-8 survive round trip
+ok 1 - WIRE-01 40-byte network-order header and UTF-8 survive round trip
+  ---
+  duration_ms: 1.880005
+  type: 'test'
+  ...
+# Subtest: WIRE-02 sequence beyond Number.MAX_SAFE_INTEGER stays exact BigInt
+ok 2 - WIRE-02 sequence beyond Number.MAX_SAFE_INTEGER stays exact BigInt
+  ---
+  duration_ms: 0.21201
+  type: 'test'
+  ...
+# Subtest: WIRE-03 decoder supports multiple complete records in one message
+ok 3 - WIRE-03 decoder supports multiple complete records in one message
+  ---
+  duration_ms: 0.221244
+  type: 'test'
+  ...
+# Subtest: WIRE-04 magic rejected
+ok 4 - WIRE-04 magic rejected
+  ---
+  duration_ms: 0.290989
+  type: 'test'
+  ...
+# Subtest: WIRE-04 version rejected
+ok 5 - WIRE-04 version rejected
+  ---
+  duration_ms: 0.118359
+  type: 'test'
+  ...
+# Subtest: WIRE-04 kind rejected
+ok 6 - WIRE-04 kind rejected
+  ---
+  duration_ms: 0.200563
+  type: 'test'
+  ...
+# Subtest: WIRE-04 reserved_flags rejected
+ok 7 - WIRE-04 reserved_flags rejected
+  ---
+  duration_ms: 0.104368
+  type: 'test'
+  ...
+# Subtest: WIRE-04 length_overflow rejected
+ok 8 - WIRE-04 length_overflow rejected
+  ---
+  duration_ms: 0.156947
+  type: 'test'
+  ...
+# Subtest: WIRE-05 every truncation boundary rejects, without partial success
+ok 9 - WIRE-05 every truncation boundary rejects, without partial success
+  ---
+  duration_ms: 0.586315
+  type: 'test'
+  ...
+# Subtest: WIRE-06 byteOffset views are decoded without reading adjacent memory
+ok 10 - WIRE-06 byteOffset views are decoded without reading adjacent memory
+  ---
+  duration_ms: 0.425792
+  type: 'test'
+  ...
+# Subtest: WIRE-07 maximum payload works; oversized payload and message reject
+ok 11 - WIRE-07 maximum payload works; oversized payload and message reject
+  ---
+  duration_ms: 0.280773
+  type: 'test'
+  ...
+# Subtest: WIRE-08 deterministic randomized round trips (1,000 records)
+ok 12 - WIRE-08 deterministic randomized round trips (1,000 records)
+  ---
+  duration_ms: 28.476848
+  type: 'test'
+  ...
+# Subtest: WIRE-09 Python/Rust/TypeScript common golden fixture
+ok 13 - WIRE-09 Python/Rust/TypeScript common golden fixture
+  ---
+  duration_ms: 0.555698
+  type: 'test'
+  ...
+# Subtest: RESTORE-01 snapshot must finish before live output is accepted
+ok 14 - RESTORE-01 snapshot must finish before live output is accepted
+  ---
+  duration_ms: 0.39126
+  type: 'test'
+  ...
+# Subtest: RESTORE-02 cross-session output rejected
+ok 15 - RESTORE-02 cross-session output rejected
+  ---
+  duration_ms: 0.123276
+  type: 'test'
+  ...
+# Subtest: RESTORE-03 missing chunk/end does not become live
+ok 16 - RESTORE-03 missing chunk/end does not become live
+  ---
+  duration_ms: 0.115384
+  type: 'test'
+  ...
+# Subtest: RESTORE-04 output gaps and duplicates require resync
+ok 17 - RESTORE-04 output gaps and duplicates require resync
+  ---
+  duration_ms: 0.156646
+  type: 'test'
+  ...
+# Subtest: RESTORE-05 restart epoch and changed generation reject restoration
+ok 18 - RESTORE-05 restart epoch and changed generation reject restoration
+  ---
+  duration_ms: 0.12595
+  type: 'test'
+  ...
+# Subtest: RESTORE-06 oversize snapshot refuses allocation
+ok 19 - RESTORE-06 oversize snapshot refuses allocation
+  ---
+  duration_ms: 0.207283
+  type: 'test'
+  ...
+# Subtest: FLOW-01 render credit is bounded, rejects forged negative acknowledgement
+ok 20 - FLOW-01 render credit is bounded, rejects forged negative acknowledgement
+  ---
+  duration_ms: 0.164848
+  type: 'test'
+  ...
+# Subtest: FLOW-02 slow peer cannot silently discard bytes and continue
+ok 21 - FLOW-02 slow peer cannot silently discard bytes and continue
+  ---
+  duration_ms: 0.230027
+  type: 'test'
+  ...
+# Subtest: GUI-01 negative monitor origin and inclusive edge coordinates
+ok 22 - GUI-01 negative monitor origin and inclusive edge coordinates
+  ---
+  duration_ms: 1.21333
+  type: 'test'
+  ...
+# Subtest: GUI-02 black letterbox must not click another window
+ok 23 - GUI-02 black letterbox must not click another window
+  ---
+  duration_ms: 0.183617
+  type: 'test'
+  ...
+# Subtest: GUI-03 DPI/scale sizes preserve logical center
+ok 24 - GUI-03 DPI/scale sizes preserve logical center
+  ---
+  duration_ms: 0.393444
+  type: 'test'
+  ...
+# Subtest: GUI-04 out-of-range/NaN/Infinity clicks rejected
+ok 25 - GUI-04 out-of-range/NaN/Infinity clicks rejected
+  ---
+  duration_ms: 0.287995
+  type: 'test'
+  ...
+# Subtest: GUI-05 stale geometry, old source and future/stale frames refused
+ok 26 - GUI-05 stale geometry, old source and future/stale frames refused
+  ---
+  duration_ms: 0.138038
+  type: 'test'
+  ...
+# Subtest: GUI-06 normalized grid stays inside original source (10,201 points)
+ok 27 - GUI-06 normalized grid stays inside original source (10,201 points)
+  ---
+  duration_ms: 9.981935
+  type: 'test'
+  ...
+# Subtest: MULTI-01 keyboard target is the requested independent session
+ok 28 - MULTI-01 keyboard target is the requested independent session
+  ---
+  duration_ms: 1.044335
+  type: 'test'
+  ...
+# Subtest: MULTI-02 same registered device in a second tab is not the writer
+ok 29 - MULTI-02 same registered device in a second tab is not the writer
+  ---
+  duration_ms: 0.29186
+  type: 'test'
+  ...
+# Subtest: MULTI-03 expired lease and exited process reject new input
+ok 30 - MULTI-03 expired lease and exited process reject new input
+  ---
+  duration_ms: 1.011145
+  type: 'test'
+  ...
+# Subtest: INPUT-01 UTF-8 byte ceiling, not character count
+ok 31 - INPUT-01 UTF-8 byte ceiling, not character count
+  ---
+  duration_ms: 0.952607
+  type: 'test'
+  ...
+# Subtest: INPUT-02 acknowledgement lost: mark unknown, never keep retry command
+ok 32 - INPUT-02 acknowledgement lost: mark unknown, never keep retry command
+  ---
+  duration_ms: 2.445538
+  type: 'test'
+  ...
+# Subtest: INPUT-03 accepted is not written or executed
+ok 33 - INPUT-03 accepted is not written or executed
+  ---
+  duration_ms: 0.328235
+  type: 'test'
+  ...
+# Subtest: INPUT-04 unacknowledged writes cannot grow without bound
+ok 34 - INPUT-04 unacknowledged writes cannot grow without bound
+  ---
+  duration_ms: 0.405462
+  type: 'test'
+  ...
+# Subtest: MOUSE-01 selecting UI tab never moves company cursor
+ok 35 - MOUSE-01 selecting UI tab never moves company cursor
+  ---
+  duration_ms: 0.097166
+  type: 'test'
+  ...
+# Subtest: MOUSE-02 plain terminal selection/scroll stays local
+ok 36 - MOUSE-02 plain terminal selection/scroll stays local
+  ---
+  duration_ms: 0.229316
+  type: 'test'
+  ...
+# Subtest: MOUSE-03 mouse-aware TUI uses PTY, not Windows desktop injection
+ok 37 - MOUSE-03 mouse-aware TUI uses PTY, not Windows desktop injection
+  ---
+  duration_ms: 0.342016
+  type: 'test'
+  ...
+# Subtest: MOUSE-04 Windows app and desktop require GUI lease
+ok 38 - MOUSE-04 Windows app and desktop require GUI lease
+  ---
+  duration_ms: 0.143837
+  type: 'test'
+  ...
+# Subtest: SPLIT-01 split pane focus switches without replacing sessions
+ok 39 - SPLIT-01 split pane focus switches without replacing sessions
+  ---
+  duration_ms: 0.145099
+  type: 'test'
+  ...
+# Subtest: SPLIT-02 closing view preserves other pane and is not process termination
+ok 40 - SPLIT-02 closing view preserves other pane and is not process termination
+  ---
+  duration_ms: 0.391341
+  type: 'test'
+  ...
+# Subtest: SPLIT-03 invisible pane cannot receive focus
+ok 41 - SPLIT-03 invisible pane cannot receive focus
+  ---
+  duration_ms: 0.095524
+  type: 'test'
+  ...
+# Subtest: SPLIT-04 selecting third pane replaces only secondary visible slot
+ok 42 - SPLIT-04 selecting third pane replaces only secondary visible slot
+  ---
+  duration_ms: 0.069465
+  type: 'test'
+  ...
+# Subtest: MOBILE-01 mobile has one active visible session, no implicit desktop preview
+ok 43 - MOBILE-01 mobile has one active visible session, no implicit desktop preview
+  ---
+  duration_ms: 0.230648
+  type: 'test'
+  ...
+# Subtest: MOBILE-02 viewing on phone never resizes company PTY
+ok 44 - MOBILE-02 viewing on phone never resizes company PTY
+  ---
+  duration_ms: 0.093001
+  type: 'test'
+  ...
+# Subtest: IME-01 composition Enter and keyCode229 cannot submit
+ok 45 - IME-01 composition Enter and keyCode229 cannot submit
+  ---
+  duration_ms: 0.087883
+  type: 'test'
+  ...
+# Subtest: DRAFT-01 independent per-session drafts survive tab changes, no auto send
+ok 46 - DRAFT-01 independent per-session drafts survive tab changes, no auto send
+  ---
+  duration_ms: 0.169696
+  type: 'test'
+  ...
+# Subtest: MEDIA-IP accept 100.64.0.1
+ok 47 - MEDIA-IP accept 100.64.0.1
+  ---
+  duration_ms: 1.031556
+  type: 'test'
+  ...
+# Subtest: MEDIA-IP accept 100.127.255.255
+ok 48 - MEDIA-IP accept 100.127.255.255
+  ---
+  duration_ms: 0.116886
+  type: 'test'
+  ...
+# Subtest: MEDIA-IP accept 100.100.12.3
+ok 49 - MEDIA-IP accept 100.100.12.3
+  ---
+  duration_ms: 0.11262
+  type: 'test'
+  ...
+# Subtest: MEDIA-IP reject "100.63.255.255"
+ok 50 - MEDIA-IP reject "100.63.255.255"
+  ---
+  duration_ms: 0.083336
+  type: 'test'
+  ...
+# Subtest: MEDIA-IP reject "100.128.0.1"
+ok 51 - MEDIA-IP reject "100.128.0.1"
+  ---
+  duration_ms: 0.060481
+  type: 'test'
+  ...
+# Subtest: MEDIA-IP reject "127.0.0.1"
+ok 52 - MEDIA-IP reject "127.0.0.1"
+  ---
+  duration_ms: 0.0598
+  type: 'test'
+  ...
+# Subtest: MEDIA-IP reject "192.168.0.2"
+ok 53 - MEDIA-IP reject "192.168.0.2"
+  ---
+  duration_ms: 0.051728
+  type: 'test'
+  ...
+# Subtest: MEDIA-IP reject "100.064.0.1"
+ok 54 - MEDIA-IP reject "100.064.0.1"
+  ---
+  duration_ms: 0.043996
+  type: 'test'
+  ...
+# Subtest: MEDIA-IP reject "100.64.0.256"
+ok 55 - MEDIA-IP reject "100.64.0.256"
+  ---
+  duration_ms: 0.206292
+  type: 'test'
+  ...
+# Subtest: MEDIA-IP reject "100.64.0.-1"
+ok 56 - MEDIA-IP reject "100.64.0.-1"
+  ---
+  duration_ms: 0.314785
+  type: 'test'
+  ...
+# Subtest: MEDIA-IP reject "100.64.0.1.attacker"
+ok 57 - MEDIA-IP reject "100.64.0.1.attacker"
+  ---
+  duration_ms: 0.193972
+  type: 'test'
+  ...
+# Subtest: MEDIA-IP reject "100.64.0.1\\n"
+ok 58 - MEDIA-IP reject "100.64.0.1\\n"
+  ---
+  duration_ms: 0.0532
+  type: 'test'
+  ...
+# Subtest: MEDIA-IP reject "::1"
+ok 59 - MEDIA-IP reject "::1"
+  ---
+  duration_ms: 0.042454
+  type: 'test'
+  ...
+# Subtest: MEDIA-IP reject "host.local"
+ok 60 - MEDIA-IP reject "host.local"
+  ---
+  duration_ms: 0.031758
+  type: 'test'
+  ...
+# Subtest: MEDIA-ICE requires exact configured host when requested
+ok 61 - MEDIA-ICE requires exact configured host when requested
+  ---
+  duration_ms: 0.224529
+  type: 'test'
+  ...
+# Subtest: MEDIA-ICE rejects candidate:1 1 tcp 1 100.70.0.2 50000 typ host
+ok 62 - MEDIA-ICE rejects candidate:1 1 tcp 1 100.70.0.2 50000 typ host
+  ---
+  duration_ms: 0.065479
+  type: 'test'
+  ...
+# Subtest: MEDIA-ICE rejects candidate:1 1 udp 1 100.70.0.2 50000 typ relay
+ok 63 - MEDIA-ICE rejects candidate:1 1 udp 1 100.70.0.2 50000 typ relay
+  ---
+  duration_ms: 0.092319
+  type: 'test'
+  ...
+# Subtest: MEDIA-ICE rejects candidate:1 2 udp 1 100.70.0.2 50000 typ host
+ok 64 - MEDIA-ICE rejects candidate:1 2 udp 1 100.70.0.2 50000 typ host
+  ---
+  duration_ms: 0.035684
+  type: 'test'
+  ...
+# Subtest: MEDIA-ICE rejects candidate:1 1 udp 1 host.local 50000 typ host
+ok 65 - MEDIA-ICE rejects candidate:1 1 udp 1 host.local 50000 typ host
+  ---
+  duration_ms: 0.031998
+  type: 'test'
+  ...
+# Subtest: MEDIA-ICE rejects candidate:1 1 udp 1 100.70.0.2 0 typ host
+ok 66 - MEDIA-ICE rejects candidate:1 1 udp 1 100.70.0.2 0 typ host
+  ---
+  duration_ms: 0.032499
+  type: 'test'
+  ...
+# Subtest: MEDIA-ICE rejects candidate:1 1 udp 1 100.70.0.2 65536 typ host
+ok 67 - MEDIA-ICE rejects candidate:1 1 udp 1 100.70.0.2 65536 typ host
+  ---
+  duration_ms: 0.031257
+  type: 'test'
+  ...
+# Subtest: MEDIA-ICE rejects candidate:1 1 udp 4294967296 100.70.0.2 50000 typ host
+ok 68 - MEDIA-ICE rejects candidate:1 1 udp 4294967296 100.70.0.2 50000 typ host
+  ---
+  duration_ms: 0.041152
+  type: 'test'
+  ...
+# Subtest: MEDIA-ICE rejects candidate:1 1 udp 1 100.70.0.2 50000 typ host\\r\\na=candidate:x
+ok 69 - MEDIA-ICE rejects candidate:1 1 udp 1 100.70.0.2 50000 typ host\\r\\na=candidate:x
+  ---
+  duration_ms: 0.037176
+  type: 'test'
+  ...
+# Subtest: MEDIA-SDP strips every embedded candidate, retains fingerprint/codec
+ok 70 - MEDIA-SDP strips every embedded candidate, retains fingerprint/codec
+  ---
+  duration_ms: 0.356097
+  type: 'test'
+  ...
+# Subtest: MEDIA-SDP rejects audio or data channels
+ok 71 - MEDIA-SDP rejects audio or data channels
+  ---
+  duration_ms: 0.27168
+  type: 'test'
+  ...
+# Subtest: MEDIA-SDP rejects missing DTLS and absent H264
+ok 72 - MEDIA-SDP rejects missing DTLS and absent H264
+  ---
+  duration_ms: 0.17892
+  type: 'test'
+  ...
+# Subtest: MEDIA-RESOURCES profile copy and 720p bounds
+ok 73 - MEDIA-RESOURCES profile copy and 720p bounds
+  ---
+  duration_ms: 0.624652
+  type: 'test'
+  ...
+# Subtest: MEDIA-RESOURCES refuses {"width":1921}
+ok 74 - MEDIA-RESOURCES refuses {"width":1921}
+  ---
+  duration_ms: 0.090196
+  type: 'test'
+  ...
+# Subtest: MEDIA-RESOURCES refuses {"height":1081}
+ok 75 - MEDIA-RESOURCES refuses {"height":1081}
+  ---
+  duration_ms: 0.115444
+  type: 'test'
+  ...
+# Subtest: MEDIA-RESOURCES refuses {"width":1279}
+ok 76 - MEDIA-RESOURCES refuses {"width":1279}
+  ---
+  duration_ms: 0.112881
+  type: 'test'
+  ...
+# Subtest: MEDIA-RESOURCES refuses {"height":719}
+ok 77 - MEDIA-RESOURCES refuses {"height":719}
+  ---
+  duration_ms: 0.055945
+  type: 'test'
+  ...
+# Subtest: MEDIA-RESOURCES refuses {"fps":0}
+ok 78 - MEDIA-RESOURCES refuses {"fps":0}
+  ---
+  duration_ms: 0.048373
+  type: 'test'
+  ...
+# Subtest: MEDIA-RESOURCES refuses {"fps":60}
+ok 79 - MEDIA-RESOURCES refuses {"fps":60}
+  ---
+  duration_ms: 0.041893
+  type: 'test'
+  ...
+# Subtest: MEDIA-RESOURCES refuses {"fps":15.5}
+ok 80 - MEDIA-RESOURCES refuses {"fps":15.5}
+  ---
+  duration_ms: 0.077327
+  type: 'test'
+  ...
+# Subtest: MEDIA-RESOURCES refuses {"bitrate_kbps":127}
+ok 81 - MEDIA-RESOURCES refuses {"bitrate_kbps":127}
+  ---
+  duration_ms: 0.174503
+  type: 'test'
+  ...
+# Subtest: MEDIA-RESOURCES refuses {"bitrate_kbps":12001}
+ok 82 - MEDIA-RESOURCES refuses {"bitrate_kbps":12001}
+  ---
+  duration_ms: 0.058989
+  type: 'test'
+  ...
+# Subtest: MEDIA-RESOURCES refuses {"width":null}
+ok 83 - MEDIA-RESOURCES refuses {"width":null}
+  ---
+  duration_ms: 0.050066
+  type: 'test'
+  ...
+# Subtest: MEDIA-GATE heartbeat and network connection alone do not prove a frame
+ok 84 - MEDIA-GATE heartbeat and network connection alone do not prove a frame
+  ---
+  duration_ms: 0.114823
+  type: 'test'
+  ...
+# Subtest: MEDIA-GATE stale, future, replaced geometry, and replaced process refused
+ok 85 - MEDIA-GATE stale, future, replaced geometry, and replaced process refused
+  ---
+  duration_ms: 0.07285
+  type: 'test'
+  ...
+# Subtest: MEDIA-GATE resize requires a fresh presented frame
+ok 86 - MEDIA-GATE resize requires a fresh presented frame
+  ---
+  duration_ms: 0.068904
+  type: 'test'
+  ...
+# Subtest: MEDIA-GATE disconnect invalidates old frames even after reconnect
+ok 87 - MEDIA-GATE disconnect invalidates old frames even after reconnect
+  ---
+  duration_ms: 0.068994
+  type: 'test'
+  ...
+# Subtest: MEDIA-POINTER only latest move kept, discrete calls remain ordered outside coalescer
+ok 88 - MEDIA-POINTER only latest move kept, discrete calls remain ordered outside coalescer
+  ---
+  duration_ms: 0.673746
+  type: 'test'
+  ...
+# Subtest: MEDIA-KEY maps extended and normal keys distinctly and excludes Meta
+ok 89 - MEDIA-KEY maps extended and normal keys distinctly and excludes Meta
+  ---
+  duration_ms: 0.136877
+  type: 'test'
+  ...
+# Subtest: PASTE-BOUNDS multibyte UTF8 and exactly 256KiB
+ok 90 - PASTE-BOUNDS multibyte UTF8 and exactly 256KiB
+  ---
+  duration_ms: 1.663859
+  type: 'test'
+  ...
+# Subtest: PASTE-SECURITY rejects control sequence ""
+ok 91 - PASTE-SECURITY rejects control sequence ""
+  ---
+  duration_ms: 0.078348
+  type: 'test'
+  ...
+# Subtest: PASTE-SECURITY rejects control sequence "\\u0000"
+ok 92 - PASTE-SECURITY rejects control sequence "\\u0000"
+  ---
+  duration_ms: 0.043946
+  type: 'test'
+  ...
+# Subtest: PASTE-SECURITY rejects control sequence "\\u001b[201~rm -rf"
+ok 93 - PASTE-SECURITY rejects control sequence "\\u001b[201~rm -rf"
+  ---
+  duration_ms: 0.081463
+  type: 'test'
+  ...
+# Subtest: PASTE-SECURITY rejects control sequence "abc\\u0003"
+ok 94 - PASTE-SECURITY rejects control sequence "abc\\u0003"
+  ---
+  duration_ms: 0.046339
+  type: 'test'
+  ...
+# Subtest: PASTE-SECURITY rejects control sequence "abc"
+ok 95 - PASTE-SECURITY rejects control sequence "abc"
+  ---
+  duration_ms: 0.038849
+  type: 'test'
+  ...
+# Subtest: PASTE-GATE is per session and Ctrl+C bypasses only its active transaction
+ok 96 - PASTE-GATE is per session and Ctrl+C bypasses only its active transaction
+  ---
+  duration_ms: 0.158739
+  type: 'test'
+  ...
+1..96
+# tests 96
+# suites 0
+# pass 96
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 164.554848
+
+> remotecodex@0.2.0 test:client
+> node scripts/build-portable-client-tests.mjs && node --test tests/client/*.test.mjs
+
+TAP version 13
+# Subtest: AUTH-CLIENT-01 actual WebCrypto P-256 signs the exact challenge, private key nonextractable
+ok 1 - AUTH-CLIENT-01 actual WebCrypto P-256 signs the exact challenge, private key nonextractable
+  ---
+  duration_ms: 24.76544
+  type: 'test'
+  ...
+# Subtest: AUTH-CLIENT-02 HTTP uses Authorization, not cookie or query secret
+ok 2 - AUTH-CLIENT-02 HTTP uses Authorization, not cookie or query secret
+  ---
+  duration_ms: 2.202983
+  type: 'test'
+  ...
+# Subtest: AUTH-CLIENT-03 WS ticket is subprotocol scoped, no URL query
+ok 3 - AUTH-CLIENT-03 WS ticket is subprotocol scoped, no URL query
+  ---
+  duration_ms: 2.775816
+  type: 'test'
+  ...
+# Subtest: AUTH-CLIENT-04 unsafe agent addresses rejected
+ok 4 - AUTH-CLIENT-04 unsafe agent addresses rejected
+  ---
+  duration_ms: 0.371861
+  type: 'test'
+  ...
+# Subtest: AUTH-CLIENT-05 device key is audience-bound and missing origin needs pairing
+ok 5 - AUTH-CLIENT-05 device key is audience-bound and missing origin needs pairing
+  ---
+  duration_ms: 1.021671
+  type: 'test'
+  ...
+# Subtest: PASTE-HTTP-01 actual payload is JSON body, not a nested Fetch RequestInit
+ok 6 - PASTE-HTTP-01 actual payload is JSON body, not a nested Fetch RequestInit
+  ---
+  duration_ms: 5.343588
+  type: 'test'
+  ...
+# Subtest: PASTE-HTTP-02 active transfer only blocks same session, Ctrl+C remains immediate
+ok 7 - PASTE-HTTP-02 active transfer only blocks same session, Ctrl+C remains immediate
+  ---
+  duration_ms: 2.063863
+  type: 'test'
+  ...
+# Subtest: PASTE-HTTP-03 ambiguous error never retries uploaded command
+ok 8 - PASTE-HTTP-03 ambiguous error never retries uploaded command
+  ---
+  duration_ms: 1.194631
+  type: 'test'
+  ...
+# Subtest: PASTE-HTTP-04 invalid pasted control sequence is not sent
+ok 9 - PASTE-HTTP-04 invalid pasted control sequence is not sent
+  ---
+  duration_ms: 0.498722
+  type: 'test'
+  ...
+# Subtest: CONNECT-RACE-01 last connect wins and late old socket is closed
+ok 10 - CONNECT-RACE-01 last connect wins and late old socket is closed
+  ---
+  duration_ms: 7.934998
+  type: 'test'
+  ...
+# Subtest: CONNECT-RACE-02 old socket events cannot overwrite new connection or lease
+ok 11 - CONNECT-RACE-02 old socket events cannot overwrite new connection or lease
+  ---
+  duration_ms: 1.162393
+  type: 'test'
+  ...
+# Subtest: CONNECT-RACE-03 explicit stop clears cached writer identity and leases
+ok 12 - CONNECT-RACE-03 explicit stop clears cached writer identity and leases
+  ---
+  duration_ms: 0.568608
+  type: 'test'
+  ...
+# Subtest: CONNECT-RACE-04 delayed old host lookup cannot replace a new epoch
+ok 13 - CONNECT-RACE-04 delayed old host lookup cannot replace a new epoch
+  ---
+  duration_ms: 2.006846
+  type: 'test'
+  ...
+# Subtest: CONNECT-RACE-05 obsolete session list cannot replace fresh list after reconnect
+ok 14 - CONNECT-RACE-05 obsolete session list cannot replace fresh list after reconnect
+  ---
+  duration_ms: 1.22031
+  type: 'test'
+  ...
+# Subtest: MEDIA-CLIENT-01 media ticket scoped to exact source, no STUN/TURN servers
+ok 15 - MEDIA-CLIENT-01 media ticket scoped to exact source, no STUN/TURN servers
+  ---
+  duration_ms: 9.13021
+  type: 'test'
+  ...
+# Subtest: MEDIA-CLIENT-02 no source or network heartbeat alone permits input
+ok 16 - MEDIA-CLIENT-02 no source or network heartbeat alone permits input
+  ---
+  duration_ms: 2.545039
+  type: 'test'
+  ...
+# Subtest: MEDIA-CLIENT-03 actual presented video is required before acquire, then inputs have monotonic sequence
+ok 17 - MEDIA-CLIENT-03 actual presented video is required before acquire, then inputs have monotonic sequence
+  ---
+  duration_ms: 1.890541
+  type: 'test'
+  ...
+# Subtest: MEDIA-CLIENT-04 stale presented frame revokes lease and rejects action
+ok 18 - MEDIA-CLIENT-04 stale presented frame revokes lease and rejects action
+  ---
+  duration_ms: 2.401181
+  type: 'test'
+  ...
+# Subtest: MEDIA-CLIENT-05 remote offer answered without embedded ICE candidates
+ok 19 - MEDIA-CLIENT-05 remote offer answered without embedded ICE candidates
+  ---
+  duration_ms: 2.338296
+  type: 'test'
+  ...
+# Subtest: MEDIA-CLIENT-06 ICE received before remote description waits for offer
+ok 20 - MEDIA-CLIENT-06 ICE received before remote description waits for offer
+  ---
+  duration_ms: 1.827316
+  type: 'test'
+  ...
+# Subtest: MEDIA-CLIENT-07 unapproved network candidate stops stream rather than dialing it
+ok 21 - MEDIA-CLIENT-07 unapproved network candidate stops stream rather than dialing it
+  ---
+  duration_ms: 1.261863
+  type: 'test'
+  ...
+# Subtest: MEDIA-CLIENT-08 browser mDNS and public candidates are not signaled
+ok 22 - MEDIA-CLIENT-08 browser mDNS and public candidates are not signaled
+  ---
+  duration_ms: 1.129304
+  type: 'test'
+  ...
+# Subtest: MEDIA-CLIENT-09 video shutdown sends stop and closes only its media socket
+ok 23 - MEDIA-CLIENT-09 video shutdown sends stop and closes only its media socket
+  ---
+  duration_ms: 1.456817
+  type: 'test'
+  ...
+# Subtest: MEDIA-CLIENT-10 stopped pending websocket does not resurrect video
+ok 24 - MEDIA-CLIENT-10 stopped pending websocket does not resurrect video
+  ---
+  duration_ms: 0.618053
+  type: 'test'
+  ...
+# Subtest: MEDIA-CLIENT-11 wrong source generation stops rather than taking control
+ok 25 - MEDIA-CLIENT-11 wrong source generation stops rather than taking control
+  ---
+  duration_ms: 1.96983
+  type: 'test'
+  ...
+# Subtest: MEDIA-CLIENT-12 credentials refresh uses media-specific one-use ticket
+ok 26 - MEDIA-CLIENT-12 credentials refresh uses media-specific one-use ticket
+  ---
+  duration_ms: 0.631383
+  type: 'test'
+  ...
+# Subtest: MEDIA-CLIENT-13 backpressure cannot enqueue another remote click
+ok 27 - MEDIA-CLIENT-13 backpressure cannot enqueue another remote click
+  ---
+  duration_ms: 0.545502
+  type: 'test'
+  ...
+# Subtest: MEDIA-CLIENT-14 invalid lease encoding is rejected
+ok 28 - MEDIA-CLIENT-14 invalid lease encoding is rejected
+  ---
+  duration_ms: 0.715459
+  type: 'test'
+  ...
+# Subtest: MEDIA-CLIENT-15 congestion closes only media so host can release injected keys
+ok 29 - MEDIA-CLIENT-15 congestion closes only media so host can release injected keys
+  ---
+  duration_ms: 0.797543
+  type: 'test'
+  ...
+1..29
+# tests 29
+# suites 0
+# pass 29
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 107.939864

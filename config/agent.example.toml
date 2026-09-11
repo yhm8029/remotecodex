@@ -1,0 +1,29 @@
+# Copy to config/agent.local.toml. No public interfaces or automatic router changes.
+bind = "127.0.0.1:3847"
+# Required for home/mobile HTTPS and Web Preview. Use the EXACT Tailscale Serve origin:
+# public_origin = "https://office-pc.your-tailnet.ts.net"
+local_ui_origins = ["http://tauri.localhost", "tauri://localhost"]
+# Optional native web frontend development only:
+# local_ui_origins = ["http://tauri.localhost", "tauri://localhost", "http://127.0.0.1:1420"]
+web_dir = "apps/web/dist"
+max_sessions = 8
+ring_bytes = 8388608
+allow_gui_experiments = false
+# data_dir defaults to %LOCALAPPDATA%\RemoteCodex, protected to this user and SYSTEM.
+
+# P4-P6 are opt-in. Never enable until native compilation and local fixture tests pass.
+# This is a separate native runtime dependency; no media SDK is loaded in terminal-only mode.
+[media]
+enabled = false
+allow_control = false
+# Replace BOTH example addresses with actual Tailscale IPv4 addresses before enabling.
+tailnet_ip = "100.64.0.10"
+allowed_peer_ips = ["100.64.0.11"]
+min_port = 50000
+max_port = 50010
+# helper_path = 'C:\your-approved-build\rc-media.exe'  # optional absolute path
+[media.profile]
+width = 1280
+height = 720
+fps = 15
+bitrate_kbps = 2500

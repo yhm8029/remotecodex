@@ -1,0 +1,24 @@
+[package]
+name = "rc-media"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[features]
+default = []
+native-media = ["dep:gstreamer", "dep:gstreamer-webrtc", "dep:gstreamer-sdp"]
+
+[dependencies]
+rc-core = { path = "../rc-core" }
+rc-platform-windows = { path = "../rc-platform-windows" }
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+uuid.workspace = true
+anyhow.workspace = true
+crossbeam-channel = "0.5"
+
+[target.'cfg(windows)'.dependencies]
+gstreamer = { version = "0.24", features = ["v1_24"], optional = true }
+gstreamer-webrtc = { version = "0.24", features = ["v1_24"], optional = true }
+gstreamer-sdp = { version = "0.24", features = ["v1_24"], optional = true }

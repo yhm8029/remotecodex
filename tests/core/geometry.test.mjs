@@ -1,0 +1,9 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {unletterbox,toPhysical,acceptFrameProof}from '../../.test-build/core/index.js';
+const source={x:-1920,y:-200,width:1920,height:1080};
+test('GUI-01 negative monitor origin and inclusive edge coordinates',()=>{assert.deepEqual(toPhysical(0,0,source),[-1920,-200]);assert.deepEqual(toPhysical(1,1,source),[-1,879]);});
+test('GUI-02 black letterbox must not click another window',()=>{const view={x:0,y:0,width:1000,height:1000};assert.equal(unletterbox(500,0,view,source),null);assert.deepEqual(unletterbox(500,500,view,source),[.5,.5]);});
+test('GUI-03 DPI/scale sizes preserve logical center',()=>{for(const dpi of[1,1.25,1.5,2])for(const zoom of[.5,.75,1,1.5,2]){const view={x:30,y:50,width:960*zoom,height:540*zoom};const src={...source,width:1920*dpi,height:1080*dpi};const n=unletterbox(30+view.width/2,50+view.height/2,view,src);assert.ok(n);assert.ok(Math.abs(n[0]-.5)<1e-12);assert.ok(Math.abs(n[1]-.5)<1e-12);}});
+test('GUI-04 out-of-range/NaN/Infinity clicks rejected',()=>{for(const n of[NaN,Infinity,-Infinity,-.1,1.1])assert.throws(()=>toPhysical(n,0,source));assert.throws(()=>unletterbox(NaN,2,{x:0,y:0,width:50,height:50},source));});
+test('GUI-05 stale geometry, old source and future/stale frames refused',()=>{const expected={source:'window-a',generation:2,geometry:3},proof={...expected,frameAt:1000};assert.equal(acceptFrameProof(proof,expected,1400),true);assert.equal(acceptFrameProof(proof,expected,1501),false);assert.equal(acceptFrameProof(proof,expected,999),false);assert.equal(acceptFrameProof({...proof,geometry:2},expected,1100),false);assert.equal(acceptFrameProof({...proof,source:'window-b'},expected,1100),false);});
+test('GUI-06 normalized grid stays inside original source (10,201 points)',()=>{for(let x=0;x<=100;x++)for(let y=0;y<=100;y++){const[a,b]=toPhysical(x/100,y/100,source);assert.ok(a>=-1920&&a<=-1);assert.ok(b>=-200&&b<=879);}});

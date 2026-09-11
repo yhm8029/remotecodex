@@ -1,0 +1,29 @@
+{
+  "name": "remotecodex",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/web",
+    "packages/core",
+    "packages/terminal-client"
+  ],
+  "scripts": {
+    "test:core": "tsc -p tsconfig.core.json && node --test tests/core/*.test.mjs",
+    "check:web": "npm --workspace @remotecodex/web run check",
+    "build:web": "npm --workspace @remotecodex/web run build",
+    "dev:web": "npm --workspace @remotecodex/web run dev",
+    "check": "npm run test:core && npm run check:web",
+    "test:client": "node scripts/build-portable-client-tests.mjs && node --test tests/client/*.test.mjs",
+    "test": "npm run test:core && npm run test:client",
+    "test:windows-e2e": "node tests/e2e/windows-agent.mjs"
+  },
+  "devDependencies": {
+    "typescript": "~5.8.3",
+    "ws": "^8.18.1",
+    "@xterm/headless": "^5.5.0"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}

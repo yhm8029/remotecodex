@@ -1,0 +1,42 @@
+[package]
+name = "rc-agent"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+rc-core = { path = "../rc-core" }
+rc-platform-windows = { path = "../rc-platform-windows" }
+anyhow.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+uuid.workspace = true
+bytes.workspace = true
+tokio.workspace = true
+tokio-util.workspace = true
+axum = { version = "0.8", features = ["ws", "json", "http1"] }
+tower-http = { version = "0.6", features = ["fs", "cors", "limit", "set-header"] }
+futures-util = "0.3"
+async-stream = "0.3"
+portable-pty = "=0.9.0"
+alacritty_terminal = "=0.25.1"
+crossbeam-channel = "0.5"
+parking_lot = "0.12"
+rusqlite = { version = "0.32", features = ["bundled"] }
+p256 = { version = "0.13", features = ["ecdsa"] }
+rand = "0.8"
+sha2 = "0.10"
+base64 = "0.22"
+subtle = "2.6"
+url = "2.5"
+reqwest = { version = "0.12", default-features = false, features = ["stream"] }
+tokio-tungstenite = "0.26"
+cookie = "0.18"
+clap = { version = "4.5", features = ["derive"] }
+toml = "0.8"
+fs2 = "0.4"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+[dev-dependencies]
+tempfile = "3.19"
