@@ -1,0 +1,71 @@
+{
+    "checked_utc":  "2026-09-11T21:04:03.8597977Z",
+    "status":  "PASS",
+    "processes":  [
+                      {
+                          "scenario":  "media-720-10m",
+                          "identity":  {
+                                           "Id":  29432,
+                                           "StartTicks":  "639247561654081947",
+                                           "Group":  "product",
+                                           "Label":  "rc-media-benchmark"
+                                       },
+                          "owned_process_exited":  true,
+                          "pid_reused":  false
+                      },
+                      {
+                          "scenario":  "media-720-10m",
+                          "identity":  {
+                                           "Id":  30392,
+                                           "StartTicks":  "639247561651867112",
+                                           "Group":  "workload",
+                                           "Label":  "animated-window"
+                                       },
+                          "owned_process_exited":  true,
+                          "pid_reused":  false
+                      },
+                      {
+                          "scenario":  "media-1080-10m",
+                          "identity":  {
+                                           "Id":  27672,
+                                           "StartTicks":  "639247567777913877",
+                                           "Group":  "product",
+                                           "Label":  "rc-media-benchmark"
+                                       },
+                          "owned_process_exited":  true,
+                          "pid_reused":  false
+                      },
+                      {
+                          "scenario":  "media-1080-10m",
+                          "identity":  {
+                                           "Id":  33000,
+                                           "StartTicks":  "639247567777023594",
+                                           "Group":  "workload",
+                                           "Label":  "animated-window"
+                                       },
+                          "owned_process_exited":  true,
+                          "pid_reused":  false
+                      }
+                  ],
+    "adapter_memory":  [
+                           {
+                               "Name":  "luid_0x00000000_0x000124F2_phys_0",
+                               "DedicatedUsage":  0,
+                               "SharedUsage":  87166976,
+                               "TotalCommitted":  114634752
+                           },
+                           {
+                               "Name":  "luid_0x00000000_0x00012498_phys_0",
+                               "DedicatedUsage":  0,
+                               "SharedUsage":  8192,
+                               "TotalCommitted":  17494016
+                           },
+                           {
+                               "Name":  "luid_0x00000000_0x0000F234_phys_0",
+                               "DedicatedUsage":  797990912,
+                               "SharedUsage":  38785024,
+                               "TotalCommitted":  1532993536
+                           }
+                       ],
+    "adapter_scope":  "system-level snapshot after media exit; not per-process attribution"
+}

@@ -10,6 +10,15 @@ and platform-specific dependencies; inclusion does not mean every dependency is
 shipped or loaded at runtime. `licenses/inventory.json` records packages whose
 license text was absent from the installed package archive.
 
+`license-coverage.json` classifies those archive omissions by exact package
+version. Source and staged notice hashes must both match before a supplemental
+notice covers an entry. Of the 84 original omissions, 5 use the project license,
+17 use verified shared upstream notices, and 60 are absent optional packages for
+other targets. Two upstream texts remain unresolved: `is-reference@3.0.3` and
+`locate-character@3.0.0`. An MIT label in upstream metadata is not substituted for
+a missing copyright/license text. The staged inventory retains both the original
+omissions and their coverage classification.
+
 The supplemental files in `licenses/` cover upstream workspace licenses omitted
 from some crate archives. [license-sources.json](license-sources.json) records each
 download URL and SHA-256. Rust upstream revisions come from the installed crate's

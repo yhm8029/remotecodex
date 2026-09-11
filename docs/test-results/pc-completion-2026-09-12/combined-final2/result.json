@@ -1,0 +1,133 @@
+{
+  "agent_exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\test-agent\\rc-agent.exe",
+  "agent_manifest": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\agent-current.json",
+  "errors": [],
+  "finished": "2026-09-11T20:41:55.060Z",
+  "baseline": {
+    "stats": {
+      "n": 10000,
+      "p50": 1.199999988079071,
+      "p95": 1.5999999940395355,
+      "p99": 2.199999988079071,
+      "max": 15.900000005960464,
+      "mean": 1.2173300000101328
+    }
+  },
+  "hmr_updates_during": 24,
+  "media": {
+    "status": "MEASURED",
+    "started_utc": "2026-09-11T20:40:42.0983225Z",
+    "finished_utc": "2026-09-11T20:41:54.7869143Z",
+    "coverage": "owned-window native capture and encode smoke; WebRTC is not measured",
+    "parameters": {
+      "width": 1280,
+      "height": 720,
+      "fps": 15,
+      "bitrate": 2500,
+      "seconds": 60,
+      "encoder_seconds": 70
+    },
+    "executables": {
+      "runner": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\build-media\\x86_64-pc-windows-msvc\\release\\examples\\owned-window-benchmark.exe",
+      "runner_sha256": "B71F35307B3C8F007D877BE31C4DE6685D975C66A9CBC5F26A28734627F7638E",
+      "encoder": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\build-media\\x86_64-pc-windows-msvc\\release\\examples\\native-capture-benchmark.exe",
+      "encoder_sha256": "9D13A825A36E441CA1E2E3E894965B35ADC2E2CB755E9AEC11749579D396D31A"
+    },
+    "capture": {
+      "Id": 32832,
+      "StartTicks": "639247560421848638",
+      "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\build-media\\x86_64-pc-windows-msvc\\release\\examples\\owned-window-benchmark.exe"
+    },
+    "record": {
+      "client_height": 720,
+      "client_width": 1280,
+      "fps": 15,
+      "hwnd": "18877458",
+      "pid": 32832,
+      "process_created": "134336328421848638"
+    },
+    "report": {
+      "actual_encoded_fps": 14.978601997146933,
+      "bitrate_kbps": 2500,
+      "effective_profile": {
+        "bitrate_kbps": 2500,
+        "fps": 15,
+        "height": 720,
+        "width": 1280
+      },
+      "elapsed_ms": 70100,
+      "encoded_buffers": 1050,
+      "encoder": "hardware",
+      "fps": 15,
+      "height": 720,
+      "requested_profile": {
+        "bitrate_kbps": 2500,
+        "fps": 15,
+        "height": 720,
+        "width": 1280
+      },
+      "scope": "owned_window_capture_encode_fakesink",
+      "source_pushes": 1050,
+      "stopped_cleanly": true,
+      "unique_pushed_fps": 12.639087018544936,
+      "unique_pushed_source_frames": 886,
+      "width": 1280
+    },
+    "errors": []
+  },
+  "media_process_manifest": [
+    {
+      "Id": 26876,
+      "StartTicks": "639247546524557659",
+      "Group": "product",
+      "Label": "rc-agent"
+    },
+    {
+      "Id": 23368,
+      "StartTicks": "639247560425565882",
+      "Group": "product",
+      "Label": "rc-media-benchmark"
+    },
+    {
+      "Id": 32832,
+      "StartTicks": "639247560421848638",
+      "Group": "workload",
+      "Label": "animated-window"
+    }
+  ],
+  "p95_delta_ms": -0.09999999403953552,
+  "perf_dropped": 0,
+  "scope": "native capture/encode + Node gateway/Vite HMR + two PTYs; WebRTC/viewer paint not measured",
+  "stress": {
+    "encoder_after": {
+      "Id": 23368,
+      "StartTicks": "639247560425565882",
+      "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\build-media\\x86_64-pc-windows-msvc\\release\\examples\\native-capture-benchmark.exe",
+      "live": true
+    },
+    "encoder_before": {
+      "Id": 23368,
+      "StartTicks": "639247560425565882",
+      "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\build-media\\x86_64-pc-windows-msvc\\release\\examples\\native-capture-benchmark.exe",
+      "live": true
+    },
+    "finished": "2026-09-11T20:41:04.598Z",
+    "started": "2026-09-11T20:40:53.064Z",
+    "stats": {
+      "n": 10000,
+      "p50": 1.0999999940395355,
+      "p95": 1.5,
+      "p99": 2,
+      "max": 4.5,
+      "mean": 1.1277300000458956
+    }
+  },
+  "started": "2026-09-11T20:40:25.176Z",
+  "status": "MEASURED",
+  "raw_evidence": {
+    "path": "result.raw.json.gz",
+    "uncompressed_bytes": 424309,
+    "uncompressed_sha256": "dc61a4ccebe3ced09cda8456285269ea279ada27dc1a1f0d68d3acb6329785c4",
+    "note": "Full original result including 20,000 echo durations; summary omits only baseline/stress latency arrays"
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "source": "runtime/local-completion-20260912/media-720-10m/resources.ndjson",
+  "definition": {
+    "cpu": "whole machine percent",
+    "memory": "sum of private working set; private bytes separately",
+    "cpu_average": "weighted by monotonic sample intervals",
+    "scope": "Only explicitly tracked process identities; absent groups are not zero"
+  },
+  "requested_seconds": 600,
+  "last_elapsed_seconds": 600.1137825999999,
+  "sample_count": 534,
+  "identity_metadata_legacy": false,
+  "groups": {
+    "product": {
+      "processes": 2,
+      "valid_samples": 534,
+      "invalid_samples": 0,
+      "cpu_machine_pct": {
+        "n": 533,
+        "p50": 0.05840296386986702,
+        "p95": 0.1765288425872031,
+        "p99": 0.2950237021947936,
+        "max": 3.5506365510195934,
+        "mean": 0.09163293262919683,
+        "weighted_mean": 0.09199524533530488
+      },
+      "private_working_set_bytes": {
+        "n": 534,
+        "p50": 62128128,
+        "p95": 62169088,
+        "p99": 62205952,
+        "max": 90890240,
+        "mean": 61785321.94756554
+      },
+      "private_bytes": {
+        "n": 534,
+        "p50": 151437312,
+        "p95": 151543808,
+        "p99": 151576576,
+        "max": 177451008,
+        "mean": 151124520.26966292
+      },
+      "threads": {
+        "n": 534,
+        "p50": 74,
+        "p95": 79,
+        "p99": 81,
+        "max": 81,
+        "mean": 74.35955056179775
+      },
+      "handles": {
+        "n": 534,
+        "p50": 1095,
+        "p95": 1103,
+        "p99": 1104,
+        "max": 1117,
+        "mean": 1093.376404494382
+      }
+    },
+    "workload": {
+      "processes": 1,
+      "valid_samples": 534,
+      "invalid_samples": 0,
+      "cpu_machine_pct": {
+        "n": 533,
+        "p50": 0,
+        "p95": 0.05786542223382024,
+        "p99": 0.05918578361795692,
+        "max": 0.11704873170563906,
+        "mean": 0.00843904075247716,
+        "weighted_mean": 0.008464829905146907
+      },
+      "private_working_set_bytes": {
+        "n": 534,
+        "p50": 1327104,
+        "p95": 1368064,
+        "p99": 1368064,
+        "max": 1368064,
+        "mean": 1342460.1647940075
+      },
+      "private_bytes": {
+        "n": 534,
+        "p50": 1794048,
+        "p95": 1863680,
+        "p99": 1863680,
+        "max": 1863680,
+        "mean": 1821561.7677902621
+      },
+      "threads": {
+        "n": 534,
+        "p50": 1,
+        "p95": 4,
+        "p99": 4,
+        "max": 4,
+        "mean": 1.8408239700374531
+      },
+      "handles": {
+        "n": 534,
+        "p50": 146,
+        "p95": 148,
+        "p99": 148,
+        "max": 148,
+        "mean": 146.39513108614233
+      }
+    },
+    "tracked_total": {
+      "processes": 3,
+      "valid_samples": 534,
+      "invalid_samples": 0,
+      "cpu_machine_pct": {
+        "n": 533,
+        "p50": 0.11104040531872811,
+        "p95": 0.22889522988493624,
+        "p99": 0.2950237021947936,
+        "max": 3.5506365510195934,
+        "mean": 0.10007197338167399,
+        "weighted_mean": 0.10046007524045181
+      },
+      "private_working_set_bytes": {
+        "n": 534,
+        "p50": 63463424,
+        "p95": 63537152,
+        "p99": 63537152,
+        "max": 92241920,
+        "mean": 63127782.11235955
+      },
+      "private_bytes": {
+        "n": 534,
+        "p50": 153231360,
+        "p95": 153403392,
+        "p99": 153403392,
+        "max": 179314688,
+        "mean": 152946082.03745317
+      },
+      "threads": {
+        "n": 534,
+        "p50": 76,
+        "p95": 82,
+        "p99": 85,
+        "max": 85,
+        "mean": 76.20037453183521
+      },
+      "handles": {
+        "n": 534,
+        "p50": 1241,
+        "p95": 1249,
+        "p99": 1251,
+        "max": 1264,
+        "mean": 1239.7715355805244
+      }
+    }
+  }
+}

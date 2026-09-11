@@ -1,0 +1,264 @@
+{
+  "scope": "Unmodified raw measurements retained locally and excluded from Git; no complete GPU allocation claim",
+  "files": [
+    {
+      "path": "runtime/local-completion-20260912/idle0-final.ndjson",
+      "bytes": 211988,
+      "sha256": "b0c5e2fb47c98e3bb0da4acbe4c8cc7aa70770296acc8b4201a2e9abcd6fae3e",
+      "requested_seconds": 600,
+      "samples": 553,
+      "last_elapsed_seconds": 600.0717212999999,
+      "max_gap_seconds": 1.8216511000000537,
+      "identities": [
+        {
+          "Id": 26876,
+          "StartTicks": "639247546524557659",
+          "Group": "product",
+          "Label": "rc-agent"
+        }
+      ]
+    },
+    {
+      "path": "runtime/local-completion-20260912/native-idle-10m/idle-raw.json",
+      "bytes": 1584962,
+      "sha256": "29c9227bd9cc6dec4c7038857367bfa446286dc9f93151b80c8b8f0ec1ae856b",
+      "requested_seconds": 600,
+      "samples": 512,
+      "last_elapsed_seconds": 600.1666892999999,
+      "max_gap_seconds": 2.145859700000017,
+      "identities": [
+        {
+          "Id": 26876,
+          "StartTicks": "639247546524557659",
+          "Group": "product",
+          "Label": "rc-agent"
+        },
+        {
+          "Id": 29608,
+          "StartTicks": "639247546873378689",
+          "Group": "product",
+          "Label": "tauri-ui"
+        },
+        {
+          "Id": 35104,
+          "StartTicks": "639247546873871258",
+          "Group": "product",
+          "Label": "webview2"
+        },
+        {
+          "Id": 25936,
+          "StartTicks": "639247546874037538",
+          "Group": "product",
+          "Label": "webview2"
+        },
+        {
+          "Id": 29044,
+          "StartTicks": "639247546875059700",
+          "Group": "product",
+          "Label": "webview2"
+        },
+        {
+          "Id": 3920,
+          "StartTicks": "639247546875095100",
+          "Group": "product",
+          "Label": "webview2"
+        },
+        {
+          "Id": 32412,
+          "StartTicks": "639247546875331769",
+          "Group": "product",
+          "Label": "webview2"
+        },
+        {
+          "Id": 35036,
+          "StartTicks": "639247546875856929",
+          "Group": "product",
+          "Label": "webview2"
+        },
+        {
+          "Id": 34180,
+          "StartTicks": "639247546863668532",
+          "Group": "workload",
+          "Label": "owned-cmd-c7d90787-1c59-4e2f-9890-8ad66fddb2e4"
+        }
+      ]
+    },
+    {
+      "path": "runtime/local-completion-20260912/native-output-10m/output-raw.json",
+      "bytes": 1601492,
+      "sha256": "fb03b4a4fc638688367d9e571829aafb82ddbfedfbc490fe908efe8cef9921ef",
+      "requested_seconds": 600,
+      "samples": 505,
+      "last_elapsed_seconds": 600.1619754,
+      "max_gap_seconds": 1.2483217999999852,
+      "identities": [
+        {
+          "Id": 26876,
+          "StartTicks": "639247546524557659",
+          "Group": "product",
+          "Label": "rc-agent"
+        },
+        {
+          "Id": 30948,
+          "StartTicks": "639247552936992834",
+          "Group": "product",
+          "Label": "tauri-ui"
+        },
+        {
+          "Id": 32064,
+          "StartTicks": "639247552937520802",
+          "Group": "product",
+          "Label": "webview2"
+        },
+        {
+          "Id": 33656,
+          "StartTicks": "639247552937691933",
+          "Group": "product",
+          "Label": "webview2"
+        },
+        {
+          "Id": 33352,
+          "StartTicks": "639247552938680005",
+          "Group": "product",
+          "Label": "webview2"
+        },
+        {
+          "Id": 31504,
+          "StartTicks": "639247552938715398",
+          "Group": "product",
+          "Label": "webview2"
+        },
+        {
+          "Id": 12984,
+          "StartTicks": "639247552938960054",
+          "Group": "product",
+          "Label": "webview2"
+        },
+        {
+          "Id": 27856,
+          "StartTicks": "639247552939564066",
+          "Group": "product",
+          "Label": "webview2"
+        },
+        {
+          "Id": 31612,
+          "StartTicks": "639247552928240208",
+          "Group": "workload",
+          "Label": "owned-cmd-abca6b61-0faa-44ba-a2f3-02f7acc490ac"
+        }
+      ]
+    },
+    {
+      "path": "runtime/local-completion-20260912/native-output-10m/node-workload-5m.ndjson",
+      "bytes": 112538,
+      "sha256": "9e01844d9b0ac6be1ae2142add57df0c0259c29c6c83fc4cb0227283af03f67f",
+      "requested_seconds": 300,
+      "samples": 274,
+      "last_elapsed_seconds": 300.1118073,
+      "max_gap_seconds": 1.1432138999999992,
+      "identities": [
+        {
+          "Id": 34484,
+          "StartTicks": "639247552966080113",
+          "Group": "workload",
+          "Label": "owned-node-output"
+        }
+      ]
+    },
+    {
+      "path": "runtime/local-completion-20260912/media-720-10m/resources.ndjson",
+      "bytes": 612832,
+      "sha256": "13c4061d215f2f06cbf977f7dbd0f5ff529779e4b8f05eee882c8ba0dc7d9953",
+      "requested_seconds": 600,
+      "samples": 534,
+      "last_elapsed_seconds": 600.1137825999999,
+      "max_gap_seconds": 1.1806952000000024,
+      "identities": [
+        {
+          "Id": 26876,
+          "StartTicks": "639247546524557659",
+          "Group": "product",
+          "Label": "rc-agent"
+        },
+        {
+          "Id": 29432,
+          "StartTicks": "639247561654081947",
+          "Group": "product",
+          "Label": "rc-media-benchmark"
+        },
+        {
+          "Id": 30392,
+          "StartTicks": "639247561651867112",
+          "Group": "workload",
+          "Label": "animated-window"
+        }
+      ]
+    },
+    {
+      "path": "runtime/local-completion-20260912/media-1080-10m/resources.ndjson",
+      "bytes": 613911,
+      "sha256": "a1dbaef1b78c178a5ce9958b5fe05c8b27c134b972d57bf3fa6bcd960412b17f",
+      "requested_seconds": 600,
+      "samples": 533,
+      "last_elapsed_seconds": 600.1074785,
+      "max_gap_seconds": 1.9815451000000053,
+      "identities": [
+        {
+          "Id": 26876,
+          "StartTicks": "639247546524557659",
+          "Group": "product",
+          "Label": "rc-agent"
+        },
+        {
+          "Id": 27672,
+          "StartTicks": "639247567777913877",
+          "Group": "product",
+          "Label": "rc-media-benchmark"
+        },
+        {
+          "Id": 33000,
+          "StartTicks": "639247567777023594",
+          "Group": "workload",
+          "Label": "animated-window"
+        }
+      ]
+    },
+    {
+      "path": "runtime/local-completion-20260912/combined-final2/media/resources.ndjson",
+      "bytes": 60194,
+      "sha256": "461d0479b867c43d252a7af1999c0057dcfaa8bb6b8e6741959bb9c0321232b7",
+      "requested_seconds": 60,
+      "samples": 52,
+      "last_elapsed_seconds": 60.1317563,
+      "max_gap_seconds": 2.0394569,
+      "identities": [
+        {
+          "Id": 26876,
+          "StartTicks": "639247546524557659",
+          "Group": "product",
+          "Label": "rc-agent"
+        },
+        {
+          "Id": 23368,
+          "StartTicks": "639247560425565882",
+          "Group": "product",
+          "Label": "rc-media-benchmark"
+        },
+        {
+          "Id": 32832,
+          "StartTicks": "639247560421848638",
+          "Group": "workload",
+          "Label": "animated-window"
+        }
+      ]
+    },
+    {
+      "path": "runtime/local-completion-20260912/agent-trace-capped.ndjson",
+      "bytes": 51443171,
+      "sha256": "583cc7dcbc297656022e4489b3c348a09dbbe838d9004daabfeb4ac242b95ab8",
+      "metadata_only": true,
+      "dropped": 0,
+      "raw_truncated": true
+    }
+  ]
+}

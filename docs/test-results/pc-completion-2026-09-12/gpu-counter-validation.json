@@ -1,0 +1,51 @@
+{
+    "at_utc":  "2026-09-11T20:49:42.9392372Z",
+    "identity":  {
+                     "Id":  29432,
+                     "StartTicks":  "639247561654081947",
+                     "Group":  "product",
+                     "Label":  "rc-media-benchmark"
+                 },
+    "process":  [
+                    {
+                        "Name":  "pid_29432_luid_0x00000000_0x00012498_phys_0",
+                        "DedicatedUsage":  0,
+                        "SharedUsage":  0,
+                        "TotalCommitted":  0
+                    },
+                    {
+                        "Name":  "pid_29432_luid_0x00000000_0x000124F2_phys_0",
+                        "DedicatedUsage":  0,
+                        "SharedUsage":  0,
+                        "TotalCommitted":  4096
+                    },
+                    {
+                        "Name":  "pid_29432_luid_0x00000000_0x0000F234_phys_0",
+                        "DedicatedUsage":  9041575936,
+                        "SharedUsage":  4104192,
+                        "TotalCommitted":  68505600
+                    }
+                ],
+    "adapters":  [
+                     {
+                         "Name":  "luid_0x00000000_0x000124F2_phys_0",
+                         "DedicatedUsage":  0,
+                         "SharedUsage":  87166976,
+                         "TotalCommitted":  114638848
+                     },
+                     {
+                         "Name":  "luid_0x00000000_0x00012498_phys_0",
+                         "DedicatedUsage":  0,
+                         "SharedUsage":  8192,
+                         "TotalCommitted":  17494016
+                     },
+                     {
+                         "Name":  "luid_0x00000000_0x0000F234_phys_0",
+                         "DedicatedUsage":  845385728,
+                         "SharedUsage":  41005056,
+                         "TotalCommitted":  1597972480
+                     }
+                 ],
+    "interpretation":  "Per-process DedicatedUsage exceeds same-adapter total. Raw counters are retained but cannot establish actual GPU allocation or a leak. Microsoft documents a similar Windows10 counter issue; this Windows11 observation is independently contradictory, not proof of the identical defect.",
+    "reference":  "https://learn.microsoft.com/en-us/troubleshoot/windows-client/performance/gpu-process-memory-counters-report-wrong-value"
+}

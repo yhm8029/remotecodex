@@ -1,0 +1,44 @@
+{
+  "status": "PASS",
+  "scope": "Focused tests added or changed in the local-completion checkpoint; prior product suites retained separately",
+  "checks": [
+    {
+      "name": "soak resource trend and identity tests",
+      "passed": 7,
+      "failed": 0,
+      "command": "node --test tests/perf/soak-resources.test.mjs"
+    },
+    {
+      "name": "license coverage tests",
+      "passed": 6,
+      "failed": 0,
+      "command": "node --test tests/perf/license-coverage.test.mjs"
+    },
+    {
+      "name": "cargo fmt",
+      "status": "PASS",
+      "command": "cargo fmt --all -- --check"
+    },
+    {
+      "name": "24h without manifest",
+      "status": "PASS_REJECTION",
+      "exit_code": 1,
+      "before_fixture_creation": true
+    },
+    {
+      "name": "Agent full unit suite after active-device quota fix",
+      "passed": 49,
+      "failed": 0,
+      "command": "cargo test -p rc-agent --locked",
+      "ignored_integration": 1
+    }
+  ],
+  "prior_verified_product_suites": {
+    "agent_unit_passed": 46,
+    "core_passed": 96,
+    "client_passed": 34,
+    "web_check_errors": 0,
+    "web_check_warnings": 0,
+    "note": "Earlier product suites in this task; Agent superseded by current 49-test check above. Packaging rechecks web and rebuilds release binaries."
+  }
+}

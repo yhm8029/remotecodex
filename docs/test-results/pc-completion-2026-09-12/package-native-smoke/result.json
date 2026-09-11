@@ -1,0 +1,64 @@
+{
+  "started": "2026-09-11T21:29:45.958Z",
+  "finished": "2026-09-11T21:29:56.123Z",
+  "count": 2,
+  "completed": 2,
+  "results": [
+    {
+      "index": 0,
+      "elapsed_ms": 3404.6728,
+      "identity": {
+        "Id": 12728,
+        "StartTicks": "639247589878802357",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\package-inspection-final\\standard\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\package-native-smoke-final\\profile",
+        "Port": 19400
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "667d60bb-9e46-4e7f-a918-c073bc35e2e2",
+        "pid": 31148,
+        "process_created": "134336357865349613",
+        "state": "running",
+        "epoch": "f534fb39-15bc-41e5-9e58-afdc7adda434"
+      }
+    },
+    {
+      "index": 1,
+      "elapsed_ms": 2779.519300000001,
+      "identity": {
+        "Id": 35568,
+        "StartTicks": "639247589925572403",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\package-inspection-final\\standard\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\package-native-smoke-final\\profile",
+        "Port": 19401
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "667d60bb-9e46-4e7f-a918-c073bc35e2e2",
+        "pid": 31148,
+        "process_created": "134336357865349613",
+        "state": "running",
+        "epoch": "f534fb39-15bc-41e5-9e58-afdc7adda434"
+      }
+    }
+  ],
+  "stats": {
+    "n": 2,
+    "p50": 2779.519300000001,
+    "p95": 3404.6728,
+    "p99": 3404.6728,
+    "max": 3404.6728,
+    "mean": 3092.09605
+  },
+  "errors": [],
+  "cleanup": true
+}

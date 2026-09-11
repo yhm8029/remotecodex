@@ -1,3 +1,4 @@
+import { emitPerf, type PerfSink } from './perf.js';
 import { Terminal, type IDisposable } from '@xterm/xterm';
 import { decodeFrames, Kind, StreamGuard, RenderBudget, type SessionInfo } from '@remotecodex/core';
 import { Controller } from './controller.js';
@@ -12,7 +13,7 @@ export class TerminalView {
   private disposables: IDisposable[] = [];
   private subscriptions: (() => void)[] = [];
   constructor(private element: HTMLElement, readonly session: SessionInfo, readonly controller: Controller,
-    private focused: () => boolean, private notify: () => void) {
+    private focused: () => boolean, private notify: () => void, readonly perf?: PerfSink) {
     this.terminal = new Terminal({ cols: session.cols, rows: session.rows, scrollback: 2000,
       cursorBlink: false, convertEol: false, allowProposedApi: true, allowTransparency: false,
       fontFamily: 'Cascadia Mono, Consolas, monospace', fontSize: 14,
@@ -28,8 +29,8 @@ export class TerminalView {
     this.disposables.push(t.parser.registerOscHandler(4, data => data.split(';').includes('?')));
     for (const id of [10, 11, 12]) this.disposables.push(t.parser.registerOscHandler(id, data => data === '?'));
     for (const id of [8, 52]) this.disposables.push(t.parser.registerOscHandler(id, () => true));
-    this.disposables.push(t.onData(data => { if (this.canInput()) try { controller.input(session.session_id, data); } catch (e) { controller.fail(e); } }));
-    this.disposables.push(t.onBinary(data => { if (this.canInput()) try { controller.binaryInput(session.session_id, data); } catch (e) { controller.fail(e); } }));
+    this.disposables.push(t.onData(data => { const started = this.perf ? performance.now() : 0; if (this.canInput()) try { controller.input(session.session_id,data); if(this.perf)emitPerf(this.perf,{stage:'client_input_enqueue',session_id:session.session_id,elapsed_ms:performance.now()-started}); } catch(e){controller.fail(e);} }));
+    this.disposables.push(t.onBinary(data => { const started = this.perf ? performance.now() : 0; if (this.canInput()) try { controller.binaryInput(session.session_id,data); if(this.perf)emitPerf(this.perf,{stage:'client_input_enqueue',session_id:session.session_id,elapsed_ms:performance.now()-started}); } catch(e){controller.fail(e);} }));
     const paste = (event: ClipboardEvent) => {
       event.preventDefault(); event.stopImmediatePropagation();
       if (!this.canInput()) return;
@@ -78,6 +79,7 @@ export class TerminalView {
       const budget = new RenderBudget(5 * 1024 * 1024); // Bounded 4MiB initial snapshot + live backlog.
       let queue = Promise.resolve();
       socket.onmessage = event => {
+        const received = this.perf ? performance.now() : 0;
         if (!(event.data instanceof ArrayBuffer)) { socket.close(); return; }
         const bytes = event.data as ArrayBuffer;
         try { budget.reserve(bytes.byteLength); } catch { socket.close(); return; }
@@ -91,6 +93,8 @@ export class TerminalView {
               const liveOutput = frame.kind === Kind.Output;
               const shouldCount = liveOutput && (!this.atBottom || !this.focused());
               await new Promise<void>(resolve => this.terminal.write(frame.payload, resolve));
+              // Note: this callback fires on parse/apply completion, not paint
+              if (liveOutput && this.perf) emitPerf(this.perf, { stage: 'client_output_parse_apply', session_id: this.session.session_id, elapsed_ms: performance.now() - received, bytes: frame.payload.length, sequence: frame.sequence.toString() });
               this.atBottom = this.isAtBottom();
               if (shouldCount) this.unread += 1;
               if (liveOutput && this.atBottom && this.focused()) this.unread = 0;

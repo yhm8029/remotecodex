@@ -1,3 +1,4 @@
+import { classifyLicenseCoverage } from './license-coverage.mjs';
 import {
   copyFileSync, existsSync, lstatSync, mkdirSync, readFileSync, readdirSync,
   writeFileSync,
@@ -160,7 +161,16 @@ copyTree(upstream, join(stage, 'licenses', 'upstream'));
 if (!file(join(repo, 'LICENSE'))) throw new Error('root LICENSE is missing');
 copyOne(join(repo, 'LICENSE'), join(stage, 'licenses', 'RemoteCodex-LICENSE'));
 ensure(join(stage, 'licenses'));
-writeFileSync(join(stage, 'licenses', 'inventory.json'), JSON.stringify({ missing }, null, 2) + '\n');
+const rulesPath = join(repo, 'docs', 'third-party', 'license-coverage.json');
+const rules = readJson(rulesPath);
+const coverageReport = classifyLicenseCoverage(missing, rules, lock.packages, path => {
+  if (typeof path !== 'string') throw new TypeError('path must be string');
+  const base = path.startsWith('licenses/') ? stage : repo;
+  const full = resolve(base, path);
+  if (!within(base, full) || !file(full)) throw new Error('invalid license path: ' + path);
+  return readFileSync(full);
+});
+writeFileSync(join(stage, 'licenses', 'inventory.json'), JSON.stringify({ missing, ...coverageReport }, null, 2) + '\n');
 
 const files = [];
 function hashTree(dir) {
@@ -181,4 +191,4 @@ writeFileSync(join(repo, 'runtime', 'package-inventory.json'), JSON.stringify({
   name: 'remotecodex', version: rootPackage.version,
   rust: [...rust.values()], npm: [...npm.values()], supplemental_sources: supplemental, files,
 }, null, 2) + '\n');
-console.log(`rust=${rust.size} npm=${npm.size} files=${files.length} missing=${missing.length}`);
+console.log(`rust=${rust.size} npm=${npm.size} files=${files.length} archive_text_missing=${missing.length} unresolved_text=${coverageReport.unresolved.length}`);

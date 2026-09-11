@@ -7,6 +7,17 @@
 This document records evidence, scope, and remaining gates. Local fixture passes
 are useful engineering evidence; they do not close external or release gates.
 
+The follow-up PC measurements and fixes are recorded in
+[pc-completion-2026-09-12](docs/test-results/pc-completion-2026-09-12/README.md).
+They include the idle-output WS credit deadline fix, usable native terminal layout,
+10,000-input distributions, 500 session cycles, 50 native UI cycles, 100 tab
+switches, native resource budgets, a 10-minute Agent-only idle measurement, and
+combined capture/encode plus Vite HMR. The Agent-only run recorded 553 valid
+samples over 600.071721 seconds, zero CPU at sampler resolution, and a constant
+10,403,840-byte (9.92 MiB) private working set.
+Terminal latency ends at xterm parse/apply; the local media benchmark ends at an
+encoder fakesink. Neither boundary is remote viewer paint.
+
 ## Evidence that currently passes
 
 | Area | Result | Evidence or scope |
@@ -16,7 +27,7 @@ are useful engineering evidence; they do not close external or release gates.
 | Projection API | PASS | `GET /api/v1/sessions/{id}/projection`; bounded physical-screen projection, alternate-screen/raw fallback, identity/sequence validation, one pending request, 2.5 s UI freshness |
 | Codex TUI | PASS | `docs/test-results/spec-completion-2026-09-12/codex-tui-chrome.json`; installed native Codex profile through ConPTY/browser, live process identity, termination disables composer |
 | Session lifecycle | PASS | `docs/test-results/spec-completion-2026-09-12/terminal-flow-chrome.json`; rename preserves UUID/PID, exit moves to history, explicit restart creates a new UUID/PID and preserves project identity |
-| Device administration | PASS | `docs/test-results/spec-completion-2026-09-12/device-admin-chrome.json`; revoke, self-revoke, PTY PID preservation, no page errors |
+| Device administration | PASS | Browser revoke/self-revoke and PTY preservation pass. The active-only 64-device quota fix passes all 49 Agent tests. A no-reset run against 64 retained revoked records authenticated two new pairings, passed terminal/reconnect/resource smoke, and ended with 66 revoked and zero active records |
 | Native GUI safety | PASS | `docs/test-results/spec-completion-2026-09-12/gui-safety.json`; keydown-before-keyup, owned foreground and geometry, source identity, Win32 fixture |
 | Native WGC/H.264 bridge | PASS, bounded | `docs/test-results/spec-completion-2026-09-12/capture-encode-bridge.json`; owned capture/encode fixture only. WebRTC, ICE, Tailscale, input, and two-PC behavior are outside its scope |
 | Tauri lifecycle | PASS, bounded | `docs/test-results/spec-completion-2026-09-12/tauri-lifecycle.json`; close/reopen preserves Agent and PTY identity through SID IPC; clean-up is fixture-scoped |
@@ -24,8 +35,8 @@ are useful engineering evidence; they do not close external or release gates.
 | Vite adapter | PASS | `docs/test-results/spec-completion-2026-09-12/preview-vite.json`; Vite 6.4.3 fixture and real HMR through the Node gateway |
 | Next adapter | PASS | `docs/test-results/spec-completion-2026-09-12/preview-next.json`; Next 16.3.3 fixture, changed HTML, and real HMR through the Node gateway |
 | PWA | PASS, bounded | `docs/test-results/spec-completion-2026-09-12/pwa-chrome.json`; actual desktop Chrome service-worker cache/offline fallback; physical mobile is not covered |
-| SBOM | PASS, bounded | Latest packaged SBOM: 605 components, official CycloneDX 1.6 schema, no schema errors. License inventory retains unresolved/platform/build entries; schema validity is not a legal completeness certification |
-| Unsigned installers | BUILT, archive verified | Latest readable-projection build: standard 16,522,844 bytes, offline 232,037,136 bytes. Both archives pass integrity checks; extracted critical resources match staging. See `docs/test-results/spec-completion-2026-09-12/package-results.json` and `package-inspection.json` |
+| SBOM | PASS, bounded | Current packaged SBOM: 605 components, official CycloneDX schema check passes. License inventory retains unresolved/platform/build entries; schema validity is not a legal completeness certification |
+| Unsigned installers | BUILT, archive verified | Current standard and offline archives pass extraction/integrity checks without installer execution; each has the expected 61-file inventory plus 1,032 license/SBOM files. The packaged native desktop also passes two close/reopen identity-preservation cycles |
 
 ## Readable projection contract
 
@@ -54,11 +65,21 @@ These have not been represented as PASS by the local fixtures:
 1. Two-PC Tailscale HTTPS/WSS/ICE behavior, including real remote media and
    reconnect behavior.
 2. Physical iOS and Android IME, composition, resize, and viewport behavior.
-3. 24-hour soak and aggregate performance thresholds, including p95/p99 input,
-   output, memory, and helper cleanup. The idle CSV is a sample, not this gate.
+3. A completed 24-hour soak and remaining end-to-end performance thresholds.
+   The soak started at 2026-09-11 21:32:05 UTC, and its first probe was observed;
+   the earliest valid finish is 2026-09-12 21:32:05 UTC. The follow-up evidence
+   closes specific local distributions and resource rows, but the running soak
+   is not yet a pass and does not replace a remote viewer.
 4. Clean-VM offline install, upgrade, uninstall, and owned-resource cleanup.
 5. Hardware DPI, lock-screen, multi-monitor, and UIPI acceptance.
-6. Complete performance instrumentation/stress harness coverage and resolve the remaining license inventory entries before a verified release.
+6. Remaining end-to-end instrumentation (paint, remote media, live WS/timer/GPU
+   surface counts), reliable GPU allocation evidence, and two missing
+   upstream license texts (`is-reference@3.0.3`, `locate-character@3.0.0`).
+
+Normal diagnostic tracing goes to stdout; the product does not create a persistent
+diagnostic-file directory. Audit metadata is pruned at seven days/10,000 rows.
+The new optional `RC_PERF_TRACE` export is capped at 50 MiB per file. This is not a
+claim of automatic seven-day rotation across caller-selected export directories.
 
 The native bridge result is intentionally not evidence for item 1. The PWA
 result is intentionally not evidence for item 2. Local preview HMR results are

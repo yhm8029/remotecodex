@@ -1,0 +1,118 @@
+{
+  "started": "2026-09-11T20:16:44.028Z",
+  "finished": "2026-09-11T20:16:56.906Z",
+  "mode": "burst",
+  "samples": 100,
+  "build_mode": "Release",
+  "input_method": "public xterm input -> onData",
+  "render_boundary": "xterm parse/apply callback, not paint",
+  "status": "MEASURED",
+  "error": null,
+  "metrics": {
+    "echoMs": {
+      "n": 100,
+      "p50": 1.4000000059604645,
+      "p95": 15,
+      "p99": 15.5,
+      "max": 15.699999988079071,
+      "mean": 3.6560000011324885
+    },
+    "reconnectMs": {
+      "n": 0,
+      "p50": null,
+      "p95": null,
+      "p99": null,
+      "max": null,
+      "mean": null
+    },
+    "recoveryEchoMs": {
+      "n": 100,
+      "p50": 1,
+      "p95": 1.4000000059604645,
+      "p99": 1.899999976158142,
+      "max": 2,
+      "mean": 1.100000001192093
+    },
+    "stages": {
+      "client_input_enqueue": {
+        "n": 100,
+        "p50": 0,
+        "p95": 0.10000002384185791,
+        "p99": 0.19999998807907104,
+        "max": 0.19999998807907104,
+        "mean": 0.03699999928474426
+      },
+      "agent_input_write": {
+        "n": 100,
+        "p50": 0.016,
+        "p95": 0.044,
+        "p99": 0.068,
+        "max": 0.069,
+        "mean": 0.022009999999999995
+      },
+      "client_output_parse_apply": {
+        "n": 109,
+        "p50": 0,
+        "p95": 0.10000002384185791,
+        "p99": 0.20000001788139343,
+        "max": 1.800000011920929,
+        "mean": 0.05963302834318319
+      }
+    },
+    "recoveryStages": {
+      "client_input_enqueue": {
+        "n": 100,
+        "p50": 0,
+        "p95": 0.09999999403953552,
+        "p99": 0.10000002384185791,
+        "max": 0.19999998807907104,
+        "mean": 0.02799999952316284
+      },
+      "agent_input_write": {
+        "n": 100,
+        "p50": 0.014,
+        "p95": 0.019,
+        "p99": 0.031,
+        "max": 0.062,
+        "mean": 0.014879999999999996
+      },
+      "client_output_parse_apply": {
+        "n": 108,
+        "p50": 0,
+        "p95": 0.09999999403953552,
+        "p99": 0.10000002384185791,
+        "max": 0.10000002384185791,
+        "mean": 0.02314814759625329
+      }
+    }
+  },
+  "workload": {
+    "target_bytes_per_second": 5242880,
+    "overlap": {
+      "output_activity_before_echo": true,
+      "output_done_before_echo": false,
+      "output_done_after_echo": false,
+      "overlap": true,
+      "description": "echo sequence completed before workload completion marker was observed"
+    },
+    "early_dropped": 0,
+    "bytes": 26214321,
+    "elapsed_seconds": 5.000294199999999,
+    "achieved_bytes_per_second": 5242555.728020964
+  },
+  "perf": {
+    "early_dropped": 0,
+    "pre_recovery_dropped": 0,
+    "final_dropped": 0,
+    "event_count": 309,
+    "recovery_event_count": 308
+  },
+  "background_output": {
+    "events": 2207,
+    "bytes": 457006
+  },
+  "raw_metric_scope": "active-session-only",
+  "instrumentation_failure": null,
+  "view_ready": true,
+  "controller_connected": true
+}

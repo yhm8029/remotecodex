@@ -1,0 +1,7 @@
+{
+  "total": 64,
+  "active": 0,
+  "revoked": 64,
+  "read_only": true,
+  "observation": "pairing returned HTTP429 after more than30minutes without pair attempts; pair() caps total device entries at64"
+}

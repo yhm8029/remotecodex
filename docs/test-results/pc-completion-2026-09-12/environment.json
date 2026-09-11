@@ -1,0 +1,32 @@
+{
+  "captured_utc": "2026-09-11T19:00:28.6255083Z",
+  "os": "Microsoft Windows 11 Pro",
+  "version": "10.0.26200",
+  "build": "26200",
+  "cpu": [
+    "12th Gen Intel(R) Core(TM) i9-12900K"
+  ],
+  "logical_processors": 24,
+  "ram_bytes": 68493795328,
+  "gpus": [
+    {
+      "name": "Intel(R) UHD Graphics 770",
+      "driver": "32.0.101.7088"
+    },
+    {
+      "name": "NVIDIA GeForce RTX 3060",
+      "driver": "32.0.15.6094"
+    }
+  ],
+  "power_scheme": "전원 구성표 GUID: 381b4222-f694-41f0-9685-ff5bb260df2e  (균형 조정)",
+  "chrome_version": "152.0.7977.83",
+  "baseline_commit": "da93a6acee95acfbd9cd779ab5d083a5d2aec089",
+  "network": "loopback; no two-PC/tailnet measurements",
+  "sampling": "CIM WorkingSetPrivate, GetProcess cumulative CPU normalized by logical processor count; no forced working-set trimming",
+  "scope": "Owned fixture Agent and explicitly listed CMD processes. Harness and unrelated machine load are not part of product resource totals.",
+  "webview2_version": "152.0.4191.66",
+  "webview2_evidence": "native-lifecycle-50/cdp-children-0.json executable identity path",
+  "gpu_counter_acceptance": "UNRELIABLE: per-process DedicatedUsage contradicted same-adapter total; see gpu-counter-validation.json",
+  "wpa_available": false,
+  "administrator": false
+}

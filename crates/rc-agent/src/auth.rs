@@ -207,7 +207,7 @@ impl Auth {
             .pairs
             .remove(&key(ticket))
             .ok_or(ErrorCode::Unauthenticated)?;
-        if i.devices.len() >= 64 {
+        if i.devices.values().filter(|d| !d.device.revoked).count() >= 64 {
             return Err(ErrorCode::RateLimited);
         }
         let d = Device {
@@ -460,5 +460,98 @@ mod tests {
         assert!(a
             .verify(&id, &URL_SAFE_NO_PAD.encode(sig.to_bytes()))
             .is_err());
+    }
+    #[test]
+    fn pairing_allows_new_device_when_existing_are_revoked() {
+        let dir = tempfile::tempdir().expect("tempdir");
+        let store = Arc::new(Store::open(&dir.path().join("test.db")).unwrap());
+
+        let key = SigningKey::random(&mut OsRng);
+        let raw = key.verifying_key().to_encoded_point(false);
+
+        let mut old_ids: Vec<Uuid> = Vec::with_capacity(64);
+        for i in 0..64 {
+            let id = Uuid::new_v4();
+            let dev = Device {
+                client_id: id,
+                public_key: raw.as_bytes().to_vec(),
+                label: format!("revoked-{i}"),
+                scopes: Scope::owner(),
+                revoked: true,
+            };
+            store.save_device(&dev).unwrap();
+            old_ids.push(id);
+        }
+
+        let a = Auth::new(store.clone(), "test-host".into()).unwrap();
+        let ticket = a.issue_pair_ticket(Scope::owner()).unwrap();
+        let new_dev = a
+            .pair(
+                &ticket,
+                &URL_SAFE_NO_PAD.encode(raw.as_bytes()),
+                "replacement",
+            )
+            .expect("revoked records must not exhaust active device quota");
+        assert!(!new_dev.revoked);
+        assert!(a.challenge(old_ids[0]).is_err());
+
+        let a2 = Auth::new(store, "test-host".into()).unwrap();
+        assert!(a2.challenge(old_ids[0]).is_err());
+    }
+    #[test]
+    fn test_pair_revoke_then_pair_succeeds() {
+        let (a, _dir) = auth();
+        let key = SigningKey::random(&mut OsRng);
+        let encoded =
+            URL_SAFE_NO_PAD.encode(key.verifying_key().to_encoded_point(false).as_bytes());
+
+        let mut first_id = None;
+        for _ in 0..64 {
+            let ticket = a.issue_pair_ticket(Scope::owner()).unwrap();
+            let device = a.pair(&ticket, &encoded, "label").unwrap();
+            if first_id.is_none() {
+                first_id = Some(device.client_id);
+            }
+            a.revoke(device.client_id).unwrap();
+        }
+
+        let revoked_id = first_id.unwrap();
+
+        let ticket = a.issue_pair_ticket(Scope::owner()).unwrap();
+        let device = a.pair(&ticket, &encoded, "label").unwrap();
+
+        let err = a.challenge(revoked_id).unwrap_err();
+        assert!(matches!(err, ErrorCode::Unauthenticated));
+
+        let devices = a.devices_public();
+        let mut revoked_count = 0;
+        let mut active_count = 0;
+        for v in devices {
+            let revoked = v["revoked"].as_bool().unwrap();
+            if revoked {
+                revoked_count += 1;
+            } else {
+                active_count += 1;
+            }
+        }
+        assert_eq!(revoked_count, 64);
+        assert_eq!(active_count, 1);
+    }
+
+    #[test]
+    fn test_pair_rate_limit() {
+        let (a, _dir) = auth();
+        let key = SigningKey::random(&mut OsRng);
+        let encoded =
+            URL_SAFE_NO_PAD.encode(key.verifying_key().to_encoded_point(false).as_bytes());
+
+        for _ in 0..64 {
+            let ticket = a.issue_pair_ticket(Scope::owner()).unwrap();
+            a.pair(&ticket, &encoded, "label").unwrap();
+        }
+
+        let ticket = a.issue_pair_ticket(Scope::owner()).unwrap();
+        let result = a.pair(&ticket, &encoded, "label");
+        assert!(matches!(result, Err(ErrorCode::RateLimited)));
     }
 }

@@ -1,0 +1,107 @@
+{
+  "source": "runtime/local-completion-20260912/idle0-final.ndjson",
+  "definition": {
+    "cpu": "whole machine percent",
+    "memory": "sum of private working set; private bytes separately",
+    "cpu_average": "weighted by monotonic sample intervals",
+    "scope": "Only explicitly tracked process identities; absent groups are not zero"
+  },
+  "requested_seconds": 600,
+  "last_elapsed_seconds": 600.0717212999999,
+  "sample_count": 553,
+  "identity_metadata_legacy": false,
+  "groups": {
+    "product": {
+      "processes": 1,
+      "valid_samples": 553,
+      "invalid_samples": 0,
+      "cpu_machine_pct": {
+        "n": 552,
+        "p50": 0,
+        "p95": 0,
+        "p99": 0,
+        "max": 0,
+        "mean": 0,
+        "weighted_mean": 0
+      },
+      "private_working_set_bytes": {
+        "n": 553,
+        "p50": 10403840,
+        "p95": 10403840,
+        "p99": 10403840,
+        "max": 10403840,
+        "mean": 10403840
+      },
+      "private_bytes": {
+        "n": 553,
+        "p50": 15433728,
+        "p95": 15433728,
+        "p99": 15433728,
+        "max": 15433728,
+        "mean": 15433728
+      },
+      "threads": {
+        "n": 553,
+        "p50": 4,
+        "p95": 4,
+        "p99": 4,
+        "max": 4,
+        "mean": 4
+      },
+      "handles": {
+        "n": 553,
+        "p50": 205,
+        "p95": 205,
+        "p99": 205,
+        "max": 205,
+        "mean": 205
+      }
+    },
+    "tracked_total": {
+      "processes": 1,
+      "valid_samples": 553,
+      "invalid_samples": 0,
+      "cpu_machine_pct": {
+        "n": 552,
+        "p50": 0,
+        "p95": 0,
+        "p99": 0,
+        "max": 0,
+        "mean": 0,
+        "weighted_mean": 0
+      },
+      "private_working_set_bytes": {
+        "n": 553,
+        "p50": 10403840,
+        "p95": 10403840,
+        "p99": 10403840,
+        "max": 10403840,
+        "mean": 10403840
+      },
+      "private_bytes": {
+        "n": 553,
+        "p50": 15433728,
+        "p95": 15433728,
+        "p99": 15433728,
+        "max": 15433728,
+        "mean": 15433728
+      },
+      "threads": {
+        "n": 553,
+        "p50": 4,
+        "p95": 4,
+        "p99": 4,
+        "max": 4,
+        "mean": 4
+      },
+      "handles": {
+        "n": 553,
+        "p50": 205,
+        "p95": 205,
+        "p99": 205,
+        "max": 205,
+        "mean": 205
+      }
+    }
+  }
+}

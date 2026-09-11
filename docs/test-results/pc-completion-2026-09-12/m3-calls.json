@@ -1,0 +1,1466 @@
+{
+  "schema": "m3-call-ledger/v1",
+  "scope": "bounded named response files only; not an all-session cost claim",
+  "source": "%TEMP%/<name>.json",
+  "requested_count": 110,
+  "present_count": 110,
+  "missing_count": 0,
+  "missing_files": [],
+  "model_counts": {
+    "MiniMax-M3": 110
+  },
+  "finish_reason_counts": {
+    "stop": 107,
+    "length": 3
+  },
+  "token_totals": {
+    "prompt_tokens": 62922,
+    "completion_tokens": 81348,
+    "total_tokens": 144270
+  },
+  "token_note": "GPT token usage is unknown; totals are the numeric fields present in these named response JSON files only.",
+  "entries": [
+    {
+      "name": "rc-local-ping",
+      "path": "%TEMP%/rc-local-ping.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 217,
+        "completion_tokens": 5,
+        "total_tokens": 222
+      },
+      "outcome": "connectivity_ping"
+    },
+    {
+      "name": "rc-perf-sample-function",
+      "path": "%TEMP%/rc-perf-sample-function.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 623,
+        "completion_tokens": 935,
+        "total_tokens": 1558
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-perf-sampler-main",
+      "path": "%TEMP%/rc-perf-sampler-main.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 598,
+        "completion_tokens": 1211,
+        "total_tokens": 1809
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-perf-sampler-fix",
+      "path": "%TEMP%/rc-perf-sampler-fix.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 408,
+        "completion_tokens": 163,
+        "total_tokens": 571
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-resource-tests",
+      "path": "%TEMP%/rc-resource-tests.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 481,
+        "completion_tokens": 949,
+        "total_tokens": 1430
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-perf-trace",
+      "path": "%TEMP%/rc-perf-trace.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 565,
+        "completion_tokens": 1717,
+        "total_tokens": 2282
+      },
+      "outcome": "rejected_implementation_or_invented_api"
+    },
+    {
+      "name": "rc-workload",
+      "path": "%TEMP%/rc-workload.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 500,
+        "completion_tokens": 1402,
+        "total_tokens": 1902
+      },
+      "outcome": "rejected_implementation_or_invented_api"
+    },
+    {
+      "name": "rc-workload-fix",
+      "path": "%TEMP%/rc-workload-fix.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 469,
+        "completion_tokens": 623,
+        "total_tokens": 1092
+      },
+      "outcome": "rejected_implementation_or_invented_api"
+    },
+    {
+      "name": "rc-trace-sink",
+      "path": "%TEMP%/rc-trace-sink.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "length",
+      "tokens": {
+        "prompt_tokens": 434,
+        "completion_tokens": 2300,
+        "total_tokens": 2734
+      },
+      "outcome": "delivery_limit_no_completed_code"
+    },
+    {
+      "name": "rc-trace-sink-disabled",
+      "path": "%TEMP%/rc-trace-sink-disabled.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 421,
+        "completion_tokens": 374,
+        "total_tokens": 795
+      },
+      "outcome": "rejected_implementation_or_invented_api"
+    },
+    {
+      "name": "rc-client-perf",
+      "path": "%TEMP%/rc-client-perf.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 441,
+        "completion_tokens": 1263,
+        "total_tokens": 1704
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-perf-wiring",
+      "path": "%TEMP%/rc-perf-wiring.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 425,
+        "completion_tokens": 228,
+        "total_tokens": 653
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-perf-terminal",
+      "path": "%TEMP%/rc-perf-terminal.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 518,
+        "completion_tokens": 577,
+        "total_tokens": 1095
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-perf-events",
+      "path": "%TEMP%/rc-perf-events.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 379,
+        "completion_tokens": 171,
+        "total_tokens": 550
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-host-client",
+      "path": "%TEMP%/rc-host-client.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 605,
+        "completion_tokens": 1011,
+        "total_tokens": 1616
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-host-pair",
+      "path": "%TEMP%/rc-host-pair.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 580,
+        "completion_tokens": 306,
+        "total_tokens": 886
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-host-cleanup",
+      "path": "%TEMP%/rc-host-cleanup.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 384,
+        "completion_tokens": 291,
+        "total_tokens": 675
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-process-manifest",
+      "path": "%TEMP%/rc-process-manifest.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 450,
+        "completion_tokens": 737,
+        "total_tokens": 1187
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-idle-matrix",
+      "path": "%TEMP%/rc-idle-matrix.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 527,
+        "completion_tokens": 956,
+        "total_tokens": 1483
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-process-loop",
+      "path": "%TEMP%/rc-process-loop.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 434,
+        "completion_tokens": 275,
+        "total_tokens": 709
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-idle-loop",
+      "path": "%TEMP%/rc-idle-loop.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 492,
+        "completion_tokens": 224,
+        "total_tokens": 716
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-trace-hooks",
+      "path": "%TEMP%/rc-trace-hooks.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 453,
+        "completion_tokens": 51,
+        "total_tokens": 504
+      },
+      "outcome": "rejected_implementation_or_invented_api"
+    },
+    {
+      "name": "rc-trace-functions",
+      "path": "%TEMP%/rc-trace-functions.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 660,
+        "completion_tokens": 377,
+        "total_tokens": 1037
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-trace-pending",
+      "path": "%TEMP%/rc-trace-pending.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 385,
+        "completion_tokens": 147,
+        "total_tokens": 532
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-browser-fixture",
+      "path": "%TEMP%/rc-browser-fixture.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 685,
+        "completion_tokens": 873,
+        "total_tokens": 1558
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-echo-samples",
+      "path": "%TEMP%/rc-echo-samples.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 506,
+        "completion_tokens": 315,
+        "total_tokens": 821
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-license-classify",
+      "path": "%TEMP%/rc-license-classify.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 598,
+        "completion_tokens": 834,
+        "total_tokens": 1432
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-license-allowed",
+      "path": "%TEMP%/rc-license-allowed.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 300,
+        "completion_tokens": 65,
+        "total_tokens": 365
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-license-tests",
+      "path": "%TEMP%/rc-license-tests.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 436,
+        "completion_tokens": 1243,
+        "total_tokens": 1679
+      },
+      "outcome": "rejected_implementation_or_invented_api"
+    },
+    {
+      "name": "rc-license-tests-retry",
+      "path": "%TEMP%/rc-license-tests-retry.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 1252,
+        "completion_tokens": 798,
+        "total_tokens": 2050
+      },
+      "outcome": "rejected_implementation_or_invented_api"
+    },
+    {
+      "name": "rc-license-stage",
+      "path": "%TEMP%/rc-license-stage.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 417,
+        "completion_tokens": 164,
+        "total_tokens": 581
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-browser-harness",
+      "path": "%TEMP%/rc-browser-harness.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 745,
+        "completion_tokens": 1291,
+        "total_tokens": 2036
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-browser-cleanup",
+      "path": "%TEMP%/rc-browser-cleanup.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 448,
+        "completion_tokens": 233,
+        "total_tokens": 681
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-reconnect",
+      "path": "%TEMP%/rc-reconnect.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 471,
+        "completion_tokens": 225,
+        "total_tokens": 696
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-lifecycle",
+      "path": "%TEMP%/rc-lifecycle.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 543,
+        "completion_tokens": 670,
+        "total_tokens": 1213
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-host-refresh",
+      "path": "%TEMP%/rc-host-refresh.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 478,
+        "completion_tokens": 260,
+        "total_tokens": 738
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-stats",
+      "path": "%TEMP%/rc-stats.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 320,
+        "completion_tokens": 236,
+        "total_tokens": 556
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-browser-benchmark",
+      "path": "%TEMP%/rc-browser-benchmark.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 904,
+        "completion_tokens": 1463,
+        "total_tokens": 2367
+      },
+      "outcome": "rejected_implementation_or_invented_api"
+    },
+    {
+      "name": "rc-browser-scenario",
+      "path": "%TEMP%/rc-browser-scenario.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "length",
+      "tokens": {
+        "prompt_tokens": 2032,
+        "completion_tokens": 5999,
+        "total_tokens": 8031
+      },
+      "outcome": "delivery_limit_no_completed_code"
+    },
+    {
+      "name": "rc-resource-summary",
+      "path": "%TEMP%/rc-resource-summary.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 627,
+        "completion_tokens": 1500,
+        "total_tokens": 2127
+      },
+      "outcome": "rejected_implementation_or_invented_api"
+    },
+    {
+      "name": "rc-resource-group",
+      "path": "%TEMP%/rc-resource-group.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 594,
+        "completion_tokens": 719,
+        "total_tokens": 1313
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-echo-cursor",
+      "path": "%TEMP%/rc-echo-cursor.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 351,
+        "completion_tokens": 63,
+        "total_tokens": 414
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-native-start",
+      "path": "%TEMP%/rc-native-start.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 399,
+        "completion_tokens": 534,
+        "total_tokens": 933
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-native-close",
+      "path": "%TEMP%/rc-native-close.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 398,
+        "completion_tokens": 669,
+        "total_tokens": 1067
+      },
+      "outcome": "rejected_implementation_or_invented_api"
+    },
+    {
+      "name": "rc-native-close-fix",
+      "path": "%TEMP%/rc-native-close-fix.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 978,
+        "completion_tokens": 652,
+        "total_tokens": 1630
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-native-cycle",
+      "path": "%TEMP%/rc-native-cycle.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 711,
+        "completion_tokens": 1508,
+        "total_tokens": 2219
+      },
+      "outcome": "rejected_implementation_or_invented_api"
+    },
+    {
+      "name": "rc-native-cycle-fix",
+      "path": "%TEMP%/rc-native-cycle-fix.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 1906,
+        "completion_tokens": 1376,
+        "total_tokens": 3282
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-perf-background",
+      "path": "%TEMP%/rc-perf-background.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 406,
+        "completion_tokens": 117,
+        "total_tokens": 523
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-native-descendants",
+      "path": "%TEMP%/rc-native-descendants.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 470,
+        "completion_tokens": 1532,
+        "total_tokens": 2002
+      },
+      "outcome": "rejected_implementation_or_invented_api"
+    },
+    {
+      "name": "rc-native-descendants-fix",
+      "path": "%TEMP%/rc-native-descendants-fix.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 515,
+        "completion_tokens": 776,
+        "total_tokens": 1291
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-native-exited",
+      "path": "%TEMP%/rc-native-exited.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 344,
+        "completion_tokens": 418,
+        "total_tokens": 762
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-native-lifecycle",
+      "path": "%TEMP%/rc-native-lifecycle.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 747,
+        "completion_tokens": 2206,
+        "total_tokens": 2953
+      },
+      "outcome": "rejected_implementation_or_invented_api"
+    },
+    {
+      "name": "rc-native-lifecycle-fix",
+      "path": "%TEMP%/rc-native-lifecycle-fix.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 734,
+        "completion_tokens": 1013,
+        "total_tokens": 1747
+      },
+      "outcome": "rejected_implementation_or_invented_api"
+    },
+    {
+      "name": "rc-native-cdp",
+      "path": "%TEMP%/rc-native-cdp.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "length",
+      "tokens": {
+        "prompt_tokens": 425,
+        "completion_tokens": 1200,
+        "total_tokens": 1625
+      },
+      "outcome": "delivery_limit_no_completed_code"
+    },
+    {
+      "name": "rc-native-cdp-fix",
+      "path": "%TEMP%/rc-native-cdp-fix.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 394,
+        "completion_tokens": 355,
+        "total_tokens": 749
+      },
+      "outcome": "rejected_implementation_or_invented_api"
+    },
+    {
+      "name": "rc-native-paircapture",
+      "path": "%TEMP%/rc-native-paircapture.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 351,
+        "completion_tokens": 146,
+        "total_tokens": 497
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-perf-hist",
+      "path": "%TEMP%/rc-perf-hist.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 491,
+        "completion_tokens": 740,
+        "total_tokens": 1231
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-perf-cap",
+      "path": "%TEMP%/rc-perf-cap.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 637,
+        "completion_tokens": 796,
+        "total_tokens": 1433
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-perf-cap-tests",
+      "path": "%TEMP%/rc-perf-cap-tests.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 503,
+        "completion_tokens": 682,
+        "total_tokens": 1185
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-native-resource",
+      "path": "%TEMP%/rc-native-resource.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 576,
+        "completion_tokens": 826,
+        "total_tokens": 1402
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-perf-cap-boundary",
+      "path": "%TEMP%/rc-perf-cap-boundary.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 419,
+        "completion_tokens": 599,
+        "total_tokens": 1018
+      },
+      "outcome": "rejected_implementation_or_invented_api"
+    },
+    {
+      "name": "rc-perf-cap-boundary-fix",
+      "path": "%TEMP%/rc-perf-cap-boundary-fix.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 430,
+        "completion_tokens": 342,
+        "total_tokens": 772
+      },
+      "outcome": "rejected_implementation_or_invented_api"
+    },
+    {
+      "name": "rc-owned-window-bench",
+      "path": "%TEMP%/rc-owned-window-bench.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 1247,
+        "completion_tokens": 2745,
+        "total_tokens": 3992
+      },
+      "outcome": "rejected_implementation_or_invented_api"
+    },
+    {
+      "name": "rc-native-bench",
+      "path": "%TEMP%/rc-native-bench.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 1964,
+        "completion_tokens": 1666,
+        "total_tokens": 3630
+      },
+      "outcome": "rejected_implementation_or_invented_api"
+    },
+    {
+      "name": "rc-native-bench-fix",
+      "path": "%TEMP%/rc-native-bench-fix.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 2129,
+        "completion_tokens": 1663,
+        "total_tokens": 3792
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-owned-paint",
+      "path": "%TEMP%/rc-owned-paint.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 474,
+        "completion_tokens": 512,
+        "total_tokens": 986
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-owned-run",
+      "path": "%TEMP%/rc-owned-run.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 669,
+        "completion_tokens": 1473,
+        "total_tokens": 2142
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-media-bench-cli",
+      "path": "%TEMP%/rc-media-bench-cli.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 346,
+        "completion_tokens": 296,
+        "total_tokens": 642
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-ws-credit-deadline",
+      "path": "%TEMP%/rc-ws-credit-deadline.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 449,
+        "completion_tokens": 166,
+        "total_tokens": 615
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-ws-credit-send-fix",
+      "path": "%TEMP%/rc-ws-credit-send-fix.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 327,
+        "completion_tokens": 68,
+        "total_tokens": 395
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-credit-probe",
+      "path": "%TEMP%/rc-credit-probe.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 541,
+        "completion_tokens": 726,
+        "total_tokens": 1267
+      },
+      "outcome": "rejected_implementation_or_invented_api"
+    },
+    {
+      "name": "rc-credit-probe-fix",
+      "path": "%TEMP%/rc-credit-probe-fix.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 1118,
+        "completion_tokens": 744,
+        "total_tokens": 1862
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-credit-timeout-test",
+      "path": "%TEMP%/rc-credit-timeout-test.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 605,
+        "completion_tokens": 1012,
+        "total_tokens": 1617
+      },
+      "outcome": "rejected_implementation_or_invented_api"
+    },
+    {
+      "name": "rc-credit-timeout-test-fix",
+      "path": "%TEMP%/rc-credit-timeout-test-fix.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 714,
+        "completion_tokens": 744,
+        "total_tokens": 1458
+      },
+      "outcome": "rejected_implementation_or_invented_api"
+    },
+    {
+      "name": "rc-media-smoke",
+      "path": "%TEMP%/rc-media-smoke.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 675,
+        "completion_tokens": 1633,
+        "total_tokens": 2308
+      },
+      "outcome": "rejected_implementation_or_invented_api"
+    },
+    {
+      "name": "rc-media-smoke-fix",
+      "path": "%TEMP%/rc-media-smoke-fix.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 616,
+        "completion_tokens": 1158,
+        "total_tokens": 1774
+      },
+      "outcome": "rejected_implementation_or_invented_api"
+    },
+    {
+      "name": "rc-native-geometry",
+      "path": "%TEMP%/rc-native-geometry.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 363,
+        "completion_tokens": 186,
+        "total_tokens": 549
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-credit-mode",
+      "path": "%TEMP%/rc-credit-mode.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 297,
+        "completion_tokens": 31,
+        "total_tokens": 328
+      },
+      "outcome": "rejected_implementation_or_invented_api"
+    },
+    {
+      "name": "rc-credit-mode-fix",
+      "path": "%TEMP%/rc-credit-mode-fix.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 275,
+        "completion_tokens": 32,
+        "total_tokens": 307
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-host-management",
+      "path": "%TEMP%/rc-host-management.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 435,
+        "completion_tokens": 110,
+        "total_tokens": 545
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-host-management-css",
+      "path": "%TEMP%/rc-host-management-css.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 320,
+        "completion_tokens": 97,
+        "total_tokens": 417
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-soak-loop",
+      "path": "%TEMP%/rc-soak-loop.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 542,
+        "completion_tokens": 615,
+        "total_tokens": 1157
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-soak-driver",
+      "path": "%TEMP%/rc-soak-driver.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 643,
+        "completion_tokens": 775,
+        "total_tokens": 1418
+      },
+      "outcome": "rejected_implementation_or_invented_api"
+    },
+    {
+      "name": "rc-soak-driver-fix",
+      "path": "%TEMP%/rc-soak-driver-fix.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 363,
+        "completion_tokens": 114,
+        "total_tokens": 477
+      },
+      "outcome": "rejected_implementation_or_invented_api"
+    },
+    {
+      "name": "rc-media-resource",
+      "path": "%TEMP%/rc-media-resource.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 506,
+        "completion_tokens": 383,
+        "total_tokens": 889
+      },
+      "outcome": "rejected_implementation_or_invented_api"
+    },
+    {
+      "name": "rc-media-resource-fix",
+      "path": "%TEMP%/rc-media-resource-fix.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 516,
+        "completion_tokens": 283,
+        "total_tokens": 799
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-ctrlc-samples",
+      "path": "%TEMP%/rc-ctrlc-samples.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 410,
+        "completion_tokens": 210,
+        "total_tokens": 620
+      },
+      "outcome": "applied_or_integrated"
+    },
+    {
+      "name": "rc-tab-samples",
+      "path": "%TEMP%/rc-tab-samples.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 376,
+        "completion_tokens": 261,
+        "total_tokens": 637
+      },
+      "outcome": "applied_or_integrated"
+    },
+    {
+      "name": "rc-native-tabs",
+      "path": "%TEMP%/rc-native-tabs.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 575,
+        "completion_tokens": 847,
+        "total_tokens": 1422
+      },
+      "outcome": "rejected"
+    },
+    {
+      "name": "rc-native-tabs-fix",
+      "path": "%TEMP%/rc-native-tabs-fix.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 437,
+        "completion_tokens": 211,
+        "total_tokens": 648
+      },
+      "outcome": "rejected"
+    },
+    {
+      "name": "rc-native-port-state",
+      "path": "%TEMP%/rc-native-port-state.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 281,
+        "completion_tokens": 24,
+        "total_tokens": 305
+      },
+      "outcome": "applied_or_integrated"
+    },
+    {
+      "name": "rc-ctrlc-driver",
+      "path": "%TEMP%/rc-ctrlc-driver.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 666,
+        "completion_tokens": 703,
+        "total_tokens": 1369
+      },
+      "outcome": "applied_or_integrated"
+    },
+    {
+      "name": "rc-gpu-sample",
+      "path": "%TEMP%/rc-gpu-sample.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 478,
+        "completion_tokens": 436,
+        "total_tokens": 914
+      },
+      "outcome": "applied_or_integrated"
+    },
+    {
+      "name": "rc-tab-selector",
+      "path": "%TEMP%/rc-tab-selector.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 302,
+        "completion_tokens": 20,
+        "total_tokens": 322
+      },
+      "outcome": "applied_or_integrated"
+    },
+    {
+      "name": "rc-hmr-gateway",
+      "path": "%TEMP%/rc-hmr-gateway.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 598,
+        "completion_tokens": 1368,
+        "total_tokens": 1966
+      },
+      "outcome": "applied_or_integrated"
+    },
+    {
+      "name": "rc-hmr-gateway-fix",
+      "path": "%TEMP%/rc-hmr-gateway-fix.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 472,
+        "completion_tokens": 346,
+        "total_tokens": 818
+      },
+      "outcome": "applied_or_integrated"
+    },
+    {
+      "name": "rc-hmr-fixture",
+      "path": "%TEMP%/rc-hmr-fixture.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 711,
+        "completion_tokens": 898,
+        "total_tokens": 1609
+      },
+      "outcome": "applied_or_integrated"
+    },
+    {
+      "name": "rc-hmr-fixture-fix",
+      "path": "%TEMP%/rc-hmr-fixture-fix.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 325,
+        "completion_tokens": 185,
+        "total_tokens": 510
+      },
+      "outcome": "applied_or_integrated"
+    },
+    {
+      "name": "rc-combined-driver",
+      "path": "%TEMP%/rc-combined-driver.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 868,
+        "completion_tokens": 1545,
+        "total_tokens": 2413
+      },
+      "outcome": "rejected"
+    },
+    {
+      "name": "rc-combined-driver-fix",
+      "path": "%TEMP%/rc-combined-driver-fix.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 649,
+        "completion_tokens": 2033,
+        "total_tokens": 2682
+      },
+      "outcome": "rejected"
+    },
+    {
+      "name": "rc-media-tail-margin",
+      "path": "%TEMP%/rc-media-tail-margin.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 337,
+        "completion_tokens": 49,
+        "total_tokens": 386
+      },
+      "outcome": "applied_or_integrated"
+    },
+    {
+      "name": "rc-soak-cadence",
+      "path": "%TEMP%/rc-soak-cadence.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 355,
+        "completion_tokens": 172,
+        "total_tokens": 527
+      },
+      "outcome": "applied_or_integrated"
+    },
+    {
+      "name": "rc-soak-resource-summary",
+      "path": "%TEMP%/rc-soak-resource-summary.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 562,
+        "completion_tokens": 1445,
+        "total_tokens": 2007
+      },
+      "outcome": "applied_or_integrated"
+    },
+    {
+      "name": "rc-soak-resource-aggregate",
+      "path": "%TEMP%/rc-soak-resource-aggregate.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 419,
+        "completion_tokens": 477,
+        "total_tokens": 896
+      },
+      "outcome": "applied_or_integrated"
+    },
+    {
+      "name": "rc-soak-sampler",
+      "path": "%TEMP%/rc-soak-sampler.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 690,
+        "completion_tokens": 978,
+        "total_tokens": 1668
+      },
+      "outcome": "applied_or_integrated"
+    },
+    {
+      "name": "rc-soak-full-gate",
+      "path": "%TEMP%/rc-soak-full-gate.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 359,
+        "completion_tokens": 90,
+        "total_tokens": 449
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-soak-resource-tests",
+      "path": "%TEMP%/rc-soak-resource-tests.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 465,
+        "completion_tokens": 686,
+        "total_tokens": 1151
+      },
+      "outcome": "applied_or_integrated_with_parent_corrections"
+    },
+    {
+      "name": "rc-device-quota-test",
+      "path": "%TEMP%/rc-device-quota-test.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 530,
+        "completion_tokens": 321,
+        "total_tokens": 851
+      },
+      "outcome": "applied"
+    },
+    {
+      "name": "rc-device-quota-fix",
+      "path": "%TEMP%/rc-device-quota-fix.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 480,
+        "completion_tokens": 580,
+        "total_tokens": 1060
+      },
+      "outcome": "production_applied_tests_rejected"
+    },
+    {
+      "name": "rc-device-quota-tests-fix",
+      "path": "%TEMP%/rc-device-quota-tests-fix.json",
+      "present": true,
+      "model": "MiniMax-M3",
+      "finish_reason": "stop",
+      "tokens": {
+        "prompt_tokens": 453,
+        "completion_tokens": 500,
+        "total_tokens": 953
+      },
+      "outcome": "applied_with_parent_corrections"
+    }
+  ],
+  "outcome_counts": {
+    "connectivity_ping": 1,
+    "applied_or_integrated_with_parent_corrections": 56,
+    "rejected_implementation_or_invented_api": 28,
+    "delivery_limit_no_completed_code": 3,
+    "applied_or_integrated": 15,
+    "rejected": 4,
+    "applied": 1,
+    "production_applied_tests_rejected": 1,
+    "applied_with_parent_corrections": 1
+  },
+  "integration_note": "applied_or_integrated includes partial snippets and parent corrections, not M3-only implementation. New sampler required exclusive writes, JSON error propagation and coverage checks; trend required corrected OLS units and identity aggregation. Initial wrong tab selector came from parent stale CSS context. Task-specific two failed full drivers fell back to Luna. Auth tests initially reused one-use tickets and invented challenge status. Focused retry still placed revocation outside loop; parent moved it inside and retained exact error and64-active quota checks."
+}

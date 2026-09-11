@@ -1,0 +1,15 @@
+{
+  "innerWidth": 1320,
+  "innerHeight": 900,
+  "visualWidth": 1320,
+  "visualHeight": 900,
+  "rect": {
+    "x": 1155.453125,
+    "y": 204,
+    "width": 104.015625,
+    "height": 36
+  },
+  "hitTag": "BUTTON",
+  "hitClass": "",
+  "targetHit": true
+}

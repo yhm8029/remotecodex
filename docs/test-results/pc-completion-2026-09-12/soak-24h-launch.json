@@ -1,0 +1,141 @@
+{
+  "status": "IN_PROGRESS",
+  "started_utc": "2026-09-11T21:32:05.1754337Z",
+  "earliest_finish_utc": "2026-09-12T21:32:05.1754337Z",
+  "requested_seconds": 86400,
+  "interval_seconds": 300,
+  "runner": {
+    "Exe": "C:\\Program Files\\nodejs\\node.exe",
+    "StartTicks": "639247591251754337",
+    "Id": 23784
+  },
+  "agent": [
+    {
+      "Id": 2664,
+      "StartTicks": "639247591068945025",
+      "Group": "product",
+      "Label": "rc-agent"
+    }
+  ],
+  "agent_exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\package-inspection-final\\standard\\rc-agent.exe",
+  "agent_sha256": "551e8344dc15c7d7eb02348cc13d6a980a1fb9e2f060a437894e3971dca3f87e",
+  "result_path": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\soak-24h-final\\run\\result.json",
+  "scope": "Loopback Agent plus two owned CMD PTYs, Chrome harness; no phone/tailnet/viewer/VM acceptance",
+  "power_configuration_changed": false,
+  "status_note": "Launch snapshot only; full result remains pending. Process can stop or sleep later.",
+  "initial_probe": {
+    "elapsed_seconds": 9.88999999999578e-05,
+    "at": "2026-09-11T21:32:06.810Z",
+    "echo_before": [
+      2.9000000059604645,
+      14.599999994039536,
+      15.200000017881393,
+      15.300000011920929,
+      14.900000005960464,
+      14.799999982118607,
+      14.899999976158142,
+      14.799999982118607,
+      15.300000011920929,
+      15
+    ],
+    "reconnect": [
+      14.5
+    ],
+    "echo_after": [
+      1.5,
+      10.800000011920929,
+      14.900000005960464,
+      15.400000005960464,
+      15,
+      15.199999988079071,
+      14.899999976158142,
+      1.2999999821186066,
+      2.300000011920929,
+      1.5
+    ],
+    "identities_valid": true,
+    "dropped": 0
+  },
+  "initial_observation_utc": "2026-09-11T21:32:45.909977+00:00",
+  "initial_resource_metadata": {
+    "type": "metadata",
+    "started_utc": "2026-09-11T21:32:06.877Z",
+    "duration_seconds": 86400,
+    "interval_ms": 10000,
+    "logical_processors": 24,
+    "identities": [
+      {
+        "Id": 2664,
+        "StartTicks": "639247591068945025",
+        "Group": "product",
+        "Label": "rc-agent"
+      },
+      {
+        "Id": 30696,
+        "StartTicks": "639247591253403616",
+        "Group": "workload",
+        "Label": "owned-cmd-66df2ca4-56ad-472b-9deb-0128237931ab"
+      },
+      {
+        "Id": 29488,
+        "StartTicks": "639247591253616769",
+        "Group": "workload",
+        "Label": "owned-cmd-27b1aee1-f486-4ff3-8b3c-2292634cc687"
+      }
+    ],
+    "gpu_memory_requested": false,
+    "gpu_memory_scope": "per-process CIM adapter sum; null means unavailable, not zero"
+  },
+  "initial_resource_sample": {
+    "type": "sample",
+    "index": 0,
+    "elapsed_seconds": 2.1657461,
+    "processes": [
+      {
+        "status": "ok",
+        "pid": 2664,
+        "group": "product",
+        "label": "rc-agent",
+        "started_ticks": "639247591068945025",
+        "monotonic_tick": 1508156920826,
+        "at_utc": "2026-09-11T21:32:09.022Z",
+        "cpu_machine_pct": null,
+        "private_working_set_bytes": 5574656,
+        "private_bytes": 10809344,
+        "working_set_bytes": 19099648,
+        "threads": 15,
+        "handles": 228
+      },
+      {
+        "status": "ok",
+        "pid": 30696,
+        "group": "workload",
+        "label": "owned-cmd-66df2ca4-56ad-472b-9deb-0128237931ab",
+        "started_ticks": "639247591253403616",
+        "monotonic_tick": 1508157119404,
+        "at_utc": "2026-09-11T21:32:09.038Z",
+        "cpu_machine_pct": null,
+        "private_working_set_bytes": 2895872,
+        "private_bytes": 7516160,
+        "working_set_bytes": 8654848,
+        "threads": 4,
+        "handles": 90
+      },
+      {
+        "status": "ok",
+        "pid": 29488,
+        "group": "workload",
+        "label": "owned-cmd-27b1aee1-f486-4ff3-8b3c-2292634cc687",
+        "started_ticks": "639247591253616769",
+        "monotonic_tick": 1508157198102,
+        "at_utc": "2026-09-11T21:32:09.046Z",
+        "cpu_machine_pct": null,
+        "private_working_set_bytes": 2736128,
+        "private_bytes": 7286784,
+        "working_set_bytes": 8163328,
+        "threads": 4,
+        "handles": 84
+      }
+    ]
+  }
+}

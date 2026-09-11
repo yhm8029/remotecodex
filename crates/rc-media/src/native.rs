@@ -901,3 +901,176 @@ mod tests {
         assert!(!EncoderChoice::SoftwareViewOnlySlow.control_allowed());
     }
 }
+
+pub fn run_owned_capture_encode_benchmark(
+    handle: u64,
+    width: u32,
+    height: u32,
+    fps: u32,
+    bitrate_kbps: u32,
+    seconds: u64,
+) -> Result<serde_json::Value> {
+    gst::init()?;
+    if handle == 0 {
+        bail!("Benchmark window handle is required");
+    }
+    if !(2..=1920).contains(&width) || !(2..=1080).contains(&height) {
+        bail!("Benchmark dimensions out of range");
+    }
+    if !(1..=30).contains(&fps) {
+        bail!("Benchmark fps out of range");
+    }
+    if !(1..=20000).contains(&bitrate_kbps) {
+        bail!("Benchmark bitrate out of range");
+    }
+    if !(1..=610).contains(&seconds) {
+        bail!("Benchmark duration out of range");
+    }
+    let init = MediaInit {
+        protocol: 1,
+        source: LocalSource {
+            native: NativeSource::Window {
+                handle: handle.to_string(),
+                pid: 0,
+                created: "owned-benchmark".into(),
+            },
+            label: "RemoteCodex owned capture benchmark".into(),
+            rect: rc_core::geometry::Rect {
+                left: 0,
+                top: 0,
+                width,
+                height,
+            },
+        },
+        profile: VideoProfile {
+            width,
+            height,
+            fps,
+            bitrate_kbps,
+        },
+        tailnet_ip: "100.64.0.1".into(),
+        min_port: 40_000,
+        max_port: 40_031,
+    };
+    let (pipeline, choice, effective) = build_capture_encode_pipeline(&init, handle)?;
+    let outcome: Result<serde_json::Value> = (|| -> Result<serde_json::Value> {
+        let pump = super::pump::attach(&pipeline)?;
+        let encoded_buffers = std::sync::Arc::new(std::sync::atomic::AtomicU64::new(0));
+        let encoded_probe = encoded_buffers.clone();
+        pipeline
+            .by_name("encoded")
+            .context("Benchmark parser missing")?
+            .static_pad("src")
+            .context("Benchmark encoded pad missing")?
+            .add_probe(gst::PadProbeType::BUFFER, move |_, _| {
+                encoded_probe.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                gst::PadProbeReturn::Ok
+            });
+        let bus = pipeline.bus().context("Benchmark pipeline has no bus")?;
+        pipeline.set_state(gst::State::Playing)?;
+        let first_deadline = Instant::now() + Duration::from_secs(10);
+        while !pump.has_latest()? {
+            while let Some(message) = bus.timed_pop(gst::ClockTime::from_nseconds(0)) {
+                match message.view() {
+                    gst::MessageView::Error(err) => {
+                        bail!("Benchmark pipeline error: {}", err.error());
+                    }
+                    gst::MessageView::Eos(_) => {
+                        bail!("Benchmark pipeline reached EOS before first frame");
+                    }
+                    _ => {}
+                }
+            }
+            if Instant::now() >= first_deadline {
+                bail!("Benchmark produced no source sample before timeout");
+            }
+            std::thread::sleep(Duration::from_millis(25));
+        }
+        let interval = frame_interval(effective.fps);
+        let start = Instant::now();
+        let deadline = start + Duration::from_secs(seconds);
+        let mut next = Instant::now();
+        let mut source_pushes: u64 = 0;
+        let mut unique_pushed_source_frames: u64 = 0;
+        let mut last_serial: Option<u64> = None;
+        while Instant::now() < deadline {
+            let now = Instant::now();
+            if now < next {
+                std::thread::sleep(next - now);
+            }
+            if Instant::now() >= deadline {
+                break;
+            }
+            if let Some(pushed) = pump.push_latest_with(effective.fps, |_| {})? {
+                source_pushes += 1;
+                if last_serial.map(|s| s != pushed.serial).unwrap_or(true) {
+                    unique_pushed_source_frames += 1;
+                    last_serial = Some(pushed.serial);
+                }
+            }
+            let mut bail_with = None;
+            while let Some(message) = bus.timed_pop(gst::ClockTime::from_nseconds(0)) {
+                match message.view() {
+                    gst::MessageView::Error(err) => {
+                        bail_with = Some(format!("Benchmark pipeline error: {}", err.error()));
+                    }
+                    gst::MessageView::Eos(_) => {
+                        bail_with = Some("Benchmark pipeline reached EOS during run".to_string());
+                    }
+                    _ => {}
+                }
+            }
+            if let Some(msg) = bail_with {
+                bail!("{}", msg);
+            }
+            next = (next + interval).max(Instant::now());
+        }
+        std::thread::sleep(Duration::from_millis(100));
+        while let Some(message) = bus.timed_pop(gst::ClockTime::from_nseconds(0)) {
+            match message.view() {
+                gst::MessageView::Error(err) => {
+                    bail!("Benchmark pipeline error: {}", err.error());
+                }
+                gst::MessageView::Eos(_) => bail!("Benchmark reached EOS during final drain"),
+                _ => {}
+            }
+        }
+        let elapsed_ms = start.elapsed().as_millis() as u64;
+        let encoded_buffers_val = encoded_buffers.load(std::sync::atomic::Ordering::Relaxed);
+        let actual_encoded_fps = if elapsed_ms > 0 {
+            encoded_buffers_val as f64 / (elapsed_ms as f64 / 1000.0)
+        } else {
+            0.0
+        };
+        let unique_pushed_fps = if elapsed_ms > 0 {
+            unique_pushed_source_frames as f64 / (elapsed_ms as f64 / 1000.0)
+        } else {
+            0.0
+        };
+        Ok(serde_json::json!({
+            "scope": "owned_window_capture_encode_fakesink",
+            "encoder": match choice {
+                EncoderChoice::Hardware => EncoderChoiceName::Hardware,
+                EncoderChoice::SoftwareViewOnlySlow => EncoderChoiceName::SoftwareViewOnlySlow,
+            },
+            "requested_profile": { "width": width, "height": height, "fps": fps, "bitrate_kbps": bitrate_kbps },
+            "effective_profile": { "width": effective.width, "height": effective.height, "fps": effective.fps, "bitrate_kbps": effective.bitrate_kbps },
+            "width": effective.width,
+            "height": effective.height,
+            "fps": effective.fps,
+            "bitrate_kbps": effective.bitrate_kbps,
+            "source_pushes": source_pushes,
+            "unique_pushed_source_frames": unique_pushed_source_frames,
+            "encoded_buffers": encoded_buffers_val,
+            "actual_encoded_fps": actual_encoded_fps,
+            "unique_pushed_fps": unique_pushed_fps,
+            "elapsed_ms": elapsed_ms,
+            "stopped_cleanly": false,
+        }))
+    })();
+    let stopped = pipeline.set_state(gst::State::Null);
+    let mut value = outcome?;
+    stopped.context("Benchmark stop failed")?;
+    value["stopped_cleanly"] = serde_json::json!(true);
+    Ok(value)
+}

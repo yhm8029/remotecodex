@@ -1,0 +1,46 @@
+{
+  "status": "PASS",
+  "unsigned": true,
+  "installer_execution": false,
+  "build_exit_code": 0,
+  "artifacts": [
+    {
+      "kind": "standard",
+      "path": "runtime/artifacts/RemoteCodex-0.2.0-standard.exe",
+      "bytes": 16573144,
+      "sha256": "3fa929d69af892e49c6f09a817202ef478f318084f1df1231992e5e36894b130",
+      "unsigned": true
+    },
+    {
+      "kind": "offline",
+      "path": "runtime/artifacts/RemoteCodex-0.2.0-offline.exe",
+      "bytes": 232085820,
+      "sha256": "d1877237f2f723c2b362ac17d34b02ca5f80e516560e84831de6562446a33916",
+      "unsigned": true
+    }
+  ],
+  "checks": [
+    {
+      "kind": "standard",
+      "status": "PASS",
+      "inventory_files": 61,
+      "extra_license_and_sbom_files": 1032,
+      "desktop_sha256": "1926b16c89b88eeeb10bdae52b5348d28be1ea1c1462c3b54f90d8d10a8e075d",
+      "build_desktop_sha256": "98dd0ae2f778f30c001eb269cba5b9a4aff1781137179131b1bccafd6d6763cd",
+      "desktop_comparison": "exact except single Tauri bundle marker UNK to NSS (3bytes), matching bundler log",
+      "agent_sha256": "551e8344dc15c7d7eb02348cc13d6a980a1fb9e2f060a437894e3971dca3f87e",
+      "archive_integrity": "7z t exit0; extracted without executing installer"
+    },
+    {
+      "kind": "offline",
+      "status": "PASS",
+      "inventory_files": 61,
+      "extra_license_and_sbom_files": 1032,
+      "desktop_sha256": "d97418473b579338d72c8e4230992956dd4d1e5ddbc687342d137e05c8c9ce1b",
+      "build_desktop_sha256": "7f56455b22b16da9b85310cba06d1ffc0bf3423e7877555cb0ff165f3459614d",
+      "desktop_comparison": "exact except single Tauri bundle marker UNK to NSS (3bytes), matching bundler log",
+      "agent_sha256": "551e8344dc15c7d7eb02348cc13d6a980a1fb9e2f060a437894e3971dca3f87e",
+      "archive_integrity": "7z t exit0; extracted without executing installer"
+    }
+  ]
+}

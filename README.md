@@ -22,21 +22,33 @@ The local evidence below is reviewable in `docs/test-results/spec-completion-202
   keydown-before-keyup ordering is covered. The WGC/H.264 bridge fixture passes,
   but it does not cover full WebRTC, ICE, Tailscale, input, or two-PC behavior.
 - Device revoke and self-revoke, Codex TUI, rename/exit/restart identity, and
-  PWA offline behavior pass in actual desktop Chrome fixtures.
+  PWA offline behavior pass in actual desktop Chrome fixtures. The device quota
+  now counts active credentials, its 49 Agent tests pass, and a no-reset run
+  against 64 retained revoked records authenticated two new pairings before
+  cleanup left 66 revoked and zero active records.
 - Real Vite 6.4.3 and Next 16.3.3 fixtures pass through the Node gateway,
   including HMR. These checks do not claim HTTPS or browser HMR over the final
   Tailscale path.
-- The latest source produced unsigned standard (16,522,844 bytes) and offline
-  (232,037,136 bytes) NSIS installers. Both archives passed integrity inspection,
-  and critical extracted resources match staging. The packaged SBOM passes the
-  CycloneDX 1.6 schema with 605 components. Hashes and scope are recorded in
-  `docs/test-results/spec-completion-2026-09-12/package-results.json`.
+- The follow-up PC checkpoint includes 10,000-input baseline and stress
+  distributions, 500 session cycles, 50 native UI cycles, 100 tab switches,
+  10-minute native output and hardware capture/encode measurements, and a
+  10-minute Agent-only idle run. The idle run recorded 553 valid samples over
+  600.071721 seconds, zero CPU at sampler resolution, and a constant 9.92 MiB
+  private working set. See
+  `docs/test-results/pc-completion-2026-09-12/README.md` for exact scopes.
+- The current unsigned standard and offline archives pass extraction and
+  integrity validation without installer execution. Both have the expected
+  61-file inventory plus 1,032 license/SBOM files, and the 605-component SBOM
+  passes schema validation. The packaged native desktop passes two close/reopen
+  identity-preservation cycles.
 
 Mandatory external gates still outstanding are two-PC Tailscale HTTPS/WSS/ICE,
-physical iOS/Android IME, 24-hour and aggregate performance, clean-VM offline
+physical iOS/Android IME, aggregate performance, clean-VM offline
 install/uninstall, and hardware DPI, lock-screen, multi-monitor, and UIPI
-acceptance. See [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) for the
-full checkpoint and limits.
+acceptance. The 24-hour soak started at 2026-09-11 21:32:05 UTC and has observed
+its first probe; it remains in progress until at least 2026-09-12 21:32:05 UTC.
+See [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) for the full checkpoint
+and limits.
 
 ## Structure
 

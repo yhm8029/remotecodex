@@ -570,32 +570,40 @@ impl Session {
 }
 fn reader_loop(session: Weak<Session>, mut reader: Box<dyn Read + Send>) {
     let mut buf = vec![0u8; frame::MAX_PAYLOAD];
+    let mut pending_since: Option<Instant> = None;
     loop {
         let count = match reader.read(&mut buf) {
             Ok(0) | Err(_) => break,
             Ok(n) => n,
         };
+        let received = Instant::now();
         let Some(s) = session.upgrade() else { break };
         let m = s.meta.lock().clone();
         let mut o = s.output.lock();
+        // Conservative upper bound while a UTF-8/VT fragment spans reads.
+        let received = pending_since.take().unwrap_or(received);
         let tokens = o.fence.push_bytes(&buf[..count]);
+        if o.fence.pending_len() > 0 {
+            pending_since = Some(received);
+        }
         let mut batch = Vec::new();
         for token in tokens {
             o.model.apply(&token);
             if batch.len() + token.len() > frame::MAX_PAYLOAD && !batch.is_empty() {
-                emit(&s, &m, &mut o, std::mem::take(&mut batch));
+                emit(&s, &m, &mut o, std::mem::take(&mut batch), received);
             }
             batch.extend_from_slice(&token);
         }
         if !batch.is_empty() {
-            emit(&s, &m, &mut o, batch);
+            emit(&s, &m, &mut o, batch, received);
         }
     }
 }
-fn emit(s: &Session, m: &SessionInfo, o: &mut OutputState, data: Vec<u8>) {
+fn emit(s: &Session, m: &SessionInfo, o: &mut OutputState, data: Vec<u8>, received: Instant) {
     o.seq += 1;
     s.meta.lock().last_activity_at = Some(activity_timestamp());
     let seq = o.seq;
+    let bytes = data.len();
     let event = o.ring.push(Frame {
         kind: frame::OUTPUT,
         session_id: m.session_id,
@@ -604,6 +612,7 @@ fn emit(s: &Session, m: &SessionInfo, o: &mut OutputState, data: Vec<u8>) {
         payload: Bytes::from(data),
     });
     let _ = s.output_events.send(event);
+    crate::perf::record(m.session_id, seq, bytes, received.elapsed());
 }
 fn writer_loop(
     s: Weak<Session>,

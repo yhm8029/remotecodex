@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "timings": {
+    "probe1": {
+      "quiet_ms": 21000,
+      "first_output_ms": 21031.5805,
+      "first_output_count": 0,
+      "second_output_count": 3
+    },
+    "probe2": {
+      "close_ms": 20019.885499999997,
+      "output_count": 8
+    }
+  },
+  "errors": []
+}

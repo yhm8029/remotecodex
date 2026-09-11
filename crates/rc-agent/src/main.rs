@@ -3,6 +3,8 @@ mod config;
 mod http;
 mod local;
 mod media;
+mod perf;
+mod perf_histogram;
 mod preview;
 mod profiles;
 mod session;
@@ -111,6 +113,7 @@ async fn main() -> anyhow::Result<()> {
             .open(config.data_dir.join("agent.lock"))?;
         lock.try_lock_exclusive()
             .map_err(|_| anyhow::anyhow!("An Agent already owns this user data directory"))?;
+        let perf_trace = perf::init_from_env()?;
         let store = Arc::new(store::Store::open(&config.data_dir.join("state.sqlite3"))?);
         let epoch = uuid::Uuid::new_v4();
         let audience = config
@@ -151,6 +154,9 @@ async fn main() -> anyhow::Result<()> {
         state.previews.shutdown();
         let s = state.clone();
         tokio::task::spawn_blocking(move || s.sessions.shutdown()).await?;
+        if let Some(trace) = perf_trace {
+            trace.finish()?;
+        }
         signal.abort();
         drop(lock);
         Ok(())

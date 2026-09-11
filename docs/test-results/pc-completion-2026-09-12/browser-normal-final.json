@@ -1,0 +1,99 @@
+{
+  "started": "2026-09-11T20:16:25.229Z",
+  "finished": "2026-09-11T20:16:43.915Z",
+  "mode": "normal",
+  "samples": 10000,
+  "build_mode": "Release",
+  "input_method": "public xterm input -> onData",
+  "render_boundary": "xterm parse/apply callback, not paint",
+  "status": "MEASURED",
+  "error": null,
+  "metrics": {
+    "echoMs": {
+      "n": 10000,
+      "p50": 1.0999999940395355,
+      "p95": 1.5,
+      "p99": 2.0999999940395355,
+      "max": 15.899999976158142,
+      "mean": 1.1689099998801946
+    },
+    "reconnectMs": {
+      "n": 100,
+      "p50": 46.89999997615814,
+      "p95": 48.30000001192093,
+      "p99": 48.900000005960464,
+      "max": 50.79999998211861,
+      "mean": 46.7640000000596
+    },
+    "recoveryEchoMs": {
+      "n": 0,
+      "p50": null,
+      "p95": null,
+      "p99": null,
+      "max": null,
+      "mean": null
+    },
+    "stages": {
+      "client_input_enqueue": {
+        "n": 10000,
+        "p50": 0,
+        "p95": 0.09999999403953552,
+        "p99": 0.10000002384185791,
+        "max": 0.3999999761581421,
+        "mean": 0.02057000001966953
+      },
+      "agent_input_write": {
+        "n": 10000,
+        "p50": 0.014,
+        "p95": 0.022,
+        "p99": 0.04,
+        "max": 0.152,
+        "mean": 0.015097700000000068
+      },
+      "client_output_parse_apply": {
+        "n": 10773,
+        "p50": 0,
+        "p95": 0.09999999403953552,
+        "p99": 0.10000002384185791,
+        "max": 1.5,
+        "mean": 0.020170797356587205
+      }
+    },
+    "recoveryStages": {
+      "client_input_enqueue": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "p99": null,
+        "max": null,
+        "mean": null
+      },
+      "agent_input_write": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "p99": null,
+        "max": null,
+        "mean": null
+      },
+      "client_output_parse_apply": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "p99": null,
+        "max": null,
+        "mean": null
+      }
+    }
+  },
+  "workload": null,
+  "perf": {
+    "final_dropped": 0,
+    "event_count": 30773
+  },
+  "background_output": null,
+  "raw_metric_scope": "active-session-only",
+  "instrumentation_failure": null,
+  "view_ready": true,
+  "controller_connected": true
+}

@@ -1,0 +1,48 @@
+{
+  "started": "2026-09-11T20:18:06.073Z",
+  "finished": "2026-09-11T20:28:12.410Z",
+  "count": 1,
+  "completed": 1,
+  "results": [
+    {
+      "index": 0,
+      "elapsed_ms": 2961.0534000000002,
+      "identity": {
+        "Id": 29608,
+        "StartTicks": "639247546873378689",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-idle-10m\\profile",
+        "Port": 19400
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "c7d90787-1c59-4e2f-9890-8ad66fddb2e4",
+        "pid": 34180,
+        "process_created": "134336314863668532",
+        "state": "running",
+        "epoch": "9bfd2e60-88b5-4b5e-828c-dbe85c27d810"
+      },
+      "resource": {
+        "mode": "idle",
+        "duration": 600,
+        "rawPath": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-idle-10m\\idle-raw.json",
+        "manifestPath": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-idle-10m\\idle-manifest.json",
+        "workload_scope": "keeper CMD only; Node child excluded from this manifest"
+      }
+    }
+  ],
+  "stats": {
+    "n": 1,
+    "p50": 2961.0534000000002,
+    "p95": 2961.0534000000002,
+    "p99": 2961.0534000000002,
+    "max": 2961.0534000000002,
+    "mean": 2961.0534000000002
+  },
+  "errors": [],
+  "cleanup": true
+}

@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "same_database": true,
+  "database_reset": false,
+  "before": {
+    "total": 64,
+    "active": 0,
+    "revoked": 64
+  },
+  "after_cleanup": {
+    "total": 66,
+    "active": 0,
+    "revoked": 66
+  },
+  "agent_sha256": "551e8344dc15c7d7eb02348cc13d6a980a1fb9e2f060a437894e3971dca3f87e",
+  "evidence": "soak-resource-smoke/result.json",
+  "scope": "Two new pairings authenticated, terminal fixture and reconnect/resource smoke passed, both fixture credentials revoked at cleanup. Original64 revoked rows retained."
+}

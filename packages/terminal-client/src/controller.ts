@@ -1,3 +1,4 @@
+import { emitPerf, type PerfSink } from './perf.js';
 import { InputSequencer, PasteGate, validatePaste, ownsLease, ProtocolError, type HostInfo, type SessionInfo, type LeaseView } from '@remotecodex/core';
 import { AgentApi } from './api.js';
 export class Controller extends EventTarget {
@@ -9,7 +10,7 @@ export class Controller extends EventTarget {
   private reload: Promise<void> | null = null;
   private attempt = 0; private reloadEpoch = 0;
   private readonly pastes = new PasteGate();
-  constructor(readonly api: AgentApi) { super(); }
+  constructor(readonly api: AgentApi, readonly perf?: PerfSink) { super(); }
   changed(): void { this.dispatchEvent(new Event('change')); }
   async connect(): Promise<void> {
     this.stopped = false; const attempt = ++this.attempt; ++this.reloadEpoch; this.reload = null; clearTimeout(this.retryTimer);
@@ -41,7 +42,12 @@ export class Controller extends EventTarget {
     } else if (m.type === 'session_changed' || m.type === 'sessions_resync' || m.type === 'lease_released') {
       void this.refreshSessions().catch(e => this.fail(e));
     } else if (m.type === 'accepted') this.inputs.accepted(String(m.input_id));
-    else if (m.type === 'written') this.inputs.settled(String(m.input_id));
+    else if (m.type === 'written') {
+  this.inputs.settled(String(m.input_id));
+  if (this.perf && typeof m.agent_receive_to_write_us === 'number' && typeof m.session_id === 'string') {
+    emitPerf(this.perf, { stage: 'agent_input_write', session_id: m.session_id, elapsed_ms: m.agent_receive_to_write_us / 1000 });
+  }
+}
     else if (['rejected', 'delivery_failed', 'delivery_unknown'].includes(String(m.type))) {
       this.inputs.settled(String(m.input_id ?? m.request_id)); this.notice = String(m.code ?? m.type);
       if (String(m.type).includes('delivery')) this.notice += ' — 자동 재전송하지 않았습니다.';

@@ -1,0 +1,251 @@
+{
+  "bytes": 51443171,
+  "sha256": "583cc7dcbc297656022e4489b3c348a09dbbe838d9004daabfeb4ac242b95ab8",
+  "samples": 8356916,
+  "dropped": 0,
+  "raw_events": 367943,
+  "raw_bytes": 51380154,
+  "raw_truncated": true,
+  "global": {
+    "count": 8356916,
+    "max_us": 28542,
+    "mean_us": 2.6071574729242224,
+    "p50_upper_us": 99,
+    "p95_upper_us": 99,
+    "p99_upper_us": 99
+  },
+  "sessions": {
+    "07b02f8a-f259-4f4b-98f9-3f9afc435380": {
+      "count": 10,
+      "max_us": 27,
+      "mean_us": 15,
+      "p50_upper_us": 27,
+      "p95_upper_us": 27,
+      "p99_upper_us": 27
+    },
+    "0ec34948-3263-46bc-894f-d41348922942": {
+      "count": 5,
+      "max_us": 22,
+      "mean_us": 15.2,
+      "p50_upper_us": 22,
+      "p95_upper_us": 22,
+      "p99_upper_us": 22
+    },
+    "104901e1-61ff-4144-a50e-590d96af0c4d": {
+      "count": 2554,
+      "max_us": 772,
+      "mean_us": 7.468285043069694,
+      "p50_upper_us": 99,
+      "p95_upper_us": 99,
+      "p99_upper_us": 99
+    },
+    "1347d4b5-0567-4538-aa39-836621783d75": {
+      "count": 7832217,
+      "max_us": 28542,
+      "mean_us": 2.591832044490085,
+      "p50_upper_us": 99,
+      "p95_upper_us": 99,
+      "p99_upper_us": 99
+    },
+    "15809a94-8b43-40f4-91d1-6f2c366b17d0": {
+      "count": 11137,
+      "max_us": 690,
+      "mean_us": 5.5846278171859565,
+      "p50_upper_us": 99,
+      "p95_upper_us": 99,
+      "p99_upper_us": 99
+    },
+    "1f2d03de-0f50-4cb8-9c0f-dba9fd8b8468": {
+      "count": 5,
+      "max_us": 49,
+      "mean_us": 27.8,
+      "p50_upper_us": 49,
+      "p95_upper_us": 49,
+      "p99_upper_us": 49
+    },
+    "2d1b0b29-6967-429b-9abe-c9106e4a7ccf": {
+      "count": 5,
+      "max_us": 28,
+      "mean_us": 14.8,
+      "p50_upper_us": 28,
+      "p95_upper_us": 28,
+      "p99_upper_us": 28
+    },
+    "2ecb9170-571f-4564-b798-c4d6179035db": {
+      "count": 10781,
+      "max_us": 741,
+      "mean_us": 5.958074390130785,
+      "p50_upper_us": 99,
+      "p95_upper_us": 99,
+      "p99_upper_us": 99
+    },
+    "38585122-6075-44a6-8e52-d038ee4c0740": {
+      "count": 244980,
+      "max_us": 25919,
+      "mean_us": 2.7077026696056823,
+      "p50_upper_us": 99,
+      "p95_upper_us": 99,
+      "p99_upper_us": 99
+    },
+    "3eab862b-35eb-450c-95d4-38a953837bd4": {
+      "count": 5,
+      "max_us": 27,
+      "mean_us": 11.2,
+      "p50_upper_us": 27,
+      "p95_upper_us": 27,
+      "p99_upper_us": 27
+    },
+    "4c0a22da-9b83-4606-bac2-e481984c2f91": {
+      "count": 10,
+      "max_us": 28,
+      "mean_us": 15.3,
+      "p50_upper_us": 28,
+      "p95_upper_us": 28,
+      "p99_upper_us": 28
+    },
+    "503c9cce-c2ca-49c8-888f-cf1e3dfc555d": {
+      "count": 5,
+      "max_us": 20,
+      "mean_us": 10.8,
+      "p50_upper_us": 20,
+      "p95_upper_us": 20,
+      "p99_upper_us": 20
+    },
+    "632a98e4-7d69-4d66-967e-31c9a14f8c88": {
+      "count": 254511,
+      "max_us": 26096,
+      "mean_us": 2.6193445469940397,
+      "p50_upper_us": 99,
+      "p95_upper_us": 99,
+      "p99_upper_us": 99
+    },
+    "6b33d071-f2e4-4441-8100-0821111e547a": {
+      "count": 5,
+      "max_us": 35,
+      "mean_us": 16.8,
+      "p50_upper_us": 35,
+      "p95_upper_us": 35,
+      "p99_upper_us": 35
+    },
+    "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5": {
+      "count": 245,
+      "max_us": 828,
+      "mean_us": 16.66938775510204,
+      "p50_upper_us": 99,
+      "p95_upper_us": 99,
+      "p99_upper_us": 99
+    },
+    "79994b01-86df-4037-8c09-93d7e15fd7ab": {
+      "count": 5,
+      "max_us": 15,
+      "mean_us": 9.6,
+      "p50_upper_us": 15,
+      "p95_upper_us": 15,
+      "p99_upper_us": 15
+    },
+    "79ad8851-ae22-4aae-a900-95f3e79c1c4e": {
+      "count": 5,
+      "max_us": 19,
+      "mean_us": 9.8,
+      "p50_upper_us": 19,
+      "p95_upper_us": 19,
+      "p99_upper_us": 19
+    },
+    "7d1add4f-efcb-48d8-8488-1a3ea59ca920": {
+      "count": 5,
+      "max_us": 23,
+      "mean_us": 10,
+      "p50_upper_us": 23,
+      "p95_upper_us": 23,
+      "p99_upper_us": 23
+    },
+    "8d014977-817f-4d27-91d4-9a395cc10f7a": {
+      "count": 5,
+      "max_us": 34,
+      "mean_us": 15.4,
+      "p50_upper_us": 34,
+      "p95_upper_us": 34,
+      "p99_upper_us": 34
+    },
+    "a2ccbd09-e4ad-41cb-b800-188084cbc40a": {
+      "count": 5,
+      "max_us": 29,
+      "mean_us": 13,
+      "p50_upper_us": 29,
+      "p95_upper_us": 29,
+      "p99_upper_us": 29
+    },
+    "aee71ec1-6f20-48b4-9839-3f273210d72e": {
+      "count": 5,
+      "max_us": 22,
+      "mean_us": 10.6,
+      "p50_upper_us": 22,
+      "p95_upper_us": 22,
+      "p99_upper_us": 22
+    },
+    "afe1d057-1d2b-477d-a403-90d66f5b5bdb": {
+      "count": 19,
+      "max_us": 1505,
+      "mean_us": 95.15789473684211,
+      "p50_upper_us": 99,
+      "p95_upper_us": 1505,
+      "p99_upper_us": 1505
+    },
+    "c7f78145-91be-4c43-9c41-6d24ac2576ae": {
+      "count": 5,
+      "max_us": 19,
+      "mean_us": 10.6,
+      "p50_upper_us": 19,
+      "p95_upper_us": 19,
+      "p99_upper_us": 19
+    },
+    "caf744cb-e688-45c0-9fdb-f575ab30c046": {
+      "count": 3,
+      "max_us": 1171,
+      "mean_us": 404,
+      "p50_upper_us": 99,
+      "p95_upper_us": 1171,
+      "p99_upper_us": 1171
+    },
+    "dc9e2975-d750-45e6-b95a-c116075c8465": {
+      "count": 148,
+      "max_us": 588,
+      "mean_us": 13.337837837837839,
+      "p50_upper_us": 99,
+      "p95_upper_us": 99,
+      "p99_upper_us": 99
+    },
+    "eeb035ee-8e27-4c9c-b6b6-6bd8e70c9b53": {
+      "count": 226,
+      "max_us": 618,
+      "mean_us": 9.380530973451327,
+      "p50_upper_us": 99,
+      "p95_upper_us": 99,
+      "p99_upper_us": 99
+    },
+    "f46ea663-7cfa-4686-ad97-e74bd6b63953": {
+      "count": 5,
+      "max_us": 38,
+      "mean_us": 19,
+      "p50_upper_us": 38,
+      "p95_upper_us": 38,
+      "p99_upper_us": 38
+    },
+    "fb5ec1db-32b8-4fa5-9ece-a9142e8eb207": {
+      "count": 5,
+      "max_us": 19,
+      "mean_us": 8.4,
+      "p50_upper_us": 19,
+      "p95_upper_us": 19,
+      "p99_upper_us": 19
+    }
+  },
+  "other": {
+    "count": 0,
+    "max_us": 0,
+    "mean_us": null,
+    "p50_upper_us": null,
+    "p95_upper_us": null,
+    "p99_upper_us": null
+  }
+}

@@ -1,0 +1,1168 @@
+{
+  "started": "2026-09-11T20:10:13.269Z",
+  "finished": "2026-09-11T20:14:00.074Z",
+  "count": 50,
+  "completed": 50,
+  "results": [
+    {
+      "index": 0,
+      "elapsed_ms": 2729.3591,
+      "identity": {
+        "Id": 33132,
+        "StartTicks": "639247542144192701",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19400
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 1,
+      "elapsed_ms": 2677.536,
+      "identity": {
+        "Id": 10660,
+        "StartTicks": "639247542187909845",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19401
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 2,
+      "elapsed_ms": 2775.9291999999987,
+      "identity": {
+        "Id": 8392,
+        "StartTicks": "639247542231249200",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19402
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 3,
+      "elapsed_ms": 2790.1329000000005,
+      "identity": {
+        "Id": 22984,
+        "StartTicks": "639247542276754999",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19403
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 4,
+      "elapsed_ms": 2794.1736999999994,
+      "identity": {
+        "Id": 15596,
+        "StartTicks": "639247542320557789",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19404
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 5,
+      "elapsed_ms": 2719.014299999999,
+      "identity": {
+        "Id": 34144,
+        "StartTicks": "639247542365114351",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19405
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 6,
+      "elapsed_ms": 2732.2634999999973,
+      "identity": {
+        "Id": 5516,
+        "StartTicks": "639247542408480429",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19406
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 7,
+      "elapsed_ms": 2695.5076999999983,
+      "identity": {
+        "Id": 31856,
+        "StartTicks": "639247542450563150",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19407
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 8,
+      "elapsed_ms": 2875.8297999999995,
+      "identity": {
+        "Id": 28348,
+        "StartTicks": "639247542492896748",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19408
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 9,
+      "elapsed_ms": 2767.9401,
+      "identity": {
+        "Id": 17072,
+        "StartTicks": "639247542537036074",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19409
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 10,
+      "elapsed_ms": 2817.349500000004,
+      "identity": {
+        "Id": 15988,
+        "StartTicks": "639247542579662129",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19410
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 11,
+      "elapsed_ms": 2808.260900000001,
+      "identity": {
+        "Id": 33912,
+        "StartTicks": "639247542622904567",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19411
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 12,
+      "elapsed_ms": 2787.709600000002,
+      "identity": {
+        "Id": 31908,
+        "StartTicks": "639247542665933134",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19412
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 13,
+      "elapsed_ms": 2736.934000000001,
+      "identity": {
+        "Id": 32080,
+        "StartTicks": "639247542708897887",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19413
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 14,
+      "elapsed_ms": 2929.4368999999933,
+      "identity": {
+        "Id": 9232,
+        "StartTicks": "639247542752121251",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19414
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 15,
+      "elapsed_ms": 2895.410799999998,
+      "identity": {
+        "Id": 35292,
+        "StartTicks": "639247542797627370",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19415
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 16,
+      "elapsed_ms": 2895.3438999999926,
+      "identity": {
+        "Id": 17072,
+        "StartTicks": "639247542843025156",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19416
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 17,
+      "elapsed_ms": 2994.1310999999987,
+      "identity": {
+        "Id": 29756,
+        "StartTicks": "639247542887149341",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19417
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 18,
+      "elapsed_ms": 2972.620299999995,
+      "identity": {
+        "Id": 34356,
+        "StartTicks": "639247542932517586",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19418
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 19,
+      "elapsed_ms": 2980.666400000002,
+      "identity": {
+        "Id": 34348,
+        "StartTicks": "639247542978158569",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19419
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 20,
+      "elapsed_ms": 2946.5190999999904,
+      "identity": {
+        "Id": 35596,
+        "StartTicks": "639247543024081383",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19420
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 21,
+      "elapsed_ms": 3072.0300000000134,
+      "identity": {
+        "Id": 9628,
+        "StartTicks": "639247543069255649",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19421
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 22,
+      "elapsed_ms": 2934.9507999999914,
+      "identity": {
+        "Id": 27916,
+        "StartTicks": "639247543114706792",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19422
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 23,
+      "elapsed_ms": 3117.5843000000023,
+      "identity": {
+        "Id": 33132,
+        "StartTicks": "639247543160871613",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19423
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 24,
+      "elapsed_ms": 3025.1291999999958,
+      "identity": {
+        "Id": 35508,
+        "StartTicks": "639247543206813254",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19424
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 25,
+      "elapsed_ms": 3060.7185000000027,
+      "identity": {
+        "Id": 35044,
+        "StartTicks": "639247543252367693",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19425
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 26,
+      "elapsed_ms": 3003.7995999999985,
+      "identity": {
+        "Id": 29364,
+        "StartTicks": "639247543298462304",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19426
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 27,
+      "elapsed_ms": 3106.782500000001,
+      "identity": {
+        "Id": 30084,
+        "StartTicks": "639247543344397423",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19427
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 28,
+      "elapsed_ms": 3050.2069000000047,
+      "identity": {
+        "Id": 32508,
+        "StartTicks": "639247543390799393",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19428
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 29,
+      "elapsed_ms": 3108.93250000001,
+      "identity": {
+        "Id": 34488,
+        "StartTicks": "639247543437054960",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19429
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 30,
+      "elapsed_ms": 3119.998200000002,
+      "identity": {
+        "Id": 10156,
+        "StartTicks": "639247543484093311",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19430
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 31,
+      "elapsed_ms": 3058.709999999992,
+      "identity": {
+        "Id": 2660,
+        "StartTicks": "639247543530561064",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19431
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 32,
+      "elapsed_ms": 3053.814399999974,
+      "identity": {
+        "Id": 18192,
+        "StartTicks": "639247543577149407",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19432
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 33,
+      "elapsed_ms": 3164.7848999999987,
+      "identity": {
+        "Id": 4004,
+        "StartTicks": "639247543622612745",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19433
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 34,
+      "elapsed_ms": 3069.15340000001,
+      "identity": {
+        "Id": 34336,
+        "StartTicks": "639247543669783451",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19434
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 35,
+      "elapsed_ms": 2986.353999999992,
+      "identity": {
+        "Id": 20256,
+        "StartTicks": "639247543716288168",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19435
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 36,
+      "elapsed_ms": 3029.63440000001,
+      "identity": {
+        "Id": 34232,
+        "StartTicks": "639247543761030299",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19436
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 37,
+      "elapsed_ms": 3026.8029999999853,
+      "identity": {
+        "Id": 13896,
+        "StartTicks": "639247543806551378",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19437
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 38,
+      "elapsed_ms": 3013.149399999995,
+      "identity": {
+        "Id": 3024,
+        "StartTicks": "639247543853037472",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19438
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 39,
+      "elapsed_ms": 3097.1020000000135,
+      "identity": {
+        "Id": 33136,
+        "StartTicks": "639247543898465915",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19439
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 40,
+      "elapsed_ms": 3250.1185000000114,
+      "identity": {
+        "Id": 32388,
+        "StartTicks": "639247543945435558",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19440
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 41,
+      "elapsed_ms": 3278.2619000000122,
+      "identity": {
+        "Id": 26324,
+        "StartTicks": "639247543994362128",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19441
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 42,
+      "elapsed_ms": 3159.9471000000194,
+      "identity": {
+        "Id": 33924,
+        "StartTicks": "639247544042672341",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19442
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 43,
+      "elapsed_ms": 3002.304999999993,
+      "identity": {
+        "Id": 24044,
+        "StartTicks": "639247544089524563",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19443
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 44,
+      "elapsed_ms": 3234.8535000000265,
+      "identity": {
+        "Id": 32744,
+        "StartTicks": "639247544136694380",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19444
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 45,
+      "elapsed_ms": 2997.8916000000027,
+      "identity": {
+        "Id": 2760,
+        "StartTicks": "639247544183074981",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19445
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 46,
+      "elapsed_ms": 2986.2168999999994,
+      "identity": {
+        "Id": 34644,
+        "StartTicks": "639247544228363221",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19446
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 47,
+      "elapsed_ms": 3009.459200000012,
+      "identity": {
+        "Id": 27056,
+        "StartTicks": "639247544273570321",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19447
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 48,
+      "elapsed_ms": 3012.7802000000083,
+      "identity": {
+        "Id": 30368,
+        "StartTicks": "639247544319438602",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19448
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    },
+    {
+      "index": 49,
+      "elapsed_ms": 2986.304199999984,
+      "identity": {
+        "Id": 31548,
+        "StartTicks": "639247544365058958",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-lifecycle-50\\profile",
+        "Port": 19449
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "6ff3107b-85de-42e5-a9d5-9c4b4622d5a5",
+        "pid": 11392,
+        "process_created": "134336310135604203",
+        "state": "running",
+        "epoch": "e15184b0-c31b-454a-87a3-ccf9d7672049"
+      }
+    }
+  ],
+  "stats": {
+    "n": 50,
+    "p50": 2994.1310999999987,
+    "p95": 3234.8535000000265,
+    "p99": 3278.2619000000122,
+    "max": 3278.2619000000122,
+    "mean": 2966.7968980000005
+  },
+  "errors": [],
+  "cleanup": true
+}

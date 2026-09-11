@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "components": 605,
+  "schema": "CycloneDX 1.6",
+  "schema_url": "https://cyclonedx.org/schema/bom-1.6.schema.json",
+  "schema_sha256": "1ebcb88a2c845ecb6ff7bee7aeabdff9422cb0347f3d6875b241bd444b7e098f",
+  "bom_sha256": "5e9e4fffe29629e2ebe5d9aa606ca225f061759e9cb6198b86decaf82504e779",
+  "errors": []
+}

@@ -1,0 +1,34 @@
+{
+  "source_base_commit": "da93a6acee95acfbd9cd779ab5d083a5d2aec089",
+  "source_state": "Uncommitted checkpoint changes are recorded by the containing Git commit; base_commit alone is not a tested-source claim",
+  "builds": [
+    {
+      "path": "runtime/test-agent/rc-agent.exe",
+      "bytes": 9804800,
+      "sha256": "11d566a619c3f98ce97d4871292123b1e719e6d87961376224a2a36a5a0044e7"
+    },
+    {
+      "path": "runtime/local-completion-20260912/native-stage/remotecodex-desktop.exe",
+      "bytes": 9952256,
+      "sha256": "f7fda3a126ddde9b8b73a3296419d6d4dc9223d71d6057504bd5285ceeed9a55"
+    },
+    {
+      "path": "runtime/build-media/x86_64-pc-windows-msvc/release/examples/native-capture-benchmark.exe",
+      "bytes": 403456,
+      "sha256": "9d13a825a36e441ca1e2e3e894965b35adc2e2cb755e9aec11749579d396d31a"
+    },
+    {
+      "path": "runtime/build-media/x86_64-pc-windows-msvc/release/examples/owned-window-benchmark.exe",
+      "bytes": 319488,
+      "sha256": "b71f35307b3c8f007d877be31c4de6685d975c66a9cbc5f26a28734627f7638e"
+    }
+  ],
+  "native_build": "Tauri CLI release --no-bundle --ci --target x86_64-pc-windows-msvc",
+  "resource_agent_trace": "off for final idle0/native idle/native output/media resource runs",
+  "idle2_idle8_scope": "Earlier same-task resource observations; refer to each exact identity manifest and do not infer final package provenance from base commit",
+  "final_package_agent": {
+    "path": "runtime/package/rc-agent.exe",
+    "sha256": "551e8344dc15c7d7eb02348cc13d6a980a1fb9e2f060a437894e3971dca3f87e",
+    "changed_after_resource_runs": "Active-device quota only;49Agenttests,sameDBpairing smoke,and packaged native cycles passed. Historical resource build hashes above retained."
+  }
+}

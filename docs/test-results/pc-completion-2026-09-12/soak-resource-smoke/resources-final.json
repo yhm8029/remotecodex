@@ -1,0 +1,1 @@
+{"sample_count":3,"cutoff_seconds":3600,"observed_seconds":20.1324386,"post_cutoff_count":0,"private_bytes_slope_per_hour":null,"leak_threshold_bytes_per_hour":10485760,"leak_flag":null,"hourly":[{"hour":0,"elapsed_seconds":20.1324386,"private_bytes":11456512,"handles":228,"threads":14,"private_bytes_delta":null}],"handles_monotonic_growth":null,"threads_monotonic_growth":null}

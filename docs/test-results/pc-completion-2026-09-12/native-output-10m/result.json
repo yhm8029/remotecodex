@@ -1,0 +1,53 @@
+{
+  "started": "2026-09-11T20:28:12.525Z",
+  "finished": "2026-09-11T20:38:27.511Z",
+  "count": 1,
+  "completed": 1,
+  "results": [
+    {
+      "index": 0,
+      "elapsed_ms": 2808.7101,
+      "identity": {
+        "Id": 30948,
+        "StartTicks": "639247552936992834",
+        "Exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-stage\\remotecodex-desktop.exe",
+        "Profile": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-output-10m\\profile",
+        "Port": 19400
+      },
+      "keeper": {
+        "session_match": true,
+        "epoch_match": true,
+        "running": true
+      },
+      "session": {
+        "session_id": "abca6b61-0faa-44ba-a2f3-02f7acc490ac",
+        "pid": 31612,
+        "process_created": "134336320928240208",
+        "state": "running",
+        "epoch": "9bfd2e60-88b5-4b5e-828c-dbe85c27d810"
+      },
+      "resource": {
+        "mode": "output",
+        "duration": 600,
+        "rawPath": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-output-10m\\output-raw.json",
+        "manifestPath": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\runtime\\local-completion-20260912\\native-output-10m\\output-manifest.json",
+        "workload_scope": "keeper CMD only; Node child excluded from this manifest",
+        "throughput": {
+          "bytes": 62463998,
+          "elapsed_seconds": 610.0003307000001,
+          "achieved_bytes_per_second": 102399.94120711384
+        }
+      }
+    }
+  ],
+  "stats": {
+    "n": 1,
+    "p50": 2808.7101,
+    "p95": 2808.7101,
+    "p99": 2808.7101,
+    "max": 2808.7101,
+    "mean": 2808.7101
+  },
+  "errors": [],
+  "cleanup": true
+}

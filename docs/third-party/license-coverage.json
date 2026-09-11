@@ -1,0 +1,420 @@
+{
+  "target": "windows-x64",
+  "rules": [
+    {
+      "ecosystem": "rust",
+      "name": "rc-agent",
+      "version": "0.2.0",
+      "status": "project_root_license",
+      "files": [
+        {
+          "source": "LICENSE",
+          "staged": "licenses/RemoteCodex-LICENSE",
+          "sha256": "74f269b0c69ac21349f039c15c1c2053fdd8d20aa6bccd4eeb8fbe0594d23516"
+        }
+      ],
+      "provenance": [
+        "https://github.com/yhm8029/remotecodex/blob/main/LICENSE"
+      ]
+    },
+    {
+      "ecosystem": "rust",
+      "name": "rc-core",
+      "version": "0.2.0",
+      "status": "project_root_license",
+      "files": [
+        {
+          "source": "LICENSE",
+          "staged": "licenses/RemoteCodex-LICENSE",
+          "sha256": "74f269b0c69ac21349f039c15c1c2053fdd8d20aa6bccd4eeb8fbe0594d23516"
+        }
+      ],
+      "provenance": [
+        "https://github.com/yhm8029/remotecodex/blob/main/LICENSE"
+      ]
+    },
+    {
+      "ecosystem": "rust",
+      "name": "rc-media",
+      "version": "0.2.0",
+      "status": "project_root_license",
+      "files": [
+        {
+          "source": "LICENSE",
+          "staged": "licenses/RemoteCodex-LICENSE",
+          "sha256": "74f269b0c69ac21349f039c15c1c2053fdd8d20aa6bccd4eeb8fbe0594d23516"
+        }
+      ],
+      "provenance": [
+        "https://github.com/yhm8029/remotecodex/blob/main/LICENSE"
+      ]
+    },
+    {
+      "ecosystem": "rust",
+      "name": "rc-platform-windows",
+      "version": "0.2.0",
+      "status": "project_root_license",
+      "files": [
+        {
+          "source": "LICENSE",
+          "staged": "licenses/RemoteCodex-LICENSE",
+          "sha256": "74f269b0c69ac21349f039c15c1c2053fdd8d20aa6bccd4eeb8fbe0594d23516"
+        }
+      ],
+      "provenance": [
+        "https://github.com/yhm8029/remotecodex/blob/main/LICENSE"
+      ]
+    },
+    {
+      "ecosystem": "rust",
+      "name": "alloc-stdlib",
+      "version": "0.2.4",
+      "status": "shared_upstream_text",
+      "files": [
+        {
+          "source": "docs/third-party/licenses/alloc-stdlib-0.2.4/LICENSE",
+          "staged": "licenses/upstream/alloc-stdlib-0.2.4/LICENSE",
+          "sha256": "c0c56f26d9c051cac4d200c34c84e7ae9aaa853e01a982a1df08b09931e518ae"
+        }
+      ],
+      "provenance": [
+        "https://raw.githubusercontent.com/dropbox/rust-alloc-no-stdlib/ae42d22078b98549e987d2f03d12df7b984fde47/LICENSE"
+      ]
+    },
+    {
+      "ecosystem": "rust",
+      "name": "defmt-parser",
+      "version": "1.0.0",
+      "status": "shared_upstream_text",
+      "files": [
+        {
+          "source": "docs/third-party/licenses/defmt-parser-1.0.0/LICENSE-APACHE",
+          "staged": "licenses/upstream/defmt-parser-1.0.0/LICENSE-APACHE",
+          "sha256": "8173d5c29b4f956d532781d2b86e4e30f83e6b7878dce18c919451d6ba707c90"
+        },
+        {
+          "source": "docs/third-party/licenses/defmt-parser-1.0.0/LICENSE-MIT",
+          "staged": "licenses/upstream/defmt-parser-1.0.0/LICENSE-MIT",
+          "sha256": "2710a622a896bba67356913d4d0492cab5465f61b2ecce6d880aeb483834fb50"
+        }
+      ],
+      "provenance": [
+        "https://raw.githubusercontent.com/knurling-rs/defmt/4a8cdb44891ed57b8ff5a023b6bec7137c48708f/LICENSE-APACHE",
+        "https://raw.githubusercontent.com/knurling-rs/defmt/4a8cdb44891ed57b8ff5a023b6bec7137c48708f/LICENSE-MIT"
+      ]
+    },
+    {
+      "ecosystem": "rust",
+      "name": "remotecodex-desktop",
+      "version": "0.2.0",
+      "status": "project_root_license",
+      "files": [
+        {
+          "source": "LICENSE",
+          "staged": "licenses/RemoteCodex-LICENSE",
+          "sha256": "74f269b0c69ac21349f039c15c1c2053fdd8d20aa6bccd4eeb8fbe0594d23516"
+        }
+      ],
+      "provenance": [
+        "https://github.com/yhm8029/remotecodex/blob/main/LICENSE"
+      ]
+    },
+    {
+      "ecosystem": "rust",
+      "name": "selectors",
+      "version": "0.36.1",
+      "status": "shared_upstream_text",
+      "files": [
+        {
+          "source": "docs/third-party/licenses/selectors-0.36.1/LICENSE-MPL-2.0",
+          "staged": "licenses/upstream/selectors-0.36.1/LICENSE-MPL-2.0",
+          "sha256": "3f3d9e0024b1921b067d6f7f88deb4a60cbe7a78e76c64e3f1d7fc3b779b9d04"
+        }
+      ],
+      "provenance": [
+        "https://www.mozilla.org/media/MPL/2.0/index.txt"
+      ]
+    },
+    {
+      "ecosystem": "rust",
+      "name": "tauri-plugin",
+      "version": "2.6.3",
+      "status": "shared_upstream_text",
+      "files": [
+        {
+          "source": "docs/third-party/licenses/tauri-plugin-2.6.3/LICENSE_MIT",
+          "staged": "licenses/upstream/tauri-plugin-2.6.3/LICENSE_MIT",
+          "sha256": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d"
+        },
+        {
+          "source": "docs/third-party/licenses/tauri-plugin-2.6.3/LICENSE_APACHE-2.0",
+          "staged": "licenses/upstream/tauri-plugin-2.6.3/LICENSE_APACHE-2.0",
+          "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+        }
+      ],
+      "provenance": [
+        "https://raw.githubusercontent.com/tauri-apps/tauri/6f6ab1207bb3923c2721fbc67d2fdb1c8deb0c7a/LICENSE_MIT",
+        "https://raw.githubusercontent.com/tauri-apps/tauri/6f6ab1207bb3923c2721fbc67d2fdb1c8deb0c7a/LICENSE_APACHE-2.0"
+      ]
+    },
+    {
+      "ecosystem": "rust",
+      "name": "unic-char-property",
+      "version": "0.9.0",
+      "status": "shared_upstream_text",
+      "files": [
+        {
+          "source": "docs/third-party/licenses/unic-0.9.0/LICENSE-APACHE",
+          "staged": "licenses/upstream/unic-0.9.0/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+        },
+        {
+          "source": "docs/third-party/licenses/unic-0.9.0/LICENSE-MIT",
+          "staged": "licenses/upstream/unic-0.9.0/LICENSE-MIT",
+          "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3"
+        }
+      ],
+      "provenance": [
+        "https://raw.githubusercontent.com/open-i18n/rust-unic/5878605364af97a3358368a6eaef02104af2e016/LICENSE-APACHE",
+        "https://raw.githubusercontent.com/open-i18n/rust-unic/5878605364af97a3358368a6eaef02104af2e016/LICENSE-MIT"
+      ]
+    },
+    {
+      "ecosystem": "rust",
+      "name": "unic-char-range",
+      "version": "0.9.0",
+      "status": "shared_upstream_text",
+      "files": [
+        {
+          "source": "docs/third-party/licenses/unic-0.9.0/LICENSE-APACHE",
+          "staged": "licenses/upstream/unic-0.9.0/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+        },
+        {
+          "source": "docs/third-party/licenses/unic-0.9.0/LICENSE-MIT",
+          "staged": "licenses/upstream/unic-0.9.0/LICENSE-MIT",
+          "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3"
+        }
+      ],
+      "provenance": [
+        "https://raw.githubusercontent.com/open-i18n/rust-unic/5878605364af97a3358368a6eaef02104af2e016/LICENSE-APACHE",
+        "https://raw.githubusercontent.com/open-i18n/rust-unic/5878605364af97a3358368a6eaef02104af2e016/LICENSE-MIT"
+      ]
+    },
+    {
+      "ecosystem": "rust",
+      "name": "unic-common",
+      "version": "0.9.0",
+      "status": "shared_upstream_text",
+      "files": [
+        {
+          "source": "docs/third-party/licenses/unic-0.9.0/LICENSE-APACHE",
+          "staged": "licenses/upstream/unic-0.9.0/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+        },
+        {
+          "source": "docs/third-party/licenses/unic-0.9.0/LICENSE-MIT",
+          "staged": "licenses/upstream/unic-0.9.0/LICENSE-MIT",
+          "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3"
+        }
+      ],
+      "provenance": [
+        "https://raw.githubusercontent.com/open-i18n/rust-unic/5878605364af97a3358368a6eaef02104af2e016/LICENSE-APACHE",
+        "https://raw.githubusercontent.com/open-i18n/rust-unic/5878605364af97a3358368a6eaef02104af2e016/LICENSE-MIT"
+      ]
+    },
+    {
+      "ecosystem": "rust",
+      "name": "unic-ucd-ident",
+      "version": "0.9.0",
+      "status": "shared_upstream_text",
+      "files": [
+        {
+          "source": "docs/third-party/licenses/unic-ucd-ident-0.9.0/LICENSE-APACHE",
+          "staged": "licenses/upstream/unic-ucd-ident-0.9.0/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+        },
+        {
+          "source": "docs/third-party/licenses/unic-ucd-ident-0.9.0/LICENSE-MIT",
+          "staged": "licenses/upstream/unic-ucd-ident-0.9.0/LICENSE-MIT",
+          "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3"
+        }
+      ],
+      "provenance": [
+        "https://raw.githubusercontent.com/open-i18n/rust-unic/8a6ce83063d90b91ae2ce59eddb803edd393fca9/LICENSE-APACHE",
+        "https://raw.githubusercontent.com/open-i18n/rust-unic/8a6ce83063d90b91ae2ce59eddb803edd393fca9/LICENSE-MIT"
+      ]
+    },
+    {
+      "ecosystem": "rust",
+      "name": "unic-ucd-version",
+      "version": "0.9.0",
+      "status": "shared_upstream_text",
+      "files": [
+        {
+          "source": "docs/third-party/licenses/unic-0.9.0/LICENSE-APACHE",
+          "staged": "licenses/upstream/unic-0.9.0/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+        },
+        {
+          "source": "docs/third-party/licenses/unic-0.9.0/LICENSE-MIT",
+          "staged": "licenses/upstream/unic-0.9.0/LICENSE-MIT",
+          "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3"
+        }
+      ],
+      "provenance": [
+        "https://raw.githubusercontent.com/open-i18n/rust-unic/5878605364af97a3358368a6eaef02104af2e016/LICENSE-APACHE",
+        "https://raw.githubusercontent.com/open-i18n/rust-unic/5878605364af97a3358368a6eaef02104af2e016/LICENSE-MIT"
+      ]
+    },
+    {
+      "ecosystem": "rust",
+      "name": "webview2-com",
+      "version": "0.38.2",
+      "status": "shared_upstream_text",
+      "files": [
+        {
+          "source": "docs/third-party/licenses/webview2-com-0.38.2/LICENSE",
+          "staged": "licenses/upstream/webview2-com-0.38.2/LICENSE",
+          "sha256": "0dcf41516e608bbcb6cdc5229feb7b86fe4a643b85e7df251133c93408fdac73"
+        }
+      ],
+      "provenance": [
+        "https://raw.githubusercontent.com/wravery/webview2-rs/b74dc5e2b394044bea5191052868ce7a106c202c/LICENSE"
+      ]
+    },
+    {
+      "ecosystem": "rust",
+      "name": "webview2-com-macros",
+      "version": "0.8.1",
+      "status": "shared_upstream_text",
+      "files": [
+        {
+          "source": "docs/third-party/licenses/webview2-com-macros-0.8.1/LICENSE",
+          "staged": "licenses/upstream/webview2-com-macros-0.8.1/LICENSE",
+          "sha256": "0dcf41516e608bbcb6cdc5229feb7b86fe4a643b85e7df251133c93408fdac73"
+        }
+      ],
+      "provenance": [
+        "https://raw.githubusercontent.com/wravery/webview2-rs/dffa41a8a46d3f5565eefbff2de57d38d399f158/LICENSE"
+      ]
+    },
+    {
+      "ecosystem": "rust",
+      "name": "webview2-com-sys",
+      "version": "0.38.2",
+      "status": "shared_upstream_text",
+      "files": [
+        {
+          "source": "docs/third-party/licenses/webview2-com-0.38.2/LICENSE",
+          "staged": "licenses/upstream/webview2-com-0.38.2/LICENSE",
+          "sha256": "0dcf41516e608bbcb6cdc5229feb7b86fe4a643b85e7df251133c93408fdac73"
+        }
+      ],
+      "provenance": [
+        "https://raw.githubusercontent.com/wravery/webview2-rs/b74dc5e2b394044bea5191052868ce7a106c202c/LICENSE"
+      ]
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@esbuild/win32-x64",
+      "version": "0.25.12",
+      "status": "shared_upstream_text",
+      "files": [
+        {
+          "source": "node_modules/esbuild/LICENSE.md",
+          "staged": "licenses/npm/esbuild-0.25.12/LICENSE.md",
+          "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681"
+        }
+      ],
+      "provenance": [
+        "git+https://github.com/evanw/esbuild.git"
+      ]
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@rollup/rollup-win32-x64-gnu",
+      "version": "4.63.1",
+      "status": "shared_upstream_text",
+      "files": [
+        {
+          "source": "node_modules/rollup/LICENSE.md",
+          "staged": "licenses/npm/rollup-4.63.1/LICENSE.md",
+          "sha256": "fa1bd040c5bdeefe65b3821cebf474f2733ce65df13089bd151dda1778e62fe8"
+        }
+      ],
+      "provenance": [
+        "git+https://github.com/rollup/rollup.git"
+      ]
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@rollup/rollup-win32-x64-msvc",
+      "version": "4.63.1",
+      "status": "shared_upstream_text",
+      "files": [
+        {
+          "source": "node_modules/rollup/LICENSE.md",
+          "staged": "licenses/npm/rollup-4.63.1/LICENSE.md",
+          "sha256": "fa1bd040c5bdeefe65b3821cebf474f2733ce65df13089bd151dda1778e62fe8"
+        }
+      ],
+      "provenance": [
+        "git+https://github.com/rollup/rollup.git"
+      ]
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@tauri-apps/cli-win32-x64-msvc",
+      "version": "2.11.4",
+      "status": "shared_upstream_text",
+      "files": [
+        {
+          "source": "node_modules/@tauri-apps/cli/LICENSE_APACHE-2.0",
+          "staged": "licenses/npm/tauri-apps__cli-2.11.4/LICENSE_APACHE-2.0",
+          "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+        },
+        {
+          "source": "node_modules/@tauri-apps/cli/LICENSE_MIT",
+          "staged": "licenses/npm/tauri-apps__cli-2.11.4/LICENSE_MIT",
+          "sha256": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d"
+        }
+      ],
+      "provenance": [
+        "git+https://github.com/tauri-apps/tauri.git"
+      ]
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@xterm/headless",
+      "version": "5.5.0",
+      "status": "shared_upstream_text",
+      "files": [
+        {
+          "source": "node_modules/@xterm/xterm/LICENSE",
+          "staged": "licenses/npm/xterm__xterm-5.5.0/LICENSE",
+          "sha256": "b569f629d00f2626a8100df2a1798210535621e42164dfd426a6fe5aac7b0ccd"
+        }
+      ],
+      "provenance": [
+        "https://github.com/xtermjs/xterm.js"
+      ]
+    }
+  ],
+  "upstream_missing": [
+    {
+      "name": "is-reference",
+      "version": "3.0.3",
+      "repository": "https://github.com/Rich-Harris/is-reference",
+      "revision": "8bb053129bfabe2f6a7d7ed050159d67ebe82829",
+      "license": "MIT"
+    },
+    {
+      "name": "locate-character",
+      "version": "3.0.0",
+      "repository": "https://github.com/Rich-Harris/locate-character",
+      "revision": "4f08a59ec248121f7002abd02ee7b94e8eda06bc",
+      "license": "MIT"
+    }
+  ]
+}

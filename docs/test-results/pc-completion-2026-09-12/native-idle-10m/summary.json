@@ -1,0 +1,153 @@
+{
+  "source": "runtime/local-completion-20260912/native-idle-10m/idle-raw.json",
+  "definition": {
+    "cpu": "whole machine percent",
+    "memory": "sum of private working set; private bytes separately",
+    "cpu_average": "weighted by monotonic sample intervals",
+    "scope": "Only explicitly tracked process identities; absent groups are not zero"
+  },
+  "requested_seconds": 600,
+  "last_elapsed_seconds": 600.1666892999999,
+  "sample_count": 512,
+  "identity_metadata_legacy": false,
+  "groups": {
+    "product": {
+      "processes": 8,
+      "valid_samples": 512,
+      "invalid_samples": 0,
+      "cpu_machine_pct": {
+        "n": 511,
+        "p50": 0,
+        "p95": 0.11226413603244385,
+        "p99": 0.27739916040575924,
+        "max": 0.6129648475760151,
+        "mean": 0.029335963115415493,
+        "weighted_mean": 0.029340358125752766
+      },
+      "private_working_set_bytes": {
+        "n": 512,
+        "p50": 109686784,
+        "p95": 112893952,
+        "p99": 115949568,
+        "max": 119275520,
+        "mean": 109409000
+      },
+      "private_bytes": {
+        "n": 512,
+        "p50": 213995520,
+        "p95": 217088000,
+        "p99": 220172288,
+        "max": 224260096,
+        "mean": 213712176
+      },
+      "threads": {
+        "n": 512,
+        "p50": 222,
+        "p95": 236,
+        "p99": 239,
+        "max": 240,
+        "mean": 225.615234375
+      },
+      "handles": {
+        "n": 512,
+        "p50": 3804,
+        "p95": 3852,
+        "p99": 3858,
+        "max": 3864,
+        "mean": 3808.21484375
+      }
+    },
+    "workload": {
+      "processes": 1,
+      "valid_samples": 512,
+      "invalid_samples": 0,
+      "cpu_machine_pct": {
+        "n": 511,
+        "p50": 0,
+        "p95": 0,
+        "p99": 0,
+        "max": 0,
+        "mean": 0,
+        "weighted_mean": 0
+      },
+      "private_working_set_bytes": {
+        "n": 512,
+        "p50": 2838528,
+        "p95": 2879488,
+        "p99": 2883584,
+        "max": 2883584,
+        "mean": 2847656
+      },
+      "private_bytes": {
+        "n": 512,
+        "p50": 4591616,
+        "p95": 6701056,
+        "p99": 7757824,
+        "max": 7757824,
+        "mean": 5100520
+      },
+      "threads": {
+        "n": 512,
+        "p50": 1,
+        "p95": 3,
+        "p99": 4,
+        "max": 4,
+        "mean": 1.482421875
+      },
+      "handles": {
+        "n": 512,
+        "p50": 84,
+        "p95": 84,
+        "p99": 84,
+        "max": 84,
+        "mean": 84
+      }
+    },
+    "tracked_total": {
+      "processes": 9,
+      "valid_samples": 512,
+      "invalid_samples": 0,
+      "cpu_machine_pct": {
+        "n": 511,
+        "p50": 0,
+        "p95": 0.11226413603244385,
+        "p99": 0.27739916040575924,
+        "max": 0.6129648475760151,
+        "mean": 0.029335963115415493,
+        "weighted_mean": 0.029340358125752766
+      },
+      "private_working_set_bytes": {
+        "n": 512,
+        "p50": 112525312,
+        "p95": 115732480,
+        "p99": 118788096,
+        "max": 122159104,
+        "mean": 112256656
+      },
+      "private_bytes": {
+        "n": 512,
+        "p50": 219021312,
+        "p95": 223387648,
+        "p99": 227930112,
+        "max": 232017920,
+        "mean": 218812696
+      },
+      "threads": {
+        "n": 512,
+        "p50": 223,
+        "p95": 239,
+        "p99": 240,
+        "max": 241,
+        "mean": 227.09765625
+      },
+      "handles": {
+        "n": 512,
+        "p50": 3888,
+        "p95": 3936,
+        "p99": 3942,
+        "max": 3948,
+        "mean": 3892.21484375
+      }
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+    "captured_utc":  "2026-09-11T20:57:18.5242110Z",
+    "defender":  {
+                     "AntivirusEnabled":  true,
+                     "RealTimeProtectionEnabled":  true,
+                     "AMServiceEnabled":  true
+                 },
+    "power_scheme":  "전원 구성표 GUID: 381b4222-f694-41f0-9685-ff5bb260df2e  (균형 조정)",
+    "settings_changed":  false
+}

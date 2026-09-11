@@ -317,6 +317,9 @@ async fn terminal(state: Shared, mut p: Principal, id: Uuid, mut socket: WebSock
         if p.require(Scope::TerminalRead).is_err() || state.shutdown.is_cancelled() {
             break;
         }
+        if unacked > 0 && tokio::time::Instant::now() >= deadline {
+            break;
+        }
         if pending.is_empty() {
             match session.ring_after(sent) {
                 Ok(v) => pending.extend(v),
@@ -332,6 +335,9 @@ async fn terminal(state: Shared, mut p: Principal, id: Uuid, mut socket: WebSock
                 if send_frame(&mut socket, (*f).clone()).await.is_err() {
                     break;
                 }
+                if unacked == 0 {
+                    deadline = tokio::time::Instant::now() + Duration::from_secs(20);
+                }
                 sent = f.sequence;
                 unacked += n;
                 inflight.push_back((sent, n));
@@ -343,6 +349,7 @@ async fn terminal(state: Shared, mut p: Principal, id: Uuid, mut socket: WebSock
             _=p.revoked.cancelled()=>break,
             _=state.shutdown.cancelled()=>break,
             _=tokio::time::sleep_until(p.expires.into())=>break,
+            _=tokio::time::sleep_until(deadline),if unacked>0=>break,
             message=socket.recv()=>{
                 let Some(Ok(Message::Text(raw)))=message else{break;};
                 match serde_json::from_str::<StreamMessage>(&raw){
@@ -354,8 +361,9 @@ async fn terminal(state: Shared, mut p: Principal, id: Uuid, mut socket: WebSock
                     Ok(StreamMessage::Applied{sequence,bytes:_})=>{
                         let Ok(seq)=sequence.parse::<u64>()else{break;};if seq<applied||seq>sent{break;}applied=seq;
                         // Account from server-sent records, not a client-supplied arbitrary byte grant.
-                        while inflight.front().is_some_and(|(s,_)|*s<=seq){unacked-=inflight.pop_front().unwrap().1;}
-                        deadline=tokio::time::Instant::now()+Duration::from_secs(20);
+                        let mut advanced=false;
+                        while inflight.front().is_some_and(|(s,_)|*s<=seq){unacked-=inflight.pop_front().unwrap().1;advanced=true;}
+                        if advanced {deadline=tokio::time::Instant::now()+Duration::from_secs(20);}
                     },Ok(StreamMessage::Ping)=>{},Err(_)=>break,
                 }
             },
@@ -363,7 +371,6 @@ async fn terminal(state: Shared, mut p: Principal, id: Uuid, mut socket: WebSock
                 Ok(f)=>{if f.sequence>sent{if f.sequence==sent+1{pending.push_back(f);}else{match session.ring_after(sent){Ok(v)=>pending.extend(v),Err(_)=>break}}}},
                 Err(broadcast::error::RecvError::Lagged(_))=>match session.ring_after(sent){Ok(v)=>pending.extend(v),Err(_)=>break},Err(_)=>break,
             },
-            _=tokio::time::sleep_until(deadline),if unacked>0=>break,
         }
         if pending
             .iter()
