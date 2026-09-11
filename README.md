@@ -2,7 +2,7 @@
 
 회사 Windows PC를 실제 실행 본체로 유지하면서 CMD·PowerShell·Codex를 회사/집/모바일에서 공유하는 원격 개발 콘솔이다. 회사 UI나 집 브라우저를 닫아도 Agent가 살아 있는 동안 PTY를 유지한다.
 
-> **이 ZIP은 소스이며 설치형 완성품이 아니다.** 실행한 TypeScript 테스트는 **125개 통과**했다. Rust/Windows·전체 Svelte/Tauri 빌드, 실제 영상·두 PC·모바일·성능은 미실행이다. P4~P6 네이티브 파이프라인 코드가 추가되었지만 실행 검증을 대신하지 않는다. 먼저 [구현 상태](IMPLEMENTATION_STATUS.md)를 읽는다.
+> **소스 알파이며 설치형 완성품이 아니다.** Windows에서 TypeScript **125개**, Rust **35개**, 실제 ConPTY **1개** 테스트와 Rust workspace/Tauri 타입 검사, Svelte 검사·웹 빌드를 통과했다. [Windows 검증 기록](docs/test-results/windows-baseline-2026-09-11/README.md)을 참고한다. Tauri Release 빌드·실제 GUI·영상·두 PC·모바일·성능은 미검증이다. 먼저 [구현 상태](IMPLEMENTATION_STATUS.md)를 읽는다.
 
 ## 구조
 
@@ -25,7 +25,7 @@
 
 Windows 11 x64, Rust stable MSVC/Cargo, C++ build tools, Node.js 22+, Tauri용 WebView2가 필요하다. 공식 Tauri 선행 조건: https://v2.tauri.app/start/prerequisites/
 
-저장소 루트에서 아래 스크립트를 **먼저 검토**한다. 실패가 나오면 다음 단계로 넘어가지 말고 `CODEX_CONTINUE.md`에 따라 실제 API/type 오류를 고친다. 첫 의존성 해결 결과는 이 작성 환경에서 생성하지 못했으므로 로컬에서 생성·검토·커밋한다.
+저장소 루트에서 아래 스크립트를 **먼저 검토**한다. 실패가 나오면 다음 단계로 넘어가지 말고 `CODEX_CONTINUE.md`에 따라 실제 API/type 오류를 고친다. Windows에서 생성한 npm/Cargo lockfile이 포함되어 있다. 재현 설치에는 `npm ci --ignore-scripts`를 사용하며, `bootstrap.ps1`은 의존성을 다시 해결하므로 lockfile 변경을 검토한다.
 
 ```powershell
 .\scripts\bootstrap.ps1

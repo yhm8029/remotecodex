@@ -11,22 +11,40 @@ pub const MAX_JS_INTEGER: u64 = 9_007_199_254_740_991;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum Scope {
-    #[serde(rename="terminal.read")] TerminalRead,
-    #[serde(rename="terminal.write")] TerminalWrite,
-    #[serde(rename="terminal.create")] TerminalCreate,
-    #[serde(rename="terminal.close")] TerminalClose,
-    #[serde(rename="preview.read")] PreviewRead,
-    #[serde(rename="window.view")] WindowView,
-    #[serde(rename="window.control")] WindowControl,
-    #[serde(rename="desktop.view")] DesktopView,
-    #[serde(rename="desktop.control")] DesktopControl,
-    #[serde(rename="admin.devices")] AdminDevices,
-    #[serde(rename="admin.settings")] AdminSettings,
+    #[serde(rename = "terminal.read")]
+    TerminalRead,
+    #[serde(rename = "terminal.write")]
+    TerminalWrite,
+    #[serde(rename = "terminal.create")]
+    TerminalCreate,
+    #[serde(rename = "terminal.close")]
+    TerminalClose,
+    #[serde(rename = "preview.read")]
+    PreviewRead,
+    #[serde(rename = "window.view")]
+    WindowView,
+    #[serde(rename = "window.control")]
+    WindowControl,
+    #[serde(rename = "desktop.view")]
+    DesktopView,
+    #[serde(rename = "desktop.control")]
+    DesktopControl,
+    #[serde(rename = "admin.devices")]
+    AdminDevices,
+    #[serde(rename = "admin.settings")]
+    AdminSettings,
 }
 impl Scope {
     pub fn owner() -> Vec<Self> {
-        vec![Self::TerminalRead, Self::TerminalWrite, Self::TerminalCreate,
-             Self::TerminalClose, Self::PreviewRead, Self::AdminDevices, Self::AdminSettings]
+        vec![
+            Self::TerminalRead,
+            Self::TerminalWrite,
+            Self::TerminalCreate,
+            Self::TerminalClose,
+            Self::PreviewRead,
+            Self::AdminDevices,
+            Self::AdminSettings,
+        ]
         // GUI permissions must be approved separately after P4/P5/P6 gates.
     }
 }
@@ -41,8 +59,14 @@ pub struct CreateSession {
     pub rows: u16,
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all="snake_case")]
-pub enum Lifecycle { Starting, Running, Closing, Exited, Lost }
+#[serde(rename_all = "snake_case")]
+pub enum Lifecycle {
+    Starting,
+    Running,
+    Closing,
+    Exited,
+    Lost,
+}
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SessionInfo {
     pub session_id: Uuid,
@@ -68,37 +92,76 @@ pub struct LeaseView {
     pub remaining_ms: u64,
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(tag="type", rename_all="snake_case", deny_unknown_fields)]
+#[serde(tag = "type", rename_all = "snake_case", deny_unknown_fields)]
 pub enum ControlMessage {
-    LeaseAcquire { request_id: Uuid, session_id: Uuid, takeover: bool },
-    LeaseRenew { request_id: Uuid, session_id: Uuid, lease_epoch: u64 },
-    LeaseRelease { request_id: Uuid, session_id: Uuid, lease_epoch: u64 },
+    LeaseAcquire {
+        request_id: Uuid,
+        session_id: Uuid,
+        takeover: bool,
+    },
+    LeaseRenew {
+        request_id: Uuid,
+        session_id: Uuid,
+        lease_epoch: u64,
+    },
+    LeaseRelease {
+        request_id: Uuid,
+        session_id: Uuid,
+        lease_epoch: u64,
+    },
     Input {
-        request_id: Uuid, session_id: Uuid, agent_epoch: Uuid, generation: u32,
-        lease_epoch: u64, input_id: Uuid, input_seq: u64, payload: InputPayload,
+        request_id: Uuid,
+        session_id: Uuid,
+        agent_epoch: Uuid,
+        generation: u32,
+        lease_epoch: u64,
+        input_id: Uuid,
+        input_seq: u64,
+        payload: InputPayload,
     },
     Resize {
-        request_id: Uuid, session_id: Uuid, agent_epoch: Uuid, generation: u32,
-        lease_epoch: u64, cols: u16, rows: u16,
+        request_id: Uuid,
+        session_id: Uuid,
+        agent_epoch: Uuid,
+        generation: u32,
+        lease_epoch: u64,
+        cols: u16,
+        rows: u16,
     },
-    RefreshAuth { request_id:Uuid, ticket:String },
-    Ping { request_id: Uuid },
+    RefreshAuth {
+        request_id: Uuid,
+        ticket: String,
+    },
+    Ping {
+        request_id: Uuid,
+    },
 }
 impl ControlMessage {
     pub fn request_id(&self) -> Uuid {
         match self {
-            Self::LeaseAcquire{request_id,..}|Self::LeaseRenew{request_id,..}|
-            Self::LeaseRelease{request_id,..}|Self::Input{request_id,..}|
-            Self::Resize{request_id,..}|Self::RefreshAuth{request_id,..}|Self::Ping{request_id} => *request_id
+            Self::LeaseAcquire { request_id, .. }
+            | Self::LeaseRenew { request_id, .. }
+            | Self::LeaseRelease { request_id, .. }
+            | Self::Input { request_id, .. }
+            | Self::Resize { request_id, .. }
+            | Self::RefreshAuth { request_id, .. }
+            | Self::Ping { request_id } => *request_id,
         }
     }
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(tag="kind", rename_all="snake_case", deny_unknown_fields)]
-pub enum InputPayload { Utf8 { text: String }, Binary { base64: String } }
+#[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
+pub enum InputPayload {
+    Utf8 { text: String },
+    Binary { base64: String },
+}
 #[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(tag="type", rename_all="snake_case", deny_unknown_fields)]
-pub enum StreamMessage { RefreshAuth { ticket:String }, Applied { sequence: String, bytes: u32 }, Ping }
+#[serde(tag = "type", rename_all = "snake_case", deny_unknown_fields)]
+pub enum StreamMessage {
+    RefreshAuth { ticket: String },
+    Applied { sequence: String, bytes: u32 },
+    Ping,
+}
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SnapshotMeta {
     pub cols: u16,

@@ -1,3 +1,4 @@
 * text=auto eol=lf
 *.ps1 text eol=crlf
 *.png binary
+docs/test-results/windows-baseline-2026-09-11/*.txt -whitespace

@@ -9,7 +9,11 @@ function Invoke-Native([string]$Command, [string[]]$Arguments) {
 foreach ($Name in @('node','npm','cargo','rustc')) {
     if (-not (Get-Command $Name -ErrorAction SilentlyContinue)) { throw "Install the documented prerequisite first: $Name" }
 }
-if ([int]((& node -p 'process.versions.node.split(".")[0]')) -lt 22) { throw 'Node.js 22+ is required.' }
+$NodeVersionOutput = & node --version 2>&1
+if ($LASTEXITCODE -ne 0) { throw 'Unable to determine the installed Node.js version.' }
+$NodeVersionText = ($NodeVersionOutput | Out-String).Trim()
+if ($NodeVersionText -notmatch '^v(\d+)(?:\.\d+){0,2}(?:[-+].*)?$') { throw 'Unable to parse the installed Node.js version.' }
+if ([int]$Matches[1] -lt 22) { throw 'Node.js 22+ is required.' }
 # This is the FIRST resolution. The authoring sandbox had no network/Rust compiler;
 # no invented lockfiles are supplied. Inspect the generated files before release.
 Invoke-Native 'npm' @('install','--ignore-scripts')

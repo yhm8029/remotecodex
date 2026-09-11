@@ -4,18 +4,19 @@
 
 ## 이번 판정
 
-v0.1의 핵심 터미널 코드를 이어서 수정하고 P4/P5/P6의 실제 네이티브 파이프라인을 소스로 연결했다. 이전의 media 인터페이스/비활성 stub만 있는 상태와 다르다. 그러나 Rust·Windows 컴파일, Svelte/Tauri 전체 빌드와 실제 회사/집 연결은 이 환경에서 실행하지 못했다. API/타입/네이티브 호환 오류가 남아 있을 수 있다. 성능 목표를 달성했다는 측정 증거도 없다.
+원본 ZIP에는 v0.1의 핵심 터미널과 P4/P5/P6 네이티브 파이프라인 소스가 포함되어 있었다. 이후 실제 Windows에서 의존성 lock을 생성하고 기본 Rust workspace/Tauri 컴파일 검사, Svelte 검사·웹 빌드, 단위 테스트와 ConPTY 왕복을 통과했다. 상세 수정과 원시 로그는 [Windows 검증 기록](docs/test-results/windows-baseline-2026-09-11/README.md)에 있다. 실제 회사/집 연결, Tauri Release 빌드와 GUI 동작, native-media feature, 성능 목표는 여전히 미검증이다.
 
 | 검사 | 실제 결과 | 범위/증거 |
 |---|---|---|
 | TypeScript core 컴파일·단위 테스트 | 96 PASS | wire/lease/좌표/IME/붙여넣기/SDP·ICE 정책 |
 | API·Controller·MediaClient 타입 검사·테스트 | 29 PASS | 실제 TS 소스 + Node WebCrypto; 네트워크·영상·저장소는 테스트 대역 |
-| 합계 | **125 PASS, 0 FAIL, 0 SKIP** | `docs/test-results/v0.2.0/all-tests.tap.txt` |
+| TypeScript 합계 | **125 PASS, 0 FAIL, 0 SKIP** | `docs/test-results/windows-baseline-2026-09-11/check.txt` |
 | MJS 문법/JSON·TOML/내부 문서 링크 | 별도 정적 검사 | `docs/test-results/v0.2.0/source-validation.json` |
-| Rust format/check/test, Windows ConPTY | NOT_RUN | Cargo/rustc/Windows 없음 |
-| Svelte/xterm 전체·Tauri 빌드 | NOT_RUN | 실제 의존성 설치 미완료 |
+| Rust format/workspace check/test | PASS, **35개 테스트** | Windows MSVC/Rust 1.95.0, 기본 feature. 기본 실행에서 제외된 ConPTY 1개는 별도 실행 |
+| 실제 Windows ConPTY | PASS, **1개 테스트** | CMD 실제 영문 marker와 한글 왕복; 초기 커서 질의에 응답하도록 fixture 수정 |
+| Svelte 검사·웹 빌드·Tauri cargo check | PASS | Svelte 오류/경고 0; Tauri Release 빌드·실제 GUI는 NOT_RUN |
 | 실제 Agent E2E, 두 PC Tailscale, iOS/Android | NOT_RUN | 실행 스크립트는 작성; 실행 성공으로 간주하지 않음 |
-| 실제 WGC/MF H.264/WebRTC/SendInput | NOT_RUN | SDK/GPU/Windows 없음 |
+| 실제 WGC/MF H.264/WebRTC/SendInput | NOT_RUN | native-media SDK 미설치, 실제 캡처·입력 검증 미실행 |
 | CPU·RAM·입력 p95/p99·24시간 soak | NOT_RUN | 목표 수치와 측정값을 혼동하지 않음 |
 | 설치 프로그램, 서명, 배포 | 미작성 | 사용자 요청대로 이번 산출물은 소스 |
 
@@ -25,7 +26,7 @@ v0.1의 핵심 터미널 코드를 이어서 수정하고 P4/P5/P6의 실제 네
 
 | 단계 | 작성한 실제 경로 | 남은 출시 조건 |
 |---|---|---|
-| P0/P1 | 기존 PTY/인증/독립 Agent 유지. 입력용 WS와 최대 256KiB paste HTTP 경로 분리. 전체 내용 검사 후 8KiB 단위 PTY write, Ctrl+C 우선 경로 | Windows API/borrow/compile 오류 수정, 실제 입력 지연·Codex·IME |
+| P0/P1 | 기존 PTY/인증/독립 Agent 유지. 입력용 WS와 최대 256KiB paste HTTP 경로 분리. 전체 내용 검사 후 8KiB 단위 PTY write, Ctrl+C 우선 경로. 기본 Windows 컴파일·ConPTY fixture 통과 | Agent E2E, 실제 입력 지연·Codex·IME |
 | P2 | 다중 탭·분할 유지, 연결 attempt/reload epoch으로 늦게 도착한 이전 host/session/WS 응답 배제. sync-update flush·pending-wrap·동적 palette 복원 코드 추가 | saved charset/cursor shape 등 full-state, alt-screen/resize golden, 장기 부하 |
 | P3 | 기존 승인된 loopback HTTP/WS/SSE 프록시 유지 | 실제 Vite/Next/HMR/OAuth/cookie·Origin/권한 철회 검사. PREVIEW.md 제한 유지 |
 | P4 | `native.rs`: WGC/D3D11 → NV12 → Media Foundation H.264 → RTP/WebRTC. Agent의 승인된 source, 시그널링, helper 수명 관리; 브라우저 video 수신 | 네이티브 compile·SDK/factory·D3D11 협상·실제 프레임·인터넷 환경 검사 |
@@ -41,7 +42,7 @@ Rust Agent나 CLI-only 경로는 GStreamer에 링크하지 않는다. 미디어�
 
 ## 현재 한계 — 완료로 숨기지 말 것
 
-1. **네이티브 코드는 컴파일 검증 전**이다. `native-media`를 끈 기본 빌드에서 media가 false인 것은 의도된 동작이다. feature와 설정을 켜고 factory probe가 통과해도 실기기 검증 완료를 뜻하지 않는다.
+1. **native-media feature 경로는 컴파일 검증 전**이다. `native-media`를 끈 기본 빌드에서 media가 false인 것은 의도된 동작이다. feature와 설정을 켜고 factory probe가 통과해도 실기기 검증 완료를 뜻하지 않는다.
 2. 처음에는 호스트당 **영상 source 1개·영상 viewer 1개**다. 터미널은 다중 세션·다중 열람 구조를 유지한다. 창/모니터 이동·크기 변경은 안전 정지 후 재승인/다시 열기 방식이다. seamless renegotiation은 아직 아니다.
 3. ICE는 승인된 숫자형 Tailscale IPv4/UDP만 허용한다. mDNS-only 후보, 허용되지 않은 주소, UDP 차단 환경은 영상 연결이 안 될 수 있다. 외부 STUN/TURN이나 포트 공개를 몰래 추가하지 않는다. 터미널은 독립적으로 유지한다.
 4. 현재는 검증 가능한 D3D11-aware `mfh264enc`를 요구한다. 소프트웨어 인코더·저속 이미지 fallback, 정지 화면 적응형 fps/bitrate는 미구현이다. 모든 PC에서 영상이 켜진다는 보장은 없다.
@@ -49,10 +50,10 @@ Rust Agent나 CLI-only 경로는 GStreamer에 링크하지 않는다. 미디어�
 6. Agent는 현재 **보이는 콘솔 실행**이다. Tauri UI 종료는 Agent와 독립이지만 Agent 콘솔 종료/로그아웃/재부팅 시 기존 PTY는 보장하지 않는다. Agent 트레이·로그인 자동 시작·설치/업데이트 수명 UX는 남아 있다. 미디어의 공유 표시창/긴급 정지 코드는 별도로 있다.
 7. GUI 선택 창 제어는 OS 샌드박스가 아니다. 회사의 실제 포커스/커서에 영향을 준다. SendInput은 권한/잠금에 따라 거절될 수 있으며 원격에서 주입한 키 해제도 OS 제약을 받는다. 로컬 입력을 막거나 UAC를 우회하지 않는다.
 8. 관리형 Codex 의미 상태 추적/Supervisor는 완료하지 않았다. `final` 출력만으로 작업 종료/성공을 단정하지 않는다.
-9. 실제 dependency lock/SBOM/전이 의존성 라이선스·보안 감사가 아직 없다. 가짜 lockfile이나 측정 CSV를 만들지 않는다.
+9. 실제 npm/root Cargo/desktop Cargo lock은 생성·검증했다. SBOM/전체 전이 의존성 라이선스·보안 감사는 아직 없다. 기본 Rust 빌드 통과를 native-media SDK/MSRV 검증으로 확장하지 않는다.
 
 ## 실행할 다음 게이트
 
-`CODEX_CONTINUE.md` → 실제 의존성 resolve → Windows compile/type 오류 수정 → `scripts/test-windows.ps1 -AgentE2E` → 실제 Codex/TUI → P3 fixture → `scripts/test-media.ps1` → `scripts/gui-fixture.ps1`와 두 PC GUI → 원본 ACCEPTANCE_MATRIX/성능/모바일 순서다.
+의존성 resolve와 기본 Windows compile/type 검사, ConPTY 단일 fixture까지 통과했다. 다음은 사용자 실행 Agent를 대상으로 `scripts/test-windows.ps1 -AgentE2E` → 실제 Codex/TUI → P3 fixture → native-media SDK/feature 컴파일 → `scripts/test-media.ps1` → `scripts/gui-fixture.ps1`와 두 PC GUI → 원본 ACCEPTANCE_MATRIX/성능/모바일 순서다.
 
 문서만 다시 쓰거나 테스트 기준을 낮추지 말고 해당 소스를 수정한다. 사용자 프로젝트 삭제/기존 세션 종료/공개 서버 배포를 테스트 준비로 자동 수행하지 않는다.

@@ -19,3 +19,4 @@ state.db*
 /config/agent.local.toml
 /native-sdk/
 /docs/test-results/local*/
+/apps/desktop/src-tauri/gen/

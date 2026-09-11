@@ -4,7 +4,7 @@
 
 ## 현재 증거
 
-실행된 것은 Node/TypeScript 단위 테스트 125개다. 실제 Controller/API/MediaClient를 컴파일했지만 transport/video/IndexedDB는 테스트 대역이다. Rust/Windows/전체 Svelte/Tauri/native GStreamer는 아직 컴파일하지 않았다. 원본 로그를 유지하고 예상 결과를 테스트 결과에 채우지 마라.
+Windows 기본 검증은 [2026-09-11 기록](docs/test-results/windows-baseline-2026-09-11/README.md)을 기준으로 이어간다. Node/TypeScript 125개, Rust 35개, 실제 ConPTY 1개와 workspace/Tauri cargo check, Svelte 검사·웹 빌드를 통과했다. transport/video/IndexedDB는 여전히 테스트 대역이며 실제 GUI·native GStreamer·두 PC·모바일·성능은 미검증이다. 아래 1번은 재현 절차이고 다음 기능 검증 게이트는 2번이다. 원본 로그를 유지하고 예상 결과를 테스트 결과에 채우지 마라.
 
 ## 1. 컴파일부터 실제로 수행
 
@@ -20,7 +20,7 @@
 
 ## 3. TerminalModel 완전성
 
-`terminal.rs`에는 headless synchronized-update flush, pending-wrap 복원, dynamic palette export를 추가했다. Rust 테스트는 아직 NOT_RUN이다. saved charset/cursor shape/reset/alt-screen/Unicode 폭/resize 순서 등의 누락을 실측 golden으로 채워라. raw 문자열 재생이나 private memory 접근으로 full-state 문제를 숨기지 않는다. query 응답은 서버 단일 소유자다.
+`terminal.rs`에는 headless synchronized-update flush, pending-wrap 복원, dynamic palette export를 추가했고 기존 Rust 단위 테스트를 실행해 통과했다. saved charset/cursor shape/reset/alt-screen/Unicode 폭/resize 순서 등의 누락은 여전히 실측 golden으로 채워야 한다. raw 문자열 재생이나 private memory 접근으로 full-state 문제를 숨기지 않는다. query 응답은 서버 단일 소유자다.
 
 ## 4. 웹 프리뷰
 
