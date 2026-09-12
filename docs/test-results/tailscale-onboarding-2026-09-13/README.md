@@ -3,14 +3,14 @@
 This evidence was produced in the isolated `work/tailscale-onboarding-20260912`
 worktree. The frozen 24-hour soak checkout was not changed.
 
-The implementation in commit `50151a0` discovers the current matching stable
+The implementation in commits `50151a0` and `49515dd` discovers the current matching stable
 Windows MSI from Tailscale's official stable index, requires its adjacent SHA-256
 file to contain exactly one hash, verifies that hash and the Authenticode signer,
 and starts a new installation with `TS_INSTALLUPDATES="always"`. Existing
 Tailscale installations return without changing their update policy.
 
-The native setup panel automatically starts this bootstrap once when it observes
-`not_installed`; it offers a retry only after a terminal failure. Browser mode
+The native setup panel opens itself on mount and automatically starts this
+bootstrap once when it observes `not_installed`; it offers a retry only after a terminal failure. Browser mode
 does not invoke native IPC. Login and host Serve consent remain separate actions.
 
 No real Tailscale installation, update, login, Serve change, Agent restart, or

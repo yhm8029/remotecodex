@@ -82,13 +82,13 @@ and raw output in actual Chrome.
 
 ## 2026-09-13 automatic Tailscale bootstrap
 
-Commit `50151a0` replaces the pinned MSI with a latest-stable selection from the
+Commits `50151a0` and `49515dd` replace the pinned MSI with a latest-stable selection from the
 official Tailscale stable index. The installer accepts only a matching local
 filename, checks the adjacent SHA-256 response, the downloaded hash, and the
 `Tailscale Inc.` Authenticode signer. New installations pass
 `TS_INSTALLUPDATES="always"`; pre-existing installations are detected and left
-unchanged. The native setup panel invokes the bootstrap once for `not_installed`
-and displays retry only after a terminal failure. Browser mode still has no IPC,
+unchanged. The native setup panel opens itself and invokes the bootstrap once for
+`not_installed`, then displays retry only after a terminal failure. Browser mode still has no IPC,
 and host Serve remains consent-gated.
 
 Bounded evidence is in `docs/test-results/tailscale-onboarding-2026-09-13/`:

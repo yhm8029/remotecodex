@@ -158,7 +158,7 @@ JSON files. This does not replace clean-VM installation acceptance.
 
 ## 7. 2026-09-13 automatic Tailscale bootstrap checkpoint
 
-The automatic bootstrap implementation is commit `50151a0` on
+The automatic bootstrap implementation is commits `50151a0` and `49515dd` on
 `work/tailscale-onboarding-20260912`. It is followed by the documentation
 checkpoint that records validation in
 `docs/test-results/tailscale-onboarding-2026-09-13/`.
@@ -166,7 +166,7 @@ checkpoint that records validation in
 Validated locally: installer mock `PASS 19`; Rust `58 passed`; Svelte check
 `0 errors, 0 warnings`; web production build; Tauri `--no-bundle --ci` build.
 The resulting desktop executable hash is
-`53786F04CD23D0C7118B063FCEDA3207C5DD77D6416BAE082C630F80F1B78B21`.
+`95D46602A4409F1A825DB1BDC4B22D398B7744C513B01435048D10FC98D23E31`.
 
 Do not launch the missing-client native bootstrap on the PC currently running
 the 24-hour soak: its intended behavior is to make a real official download and
