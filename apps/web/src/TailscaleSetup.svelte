@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onDestroy } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
   export let native = false;
   export let role: 'host' | 'client' = 'client';
   export let canConfigureHost = false;
@@ -98,6 +98,7 @@
   function closePanel() { if (!busy) { stopPoll(); epoch++; open = false; } }
   function manual() { if (!busy) { stopPoll(); epoch++; if (!rebootRequired) message = ''; void refresh(epoch); } }
   function retryBootstrap() { if (!busy && retryAvailable && !rebootRequired && setup?.state === 'not_installed') { bootstrapAttempted = false; void install(); } }
+  onMount(() => { if (native) openPanel(); });
   onDestroy(() => { disposed = true; epoch++; stopPoll(); });
   $: host = role === 'host' && setup?.state === 'connected';
   $: ready = host && canConfigureHost && serve?.ownership === 'owned' && !!serve.public_origin && !serve.restart_required && !rebootRequired && !busy && !error;

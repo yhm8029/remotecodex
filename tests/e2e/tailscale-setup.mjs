@@ -35,8 +35,12 @@ const results = [];
 async function page(query = '') {
   const p = await browser.newPage();
   await p.goto(`${base}?${query}`);
-  assert.equal(await p.getByTestId('open').textContent(), '원격 연결 준비하기');
-  await p.getByTestId('open').click();
+  if (query.includes('n=0')) {
+    assert.equal(await p.getByTestId('open').textContent(), '원격 연결 준비하기');
+    await p.getByTestId('open').click();
+  } else {
+    assert.equal(await p.getByTestId('open').count(), 0);
+  }
   await p.getByTestId('close').waitFor();
   return p;
 }
