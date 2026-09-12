@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "command": "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File tests/windows/tailscale-installer.test.ps1",
+  "cases": 19,
+  "coverage": [
+    "latest matching architecture is selected from the official stable index",
+    "foreign, nested, malformed, wrong-architecture, and missing package links are rejected",
+    "checksum endpoint, SHA-256, Authenticode status, and Tailscale Inc. signer are required",
+    "new MSI invocation includes TS_INSTALLUPDATES=always and /norestart",
+    "installer result, UAC denial, existing-install discovery, and timeout identity behavior"
+  ],
+  "real_network_or_install": false
+}

@@ -80,6 +80,22 @@ characters, malformed sequence encoding, stale identity and late responses, perm
 out of an HTML interpretation path. The browser E2E covers toggling projection
 and raw output in actual Chrome.
 
+## 2026-09-13 automatic Tailscale bootstrap
+
+Commit `50151a0` replaces the pinned MSI with a latest-stable selection from the
+official Tailscale stable index. The installer accepts only a matching local
+filename, checks the adjacent SHA-256 response, the downloaded hash, and the
+`Tailscale Inc.` Authenticode signer. New installations pass
+`TS_INSTALLUPDATES="always"`; pre-existing installations are detected and left
+unchanged. The native setup panel invokes the bootstrap once for `not_installed`
+and displays retry only after a terminal failure. Browser mode still has no IPC,
+and host Serve remains consent-gated.
+
+Bounded evidence is in `docs/test-results/tailscale-onboarding-2026-09-13/`:
+19 mocked installer cases, 58 Rust tests, zero Svelte diagnostics, web build,
+and Tauri no-bundle build. Real download, UAC, installer execution, update,
+login, and two-PC checks are NOT_RUN on the active soak PC.
+
 ## Mandatory gates still open
 
 These have not been represented as PASS by the local fixtures:

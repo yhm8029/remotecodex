@@ -1,0 +1,17 @@
+{
+  "status": "PASS_BOUNDED",
+  "commands": [
+    "cargo fmt --manifest-path apps/desktop/src-tauri/Cargo.toml -- --check",
+    "cargo test --manifest-path apps/desktop/src-tauri/Cargo.toml --quiet",
+    "npm run check:web",
+    "npm run build:web",
+    "node C:/Users/user/remotecodex/node_modules/@tauri-apps/cli/tauri.js build --no-bundle --ci"
+  ],
+  "rust_tests": 58,
+  "web_diagnostics": { "errors": 0, "warnings": 0 },
+  "artifact": {
+    "path": "apps/desktop/src-tauri/target/release/remotecodex-desktop.exe",
+    "sha256": "53786F04CD23D0C7118B063FCEDA3207C5DD77D6416BAE082C630F80F1B78B21"
+  },
+  "native_missing_client_smoke": "NOT_RUN: would trigger real automatic bootstrap on the soak PC"
+}

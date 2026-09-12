@@ -316,6 +316,15 @@ P1~P6의 각 gate와 모바일 검사는 SPEC의 단계 순서를 따른다. 이
 
 단위 테스트 증거: `docs/test-results/v0.2.0/all-tests.tap.txt` (96 core + 29 client). Fake transport/decoder를 실제 native/WebRTC로 표시하지 않는다.
 
+## 2026-09-13 Tailscale 자동 부트스트랩
+
+| 인수 ID | 확인된 범위 | 남은 조건 / 증거 |
+|---|---|---|
+| TS-AUTO-001 | native `not_installed` 상태에서 패널 열기마다 한 번 자동 설치 호출, 수동 설치 버튼 없음 | Playwright mock E2E PASS; 실제 MSI 다운로드/UAC는 NOT_RUN. `docs/test-results/tailscale-onboarding-2026-09-13/` |
+| TS-AUTO-002 | 공식 stable index의 동일 CPU MSI만 선택, checksum·SHA-256·Authenticode 검증 | PowerShell mock 19 cases PASS; 실제 네트워크/서명 체인은 NOT_RUN |
+| TS-AUTO-003 | 새 설치의 `TS_INSTALLUPDATES="always"`, 기존 설치 정책 보존 | MSI argument mock PASS; 실제 Windows 정책/업데이트 동작은 NOT_RUN |
+| TS-AUTO-004 | 취소·승인 거부 등 실패에서만 명시 재시도, browser IPC 없음, Serve 동의 유지 | Playwright mock E2E PASS; 실제 UAC/로그인/2-PC Serve는 NOT_RUN |
+
 ## 2026-09-12 실제 증거와 판정 범위
 
 기준 소스는 이 문서와 함께 커밋되는 `work/spec-completion` 체크포인트다. 상세 결과: [로컬 검증](docs/test-results/spec-completion-2026-09-12/local-checks.json). 최종 패키지와 전 기기 인수 완료를 뜻하지 않는다.
