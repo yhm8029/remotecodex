@@ -1,5 +1,16 @@
 # RemoteCodex — continuation guide
 
+## 다음 작업: Tailscale 설치·연결 안내
+
+[작업 계획](docs/superpowers/plans/2026-09-12-tailscale-onboarding.md)에 설치 감지,
+공식 설치 프로그램 실행, 로그인 안내, 기존 Serve 설정 연결과 검증 범위를 정리했다.
+현재는 **계획만 기록한 상태**다. 다른 PC에서 진행 중인 테스트는 기존 실행본과
+설정으로 유지하고, 구현·빌드는 별도 작업 공간에서 진행한다. 이 문서 커밋만으로
+Tailscale이나 실행 중인 EXE가 업데이트된 것은 아니다.
+
+이 PC의 이전 24시간 soak는 사용자 요청으로 중단됐으며 24시간 PASS가 아니다.
+중단 시점과 다른 PC 테스트의 구분은 위 계획의 인계 참고를 확인한다.
+
 This checkout is at a **SPEC-completion-in-progress** checkpoint. Current local
 fixtures cover real Windows PTYs, the readable projection UI, preview adapters,
 native safety fixtures, device administration, PWA offline behavior, and several
