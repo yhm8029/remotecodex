@@ -166,7 +166,7 @@ checkpoint that records validation in
 Validated locally: installer mock `PASS 19`; Rust `58 passed`; Svelte check
 `0 errors, 0 warnings`; web production build; Tauri `--no-bundle --ci` build.
 The resulting desktop executable hash is
-`95D46602A4409F1A825DB1BDC4B22D398B7744C513B01435048D10FC98D23E31`.
+`0E3ADD8BA058974C7E0571C5FA4C485B38B01BAAFFD44E1830FE2804CB0D504C`.
 
 Do not launch the missing-client native bootstrap on the PC currently running
 the 24-hour soak: its intended behavior is to make a real official download and

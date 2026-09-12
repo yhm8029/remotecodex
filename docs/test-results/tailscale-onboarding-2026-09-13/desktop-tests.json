@@ -11,7 +11,7 @@
   "web_diagnostics": { "errors": 0, "warnings": 0 },
   "artifact": {
     "path": "apps/desktop/src-tauri/target/release/remotecodex-desktop.exe",
-    "sha256": "95D46602A4409F1A825DB1BDC4B22D398B7744C513B01435048D10FC98D23E31"
+    "sha256": "0E3ADD8BA058974C7E0571C5FA4C485B38B01BAAFFD44E1830FE2804CB0D504C"
   },
   "native_missing_client_smoke": "NOT_RUN: would trigger real automatic bootstrap on the soak PC"
 }
