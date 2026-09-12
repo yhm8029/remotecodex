@@ -7,7 +7,7 @@
   type Serve = { ownership: 'absent' | 'owned' | 'conflict'; public_origin?: string; restart_required?: boolean; detail: string };
   let open = false, busy = false, installing = false, disposed = false;
   let setup: Setup | null = null, serve: Serve | null = null;
-  let error = '', message = '', consent = false, installBlocked = false, rebootRequired = false;
+  let error = '', message = '', consent = false, installBlocked = false, rebootRequired = false, bootstrapAttempted = false, retryAvailable = false;
   let epoch = 0, poll = 0, timer: ReturnType<typeof setTimeout> | undefined;
   const current = (id: number) => !disposed && open && id === epoch;
   function stopPoll() { poll++; clearTimeout(timer); timer = undefined; }
@@ -22,24 +22,34 @@
   };
   async function refresh(id = epoch) {
     if (!native || !current(id) || busy) return;
+    let bootstrap = false;
     busy = true; error = ''; setup = null; serve = null;
     try {
       const next = await invoke<Setup>('tailscale_setup_status');
       if (!current(id)) return;
       setup = next; installBlocked = next.state === 'installing';
+      bootstrap = next.state === 'not_installed' && !bootstrapAttempted && !installBlocked && !rebootRequired;
       if (role === 'host' && canConfigureHost && next.state === 'connected' && !rebootRequired) {
         const nextServe = await invoke<Serve>('tailscale_status');
         if (!current(id)) return;
         serve = nextServe;
       }
     } catch (e) { if (current(id)) { setup = null; serve = null; error = String(e); } }
-    finally { if (current(id)) busy = false; }
+    finally {
+      if (current(id)) {
+        busy = false;
+        if (bootstrap) void install();
+      }
+    }
   }
   async function install() {
     if (!native || busy || !open || disposed || installBlocked || rebootRequired || setup?.state !== 'not_installed') return;
-    stopPoll(); const id = ++epoch; busy = true; installing = true; message = ''; error = '';
+    bootstrapAttempted = true;
+    retryAvailable = false;
+    stopPoll(); const id = ++epoch; let installCode: string | null = null; busy = true; installing = true; message = ''; error = '';
     try {
       const result = await invoke<{ code: string }>('tailscale_setup_install');
+      installCode = result.code;
       if (!current(id)) return;
       if (result.code === 'installed' || result.code === 'already_installed') {
         busy = false; installing = false; await refresh(id);
@@ -51,8 +61,8 @@
       } else if (result.code === 'cancelled') message = '설치가 취소되었습니다. 다시 시도할 수 있습니다.';
       else if (result.code === 'approval_denied') message = 'Windows 관리자 승인이 거부되었습니다. 승인 가능한 계정으로 다시 시도하세요.';
       else { message = '설치를 완료하지 못했습니다. 새로 고침 후 다시 시도하세요.'; error = result.code; }
-    } catch (e) { if (current(id)) { message = '설치를 시작하지 못했습니다.'; error = String(e); } }
-    finally { if (current(id)) { busy = false; installing = false; } }
+    } catch (e) { if (current(id)) { installCode = 'invoke_failed'; message = '설치를 시작하지 못했습니다.'; error = String(e); } }
+    finally { if (current(id)) { retryAvailable = !!installCode && !['installed', 'already_installed', 'reboot_required', 'timeout'].includes(installCode); busy = false; installing = false; } }
   }
   async function login() {
     if (!native || busy || !open || disposed || rebootRequired || !['login_required', 'connecting'].includes(setup?.state ?? '')) return;
@@ -84,9 +94,10 @@
     } catch (e) { if (current(id)) { serve = null; message = '원격 연결 설정을 완료하지 못했습니다.'; error = String(e); } }
     finally { if (current(id)) busy = false; }
   }
-  function openPanel() { if (!open && !disposed) { open = true; busy = false; epoch++; void refresh(epoch); } }
+  function openPanel() { if (!open && !disposed) { open = true; busy = false; bootstrapAttempted = false; retryAvailable = false; epoch++; void refresh(epoch); } }
   function closePanel() { if (!busy) { stopPoll(); epoch++; open = false; } }
   function manual() { if (!busy) { stopPoll(); epoch++; if (!rebootRequired) message = ''; void refresh(epoch); } }
+  function retryBootstrap() { if (!busy && retryAvailable && !rebootRequired && setup?.state === 'not_installed') { bootstrapAttempted = false; void install(); } }
   onDestroy(() => { disposed = true; epoch++; stopPoll(); });
   $: host = role === 'host' && setup?.state === 'connected';
   $: ready = host && canConfigureHost && serve?.ownership === 'owned' && !!serve.public_origin && !serve.restart_required && !rebootRequired && !busy && !error;
@@ -109,7 +120,7 @@
       <p role="status" data-testid="state">{installing ? '설치 중 — Windows 설치 창을 확인하세요.' : labels[setup?.state ?? ''] ?? '설치 확인 중'}</p>
       {#if message}<p role="status" data-testid="message">{message}</p>{/if}
       {#if error}<p role="alert">상태를 확인하지 못했습니다. 고급 진단을 확인한 뒤 다시 시도하세요.</p>{/if}
-      {#if setup?.state === 'not_installed' && !installBlocked && !rebootRequired}<button type="button" on:click={install} disabled={busy} data-testid="install">Tailscale 설치</button>{/if}
+      {#if retryAvailable && !rebootRequired}<button type="button" on:click={retryBootstrap} disabled={busy} data-testid="retry-bootstrap">설치 다시 시도</button>{/if}
       {#if ['login_required', 'connecting'].includes(setup?.state ?? '') && !rebootRequired}<button type="button" on:click={login} disabled={busy} data-testid="login">Tailscale 로그인·연결</button>{/if}
       {#if host && !canConfigureHost}<p>아래의 Agent 시작 또는 연결 버튼을 먼저 사용하세요. 연결 후 호스트 설정에서 원격 접속을 켤 수 있습니다.</p>{/if}
       {#if role === 'client' && setup?.state === 'connected'}<p>이 PC의 연결이 준비됐습니다. 접속하려는 호스트 PC 주소를 입력하세요.</p>{/if}

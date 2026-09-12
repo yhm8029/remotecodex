@@ -1,6 +1,7 @@
 $ErrorActionPreference = 'Stop'
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-$version = '1.102.4'
+$packageRoot = 'https://pkgs.tailscale.com/stable/'
+$publisher = 'Tailscale Inc.'
 $source = $null
 $code = $null
 $arch = $null
@@ -9,10 +10,20 @@ $workDir = $null
 $proc = $null
 $installer_pid = $null
 $installer_start_ticks = $null
-$hashes = @{
-    'amd64' = '80eb007e39dfebe17299fa1a09c79a8e1d934f76e0246c0817ebe3af675b7ef6'
-    'arm64' = 'b7dd1c03bf2e2c430f1fffc4e47ef92829c86d5190febbd9c025dcada5f410b6'
-    'x86'   = 'a8bda9fb254374bb13d46ebf02b6ffba4ed009a739580be511aa7afa8dddd42d'
+function Select-StableMsi {
+    param([string]$Html,[string]$Architecture)
+    $selected = $null
+    foreach ($match in [regex]::Matches($Html, 'href\s*=\s*["'']([^"'']+)["'']', [Text.RegularExpressions.RegexOptions]::IgnoreCase)) {
+        $name = $match.Groups[1].Value
+        $parts = [regex]::Match($name, '^tailscale-setup-(\d+)\.(\d+)\.(\d+)-(amd64|arm64|x86)\.msi$')
+        if (-not $parts.Success -or $parts.Groups[4].Value -ne $Architecture) { continue }
+        $candidate = [pscustomobject]@{
+            Name = $name
+            Version = [version]("{0}.{1}.{2}" -f $parts.Groups[1].Value,$parts.Groups[2].Value,$parts.Groups[3].Value)
+        }
+        if ($null -eq $selected -or $candidate.Version -gt $selected.Version) { $selected = $candidate }
+    }
+    return $selected
 }
 function Test-Installed {
     $paths = @()
@@ -48,7 +59,21 @@ try {
         default { $code = 'unsupported_platform'; return }
     }
     if (Test-Installed) { $code = 'already_installed'; return }
-    $source = "https://pkgs.tailscale.com/stable/tailscale-setup-$version-$arch.msi"
+    try {
+        $index = (Invoke-WebRequest -Uri $packageRoot -UseBasicParsing -TimeoutSec 120 -MaximumRedirection 0).Content
+    } catch {
+        $code = 'download_failed'; return
+    }
+    $selected = Select-StableMsi -Html $index -Architecture $arch
+    if ($null -eq $selected) { $code = 'download_failed'; return }
+    $version = $selected.Version.ToString()
+    $source = $packageRoot + $selected.Name
+    try {
+        $expected = (Invoke-WebRequest -Uri ($source + '.sha256') -UseBasicParsing -TimeoutSec 120 -MaximumRedirection 0).Content.Trim()
+    } catch {
+        $code = 'download_failed'; return
+    }
+    if ($expected -notmatch '^[a-fA-F0-9]{64}$') { $code = 'verification_failed'; return }
     $guid = [Guid]::NewGuid().ToString()
     $workDir = Join-Path ([System.IO.Path]::GetTempPath()) $guid
     $null = New-Item -ItemType Directory -Path $workDir -Force
@@ -59,15 +84,15 @@ try {
         $code = 'download_failed'; return
     }
     $actual = (Get-FileHash -Path $msiPath -Algorithm SHA256).Hash.ToLower()
-    if ($actual -ne $hashes[$arch].ToLower()) { $code = 'verification_failed'; return }
+    if ($actual -ne $expected.ToLower()) { $code = 'verification_failed'; return }
     $sig = Get-AuthenticodeSignature -FilePath $msiPath
     if ($sig.Status -ne 'Valid') { $code = 'verification_failed'; return }
     $sn = $sig.SignerCertificate.GetNameInfo([System.Security.Cryptography.X509Certificates.X509NameType]::SimpleName, $false)
-    if ($sn -ne 'Tailscale Inc.') { $code = 'verification_failed'; return }
+    if ($sn -ne $publisher) { $code = 'verification_failed'; return }
     if (Test-Installed) { $code = 'already_installed'; return }
     $msiExec = Join-Path $env:SystemRoot 'System32\msiexec.exe'
     try {
-        $proc = Start-Process -FilePath $msiExec -ArgumentList @('/i', "`"$msiPath`"", '/norestart') -PassThru -WindowStyle Normal
+        $proc = Start-Process -FilePath $msiExec -ArgumentList @('/i', "`"$msiPath`"", 'TS_INSTALLUPDATES="always"', '/norestart') -PassThru -WindowStyle Normal
     } catch [System.ComponentModel.Win32Exception] {
         if ($_.Exception.NativeErrorCode -eq 1223) { $code = 'approval_denied' } else { $code = 'install_failed' }
         return

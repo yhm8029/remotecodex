@@ -4,11 +4,11 @@
     "fresh host connected before Agent never reads Serve",
     "login deadline stops and connected poll checks host address",
     "browser0IPC",
-    "both roles install reaches login UI",
+    "both roles bootstrap automatically and never show an install button",
     "host consent, conflict, client no serve",
     "ready requires origin and no restart",
     "poll cleanup close and destroy",
-    "install terminal, retry, and reboot latch",
+    "bootstrap failure shows explicit retry and reboot remains latched",
     "refresh failure clears stale ready"
   ]
 }
