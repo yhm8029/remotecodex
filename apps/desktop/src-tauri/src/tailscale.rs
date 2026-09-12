@@ -89,7 +89,9 @@ pub trait CliRunner {
 pub struct SystemRunner;
 impl CliRunner for SystemRunner {
     fn run(&self, args: &[&str]) -> Result<CommandOutput, String> {
-        let mut c = Command::new("tailscale.exe");
+        let executable = crate::tailscale_setup::resolve_cli()
+            .ok_or_else(|| "Tailscale executable not found".to_owned())?;
+        let mut c = Command::new(executable);
         c.args(args)
             .stdin(Stdio::null())
             .stdout(Stdio::piped())

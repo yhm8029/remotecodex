@@ -1,6 +1,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 mod lifecycle;
 mod tailscale;
+mod tailscale_setup;
 use tauri_plugin_opener::OpenerExt;
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -136,6 +137,63 @@ fn set_media_document(path: &std::path::Path, settings: &MediaSettings) -> Resul
 #[derive(serde::Serialize)]
 struct AutostartResponse {
     status: &'static str,
+}
+
+fn authorize_setup_window(window: &tauri::WebviewWindow) -> Result<(), String> {
+    if window.label() != "main" {
+        return Err("Tailscale setup is only available to the main window".into());
+    }
+    let url = window
+        .url()
+        .map_err(|_| "Could not verify setup window origin".to_owned())?;
+    if allowed_setup_origin(&url) {
+        Ok(())
+    } else {
+        Err("Tailscale setup is unavailable from this origin".into())
+    }
+}
+
+fn allowed_setup_origin(url: &url::Url) -> bool {
+    let production = url.port().is_none()
+        && url.username().is_empty()
+        && url.password().is_none()
+        && ((url.scheme() == "tauri" && url.host_str() == Some("localhost"))
+            || (url.scheme() == "http" && url.host_str() == Some("tauri.localhost")));
+    #[cfg(debug_assertions)]
+    let development = url.scheme() == "http"
+        && url.port() == Some(1420)
+        && matches!(url.host_str(), Some("127.0.0.1") | Some("localhost"));
+    #[cfg(not(debug_assertions))]
+    let development = false;
+    production || development
+}
+
+#[tauri::command]
+async fn tailscale_setup_status(
+    window: tauri::WebviewWindow,
+) -> Result<tailscale_setup::SetupStatus, String> {
+    authorize_setup_window(&window)?;
+    tauri::async_runtime::spawn_blocking(tailscale_setup::status)
+        .await
+        .map_err(|_| "Tailscale status task failed".into())
+}
+
+#[tauri::command]
+async fn tailscale_setup_install(
+    window: tauri::WebviewWindow,
+) -> Result<tailscale_setup::InstallResult, String> {
+    authorize_setup_window(&window)?;
+    tauri::async_runtime::spawn_blocking(tailscale_setup::install)
+        .await
+        .map_err(|_| "Tailscale installer task failed".to_owned())?
+}
+
+#[tauri::command]
+async fn tailscale_setup_login(window: tauri::WebviewWindow) -> Result<(), String> {
+    authorize_setup_window(&window)?;
+    tauri::async_runtime::spawn_blocking(tailscale_setup::open_login)
+        .await
+        .map_err(|_| "Tailscale login task failed".to_owned())?
 }
 
 #[tauri::command]
@@ -751,6 +809,9 @@ fn main() {
             set_autostart,
             media_config_status,
             set_media_config,
+            tailscale_setup_status,
+            tailscale_setup_install,
+            tailscale_setup_login,
             tailscale_status,
             set_tailscale_serve,
             open_preview
@@ -762,6 +823,41 @@ fn main() {
 #[cfg(test)]
 mod media_config_tests {
     use super::*;
+
+    #[test]
+    fn setup_origin_accepts_production_localhost() {
+        assert!(allowed_setup_origin(
+            &url::Url::parse("tauri://localhost").unwrap()
+        ));
+        assert!(allowed_setup_origin(
+            &url::Url::parse("http://tauri.localhost").unwrap()
+        ));
+    }
+
+    #[test]
+    fn setup_origin_rejects_remote_and_preview_origins() {
+        for value in [
+            "https://evil.example",
+            "http://127.0.0.1:1421",
+            "tauri://evil",
+            "http://tauri.localhost:9333",
+            "tauri://localhost:9333",
+            "http://user@tauri.localhost",
+        ] {
+            assert!(!allowed_setup_origin(&url::Url::parse(value).unwrap()));
+        }
+    }
+
+    #[cfg(debug_assertions)]
+    #[test]
+    fn setup_origin_allows_dev_loopback_only_in_debug() {
+        assert!(allowed_setup_origin(
+            &url::Url::parse("http://127.0.0.1:1420").unwrap()
+        ));
+        assert!(!allowed_setup_origin(
+            &url::Url::parse("http://192.168.1.10:1420").unwrap()
+        ));
+    }
 
     #[test]
     fn media_validation_rejects_non_tailnet_peers() {
