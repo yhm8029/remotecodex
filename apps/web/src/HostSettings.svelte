@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import TailscaleSetup from './TailscaleSetup.svelte';
   type Status = 'unknown' | 'disabled' | 'enabled' | 'conflict';
   let status: Status = 'unknown', consent = false, busy = false, error = '';
   type Serve = { installed: boolean; ownership: 'absent' | 'owned' | 'conflict'; detail: string; dns_name?: string; public_origin?: string; restart_required?: boolean; preview_ports?: Record<string, number> };
@@ -34,17 +35,19 @@
     <button on:click={() => setEnabled(false)} disabled={busy || status === 'conflict'}>자동 시작 끄기</button>
     <button on:click={refresh} disabled={busy}>새로 고침</button>
   </div>
-  <h3>Tailscale Serve</h3>
+  <TailscaleSetup native={true} role="host" canConfigureHost={true} />
+  <details><summary>기존 원격 연결 설정 관리</summary>
+  <button on:click={refreshServe} disabled={busy}>설정 새로 고침</button>
   {#if serve && !serve.installed}<p class="warning" role="status">Tailscale CLI가 설치되어 있지 않습니다. Tailscale은 별도 구성요소입니다.</p>
   {:else if serve}<p role="status">HTTPS 443: {serve.ownership} · {serve.detail}</p>{/if}
   {#if serve?.public_origin}<p><label>복사할 회사 주소<input readonly value={serve.public_origin} on:focus={(event) => event.currentTarget.select()}></label></p>{/if}
   {#if serve?.restart_required}<p class="warning" role="status">Agent 설정이 바뀌어 재시작이 필요합니다. 실행 중인 PTY는 중지하지 않습니다.</p>{/if}
   {#if serve?.ownership === 'conflict'}<p class="warning" role="alert">기존 443 설정을 보존했습니다. RemoteCodex가 변경하거나 제거하지 않습니다.</p>{/if}
-  <label><input type="checkbox" bind:checked={serveConsent} disabled={busy || !serve?.installed || serve?.ownership === 'conflict'}> 이 PC의 HTTPS 443을 Agent로 연결하는 Serve 변경에 동의합니다.</label>
-  <div class="actions"><button on:click={() => setServe(true)} disabled={busy || !serveConsent || !serve?.installed || serve?.ownership !== 'absent'}>Serve 적용</button><button on:click={() => setServe(false)} disabled={busy || serve?.ownership !== 'owned'}>RemoteCodex Serve 제거</button><button on:click={refreshServe} disabled={busy}>Serve 새로 고침</button></div>
+  {#if serve?.ownership === 'owned'}<div class="actions"><button on:click={() => setServe(false)} disabled={busy}>RemoteCodex Serve 제거</button><button on:click={refreshServe} disabled={busy}>Serve 새로 고침</button></div>{/if}
+  </details>
   {#if error}<p class="warning" role="alert">{error}</p>{/if}
 </section>
 
 <style>
-  .host-settings{margin:12px 14px;padding:14px;border:1px solid #273447;border-radius:9px;background:#131c28}.host-settings h2{font-size:15px;margin:0 0 8px}.host-settings h3{font-size:14px;margin:18px 0 6px}.host-settings p{margin:6px 0}.hint{font-size:11px;color:#92a3b8}.warning{color:#ddc392}.host-settings label{flex-direction:row;align-items:center;margin:12px 0}.actions{display:flex;gap:8px;flex-wrap:wrap}
+  .host-settings{margin:12px 14px;padding:14px;border:1px solid #273447;border-radius:9px;background:#131c28}.host-settings h2{font-size:15px;margin:0 0 8px}.host-settings p{margin:6px 0}.hint{font-size:11px;color:#92a3b8}.warning{color:#ddc392}.host-settings label{flex-direction:row;align-items:center;margin:12px 0}.actions{display:flex;gap:8px;flex-wrap:wrap}
 </style>

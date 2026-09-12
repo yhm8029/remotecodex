@@ -6,6 +6,7 @@
   import MediaPane from './MediaPane.svelte';
   import LocalMediaAdmin from './LocalMediaAdmin.svelte';
   import HostSettings from './HostSettings.svelte';
+  import TailscaleSetup from './TailscaleSetup.svelte';
   import DeviceAdmin from './DeviceAdmin.svelte';
   import SessionSidebar from './SessionSidebar.svelte';
   import { previewAdapter, type PreviewFramework } from './preview-adapters';
@@ -134,8 +135,9 @@
         <button on:click={() => setupMode = 'client'}>다른 PC에 접속</button>
       {:else if setupMode === 'host'}
         <p>Agent는 현재 로그인한 일반 Windows 사용자로 실행됩니다. 원격 셸은 그 사용자의 파일과 명령 실행 권한을 가집니다.</p>
-        <div class="notice">Tailscale은 별도로 설치하고 구성해야 합니다. Codex·Git·Node·Python은 호스트 PC에서 사용하는 개발 도구이며 RemoteCodex 클라이언트의 필수 런타임이 아닙니다.</div>
+        <div class="notice">아래 안내에서 Tailscale 설치와 연결을 준비하세요. Codex·Git·Node·Python은 호스트 PC에서 사용하는 개발 도구이며 RemoteCodex 클라이언트의 필수 런타임이 아닙니다.</div>
         <p>RemoteCodex UI를 닫아도 Agent와 실행 중인 PTY는 계속 유지됩니다.</p>
+        <TailscaleSetup native={isNative} role="host" />
         <label class="checkbox"><input type="checkbox" bind:checked={experimentalAccepted}> 소스 알파의 미검증 제한과 원격 셸 권한을 확인했습니다.</label>
         <button class="primary" on:click={startHost} disabled={busy || !experimentalAccepted}>{busy ? 'Agent 확인 중…' : '이 PC에서 Agent 시작 또는 연결'}</button>
         <button on:click={() => setupMode = 'choose'} disabled={busy}>뒤로</button>
@@ -144,6 +146,7 @@
       <p>집 PC는 화면과 키보드입니다. 코드와 Codex는 회사 PC에서 계속 실행됩니다.</p>
       <label>회사 Agent 주소 <input type="url" bind:value={base} placeholder="https://office-pc.your-tailnet.ts.net"></label>
       <div class="notice">이 소스는 Windows 실기기 검증 전 개발 버전입니다. 터미널 복원·IME·성능이 아직 출시 기준을 통과하지 않았습니다.</div>
+      <TailscaleSetup native={isNative} role="client" />
       <label class="checkbox"><input type="checkbox" bind:checked={experimentalAccepted}> 개발 버전의 검증 제한을 확인했습니다.</label>
       <button class="primary" on:click={() => connect()} disabled={busy || !experimentalAccepted}>{busy ? '연결 중…' : '등록된 기기로 연결'}</button>
       <details open><summary>처음 연결하는 기기 등록</summary><label>기기 이름<input bind:value={label}></label><label>회사 PC에서 발급한 일회용 티켓<input type="password" autocomplete="off" bind:value={ticket} placeholder="rc-agent pair 결과의 ticket"></label>
