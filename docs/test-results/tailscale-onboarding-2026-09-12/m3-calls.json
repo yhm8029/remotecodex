@@ -1,0 +1,174 @@
+[
+  {
+    "call": "detection.initial",
+    "outcome": "transport_read_timeout",
+    "usage": null
+  },
+  {
+    "call": "browser-tests.response",
+    "model": "MiniMax-M3",
+    "max_tokens": 524288,
+    "thinking": "disabled",
+    "usage": {
+      "input_tokens": 781,
+      "output_tokens": 2272,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 128,
+      "service_tier": "standard"
+    },
+    "stop_reason": "end_turn",
+    "outcome": "rejected_invalid_syntax_and_vacuous_checks_Luna_fallback"
+  },
+  {
+    "call": "detection-fixed.response",
+    "model": "MiniMax-M3",
+    "max_tokens": 524288,
+    "thinking": "disabled",
+    "usage": {
+      "input_tokens": 2213,
+      "output_tokens": 2030,
+      "service_tier": "standard"
+    },
+    "stop_reason": "end_turn",
+    "outcome": "integrated_with_GPT_test_order_fix"
+  },
+  {
+    "call": "detection-retry.response",
+    "model": "MiniMax-M3",
+    "max_tokens": 524288,
+    "thinking": "disabled",
+    "usage": {
+      "input_tokens": 406,
+      "output_tokens": 1914,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 128,
+      "service_tier": "standard"
+    },
+    "stop_reason": "end_turn",
+    "outcome": "rejected_wrong_schema_and_discovery"
+  },
+  {
+    "call": "installer-fixed.response",
+    "model": "MiniMax-M3",
+    "max_tokens": 524288,
+    "thinking": "disabled",
+    "usage": {
+      "input_tokens": 1432,
+      "output_tokens": 1409,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 128,
+      "service_tier": "standard"
+    },
+    "stop_reason": "end_turn",
+    "outcome": "integrated_pending_mock_verification"
+  },
+  {
+    "call": "installer-tests-fixed.response",
+    "model": "MiniMax-M3",
+    "max_tokens": 524288,
+    "thinking": "disabled",
+    "usage": {
+      "input_tokens": 2835,
+      "output_tokens": 2370,
+      "service_tier": "standard"
+    },
+    "stop_reason": "end_turn",
+    "outcome": "rejected_repeated_mock_scopes_Luna_fallback"
+  },
+  {
+    "call": "installer-tests.response",
+    "model": "MiniMax-M3",
+    "max_tokens": 524288,
+    "thinking": "disabled",
+    "usage": {
+      "input_tokens": 1863,
+      "output_tokens": 2429,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 128,
+      "service_tier": "standard"
+    },
+    "stop_reason": "end_turn",
+    "outcome": "rejected_syntax_and_mock_scopes"
+  },
+  {
+    "call": "installer.response",
+    "model": "MiniMax-M3",
+    "max_tokens": 524288,
+    "thinking": "adaptive",
+    "usage": {
+      "input_tokens": 643,
+      "output_tokens": 14112,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 128,
+      "service_tier": "standard",
+      "output_tokens_details": {
+        "thinking_tokens": 12835
+      }
+    },
+    "stop_reason": "end_turn",
+    "outcome": "rejected_powershell_parameter_and_discovery"
+  },
+  {
+    "call": "os-fixed.response",
+    "model": "MiniMax-M3",
+    "max_tokens": 524288,
+    "thinking": "disabled",
+    "usage": {
+      "input_tokens": 2153,
+      "output_tokens": 1861,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 128,
+      "service_tier": "standard"
+    },
+    "stop_reason": "end_turn",
+    "outcome": "rejected_repeated_missed_corrections_Luna_fallback"
+  },
+  {
+    "call": "os.response",
+    "model": "MiniMax-M3",
+    "max_tokens": 524288,
+    "thinking": "adaptive",
+    "usage": {
+      "input_tokens": 779,
+      "output_tokens": 8810,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 128,
+      "service_tier": "standard",
+      "output_tokens_details": {
+        "thinking_tokens": 6848
+      }
+    },
+    "stop_reason": "end_turn",
+    "outcome": "rejected_mock_tests_and_error_handling"
+  },
+  {
+    "call": "ui-retry.response",
+    "model": "MiniMax-M3",
+    "max_tokens": 524288,
+    "thinking": "disabled",
+    "usage": {
+      "input_tokens": 774,
+      "output_tokens": 3064,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 128,
+      "service_tier": "standard"
+    },
+    "stop_reason": "end_turn",
+    "outcome": "rejected_busy_refresh_and_lifecycle_Luna_fallback"
+  },
+  {
+    "call": "ui.response",
+    "model": "MiniMax-M3",
+    "max_tokens": 524288,
+    "thinking": "disabled",
+    "usage": {
+      "input_tokens": 773,
+      "output_tokens": 3925,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 128,
+      "service_tier": "standard"
+    },
+    "stop_reason": "end_turn",
+    "outcome": "rejected_mutation_during_refresh"
+  }
+]

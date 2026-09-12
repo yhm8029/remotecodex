@@ -5,6 +5,11 @@
 
 ## 사용 규칙
 
+Tailscale 설치·연결 안내 개선의 단위/모의/로컬 빌드 증거는
+[tailscale-onboarding-2026-09-12](docs/test-results/tailscale-onboarding-2026-09-12/README.md)에
+별도로 기록한다. 실제 Windows 미설치→설치→로그인 및 두 PC 원격 경로는
+`NOT_RUN`이며, 이 변경으로 기존 네트워크 인수 항목을 PASS로 올리지 않는다.
+
 실제 구현 후 각 ID에 환경·commit·절차·원시 로그/trace·판정 근거를 연결한다. 자동화 fixture와 실기기 검증을 구분한다. 해당 단계의 필수 항목이 FAILED/NOT_RUN이면 VERIFIED 릴리스로 보고하지 않는다.
 
 상태: `NOT_RUN` / `PASS` / `FAIL` / `BLOCKED` / `NOT_APPLICABLE_WITH_REASON`. 구현 완료 여부는 별도 IMPLEMENTATION_STATUS.md에서 추적한다. 이유 없는 N/A·목표값 완화·테스트 삭제는 허용하지 않는다.

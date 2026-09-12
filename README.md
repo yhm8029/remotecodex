@@ -10,6 +10,24 @@ native media and preview adapters extend the same authenticated control plane.
 
 ## Current checkpoint
 
+### Tailscale 연결 준비
+
+Windows 앱에서 PC 역할을 고른 뒤 **원격 연결 준비하기**를 누르면 설치와
+로그인 상태를 확인할 수 있습니다. 미설치일 때만 공식 설치 프로그램을
+다운로드하고 해시·Windows 서명을 검증합니다. Windows 설치 승인과
+Tailscale 트레이 앱의 Log in/Connect 및 브라우저 로그인은 사용자가 진행합니다.
+기존 설치는 자동으로 업데이트하지 않습니다.
+
+호스트의 원격 연결은 별도 동의 후 설정합니다. 기존 다른 Serve 설정은
+덮어쓰지 않으며, 설정 적용에 Agent 재시작이 필요하면 이를 안내합니다.
+실행 중인 터미널을 자동 종료하지 않습니다. 클라이언트 역할에서는
+호스트 Serve나 Agent 자동 시작을 설정하지 않습니다. 브라우저·모바일에는
+공식 플랫폼 설치 안내를 제공합니다.
+
+새 안내 기능의 검증 범위와 실제 설치·로그인에서 남은 확인 항목은
+[검증 기록](docs/test-results/tailscale-onboarding-2026-09-12/README.md)에 있습니다.
+진행 중인 이전 빌드의 24시간 테스트에 이 기능을 자동 적용하지 않습니다.
+
 The local evidence below is reviewable in `docs/test-results/spec-completion-2026-09-12/`:
 
 - The Agent/browser E2E is PASS, including eight isolated real CMD PTYs,

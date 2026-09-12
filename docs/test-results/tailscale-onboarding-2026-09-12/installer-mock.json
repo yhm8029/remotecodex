@@ -1,0 +1,24 @@
+﻿{
+    "status":  "PASS",
+    "runtime":  "Windows PowerShell 5.1",
+    "cases":  15,
+    "command":  "powershell.exe -NoProfile -NonInteractive -File tests/windows/tailscale-installer.test.ps1",
+    "scope":  "Local cmdlet mocks only: no installation, download, login, or VPN mutation",
+    "coverage":  [
+                     "existing install",
+                     "download failure",
+                     "hash mismatch",
+                     "invalid signature",
+                     "wrong publisher",
+                     "MSI success",
+                     "reboot 3010",
+                     "reboot 1641",
+                     "cancel 1602",
+                     "UAC rejection exception",
+                     "UAC rejection exit1223",
+                     "MSI busy",
+                     "other failure",
+                     "install discovered before launch",
+                     "timeout with exact string identity and no cleanup"
+                 ]
+}

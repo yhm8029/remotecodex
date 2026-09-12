@@ -1,5 +1,27 @@
 # RemoteCodex — continuation guide
 
+## 이 작업 공간의 최신 진행
+
+`work/tailscale-onboarding-20260912`는 계획 커밋 `5116879`에서 분리한
+구현 작업 공간이다. 설치 감지·검증된 공식 MSI 실행·트레이 로그인 안내와
+호스트/클라이언트 UI 구현과 로컬 검증을 마쳤다. 실제 MSI 설치·로그인과
+설치된 환경의 계정·Serve 보존 실검증은 NOT_RUN이다. 아래의 "계획만 기록" 문단은
+원래 계획 커밋 시점의 기록이며 현재 구현 상태는
+`docs/test-results/tailscale-onboarding-2026-09-12/README.md`를 따른다.
+
+현재 PC의 기존 checkout `C:/Users/user/remotecodex`에서 별도 24시간 soak가
+실행 중이다. `runtime/soak-current.json`과 해당 디렉터리의
+`launch-timeout15.json`, `run-timeout15/result.json`을 확인한다. 아래 인계의
+"11:20 중단"은 계획을 작성한 다른 PC의 기록이며 이 실행과 혼동하지 않는다.
+이 worktree의 빌드·테스트로 기존 Agent 또는 서비스 중인 웹 자산을 바꾸지 않는다.
+
+로컬 검사: Rust 58개, MSI 모의 15개, UI 9개 그룹 PASS. Svelte 진단 0개,
+웹 및 Tauri CLI release 빌드 PASS. 실제 네이티브 호스트/클라이언트 감지
+PASS이며 테스트용 UI는 종료했다. 사용자가 기존 GitHub 작성자 정보 재사용을
+승인하여 이 저장소의 로컬 Git 설정에 적용했다. 백엔드 커밋 `6698c33`,
+UI·동작 테스트 커밋 `f960c71`을 생성했다. 현재 PC의 연속 soak는 8시간
+체크포인트까지 IN_PROGRESS이며 완료 결과는 아직 없다.
+
 ## 다음 작업: Tailscale 설치·연결 안내
 
 [작업 계획](docs/superpowers/plans/2026-09-12-tailscale-onboarding.md)에 설치 감지,

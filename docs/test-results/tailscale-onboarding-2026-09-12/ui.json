@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "groups": [
+    "fresh host connected before Agent never reads Serve",
+    "login deadline stops and connected poll checks host address",
+    "browser0IPC",
+    "both roles install reaches login UI",
+    "host consent, conflict, client no serve",
+    "ready requires origin and no restart",
+    "poll cleanup close and destroy",
+    "install terminal, retry, and reboot latch",
+    "refresh failure clears stale ready"
+  ]
+}

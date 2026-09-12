@@ -1,0 +1,7 @@
+﻿{
+    "status":  "PASS",
+    "passed":  58,
+    "failed":  0,
+    "command":  "cargo test --locked --manifest-path apps/desktop/src-tauri/Cargo.toml",
+    "scope":  "Desktop unit tests; no real installer/login/Serve"
+}

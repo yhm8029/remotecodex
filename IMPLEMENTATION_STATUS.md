@@ -24,6 +24,24 @@ The right-click tray callback delivery bug is fixed and tested in source; see [t
 
 ## Evidence that currently passes
 
+## Guided Tailscale setup follow-up
+
+The isolated onboarding branch implements Windows installation detection,
+verified official MSI launch, tray login guidance, bounded connection polling,
+and consent-based host Serve setup. Client/browser flows do not enable Serve.
+The initial host screen defers Serve configuration until Agent setup succeeds;
+the connected host settings provide the configuration wizard.
+
+Local verification: 58 desktop Rust tests, 15 installer mock cases, nine browser
+behavior groups, zero Svelte diagnostics, web production build, and Tauri CLI
+release build. The actual release UI detected missing Tailscale in both roles.
+See [onboarding evidence](docs/test-results/tailscale-onboarding-2026-09-12/README.md).
+Real installation/UAC/login and preservation checks on an already configured
+Tailscale installation remain NOT_RUN. Existing soak binaries and network
+configuration have not received this change.
+
+## Earlier evidence
+
 | Area | Result | Evidence or scope |
 |---|---|---|
 | Agent and browser flow | PASS | `docs/test-results/spec-completion-2026-09-12/windows-agent.json`; 14 checks, including eight isolated real CMD PTYs, lease/reconnect/resize/process checks, projection auth, current-screen projection, and Chrome readable/raw toggle |

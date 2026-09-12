@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "origin": "http://tauri.localhost/",
+  "states": [
+    "client:not_installed",
+    "host:not_installed"
+  ],
+  "build": "Tauri CLI release --no-bundle --ci",
+  "actions": "role selection, open/close setup only; no installation, login, Agent start, pairing or Serve changes",
+  "at": "2026-09-12T10:17:50.536Z"
+}
