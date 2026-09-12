@@ -2,6 +2,16 @@
 
 ## 이 작업 공간의 최신 진행
 
+**2026-09-12 21:27 KST 갱신:** 기능 커밋 3개는
+`origin/work/tailscale-onboarding-20260912`에 push했고 원격 HEAD `3b88f53`을
+확인했다. 아래 8시간 soak 기록 이후 PC의 Modern Standby로 검사 간격이
+34분 벌어져 기존 `run-timeout15`는 FAIL로 끝났다. 로그는 보존했다.
+충전기 연결 확인 및 절전 방지 보조 프로세스의 60초 smoke PASS 후
+같은 동결 Agent로 새 `run-awake` 실행을 시작했다. 현재 결과 경로는
+`C:/Users/user/remotecodex/runtime/soak-24h-20260912-014102/run-awake/result.json`이다.
+Node PID 35004, 절전 방지 wrapper PID 38012. 가장 빠른 완료 시각은
+2026-09-13 21:27 KST이며 이전 실행 시간을 합산하지 않는다.
+
 `work/tailscale-onboarding-20260912`는 계획 커밋 `5116879`에서 분리한
 구현 작업 공간이다. 설치 감지·검증된 공식 MSI 실행·트레이 로그인 안내와
 호스트/클라이언트 UI 구현과 로컬 검증을 마쳤다. 실제 MSI 설치·로그인과
