@@ -1,0 +1,54 @@
+{
+  "entries": [
+    {
+      "name": "rc-tray-sent-test",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 1272,
+        "total_characters": 0,
+        "prompt_tokens": 505,
+        "completion_tokens": 767,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "finish_reason": "stop",
+      "outcome": "rejected: mixed windows crate wrappers with windows-sys raw types"
+    },
+    {
+      "name": "rc-tray-sent-test-fix",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 1137,
+        "total_characters": 0,
+        "prompt_tokens": 539,
+        "completion_tokens": 598,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "finish_reason": "stop",
+      "outcome": "rejected: shadowed production WndProc with fake fixed implementation"
+    },
+    {
+      "name": "rc-tray-relay-fix",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 541,
+        "total_characters": 0,
+        "prompt_tokens": 474,
+        "completion_tokens": 67,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "finish_reason": "stop",
+      "outcome": "applied with parent integration into loop and popup owner; validated by two regressions and owned native menu smoke"
+    }
+  ],
+  "total_tokens": 2950,
+  "scope": "Tray fix task only; Luna test fallback after two rejected M3 test drafts; GPT tokens unknown"
+}

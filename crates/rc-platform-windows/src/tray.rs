@@ -112,6 +112,7 @@ mod native {
 
     const TRAY_ID: u32 = 1;
     const TRAY_CALLBACK: u32 = WM_APP + 41;
+    const TRAY_DISPATCH: u32 = WM_APP + 42;
     const MENU_OPEN_DESKTOP: usize = 1;
     const MENU_BLOCK_REMOTE: usize = 2;
     const MENU_RESUME_REMOTE: usize = 3;
@@ -124,6 +125,10 @@ mod native {
         wparam: WPARAM,
         lparam: LPARAM,
     ) -> LRESULT {
+        if message == TRAY_CALLBACK {
+            let _ = PostMessageW(hwnd, TRAY_DISPATCH, wparam, lparam);
+            return 0;
+        }
         DefWindowProcW(hwnd, message, wparam, lparam)
     }
 
@@ -265,6 +270,9 @@ mod native {
                     null(),
                 )
             };
+            unsafe {
+                PostMessageW(hwnd, WM_NULL, 0, 0);
+            }
             Ok(menu_command(command as usize))
         })();
 
@@ -339,7 +347,7 @@ mod native {
                 0,
                 0,
                 0,
-                HWND_MESSAGE,
+                null_mut(),
                 null_mut(),
                 instance,
                 null(),
@@ -381,7 +389,7 @@ mod native {
                 // WM_QUIT is only expected during process teardown. The tray itself never posts it.
                 break;
             }
-            if message.hwnd != resources.hwnd || message.message != TRAY_CALLBACK {
+            if message.hwnd != resources.hwnd || message.message != TRAY_DISPATCH {
                 unsafe {
                     TranslateMessage(&message);
                     DispatchMessageW(&message);
@@ -432,6 +440,174 @@ mod native {
             }
         }
         Ok(())
+    }
+    #[cfg(test)]
+    mod tray_window_proc_tests {
+        use super::*;
+        use std::{
+            ptr::{null, null_mut},
+            thread,
+            time::{Duration, Instant},
+        };
+        use windows_sys::Win32::{
+            Foundation::{HINSTANCE, LPARAM, WPARAM},
+            System::{
+                LibraryLoader::GetModuleHandleW,
+                Threading::{GetCurrentProcessId, GetCurrentThreadId},
+            },
+            UI::WindowsAndMessaging::*,
+        };
+
+        const PRIVATE_CALLBACK: u32 = WM_APP + 42;
+
+        fn wide(value: &str) -> Vec<u16> {
+            value.encode_utf16().chain(std::iter::once(0)).collect()
+        }
+
+        struct TestWindow {
+            hwnd: HWND,
+            class_name: Vec<u16>,
+            instance: HINSTANCE,
+        }
+
+        impl TestWindow {
+            fn new() -> Self {
+                let instance = unsafe { GetModuleHandleW(null()) };
+                assert!(!instance.is_null());
+                let class_name = wide(&format!(
+                    "RemoteCodexTrayProcTest-{}-{}",
+                    unsafe { GetCurrentProcessId() },
+                    unsafe { GetCurrentThreadId() },
+                ));
+                let class = WNDCLASSW {
+                    lpfnWndProc: Some(tray_window_proc),
+                    hInstance: instance,
+                    lpszClassName: class_name.as_ptr(),
+                    ..unsafe { std::mem::zeroed() }
+                };
+                assert_ne!(unsafe { RegisterClassW(&class) }, 0);
+                let hwnd = unsafe {
+                    CreateWindowExW(
+                        0,
+                        class_name.as_ptr(),
+                        class_name.as_ptr(),
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        HWND_MESSAGE,
+                        null_mut(),
+                        instance,
+                        null_mut(),
+                    )
+                };
+                assert!(!hwnd.is_null());
+                Self {
+                    hwnd,
+                    class_name,
+                    instance,
+                }
+            }
+
+            fn clear_private_messages(&self) {
+                let mut message = unsafe { std::mem::zeroed::<MSG>() };
+                while unsafe {
+                    PeekMessageW(
+                        &mut message,
+                        self.hwnd,
+                        PRIVATE_CALLBACK,
+                        PRIVATE_CALLBACK,
+                        PM_REMOVE,
+                    )
+                } != 0
+                {}
+            }
+        }
+
+        impl Drop for TestWindow {
+            fn drop(&mut self) {
+                unsafe {
+                    DestroyWindow(self.hwnd);
+                    UnregisterClassW(self.class_name.as_ptr(), self.instance);
+                }
+            }
+        }
+
+        #[test]
+        fn synchronous_tray_callback_is_forwarded_to_private_message() {
+            let observed = {
+                let window = TestWindow::new();
+                window.clear_private_messages();
+                unsafe {
+                    SendMessageW(
+                        window.hwnd,
+                        TRAY_CALLBACK,
+                        TRAY_ID as WPARAM,
+                        WM_RBUTTONUP as LPARAM,
+                    );
+                }
+                let mut message = unsafe { std::mem::zeroed::<MSG>() };
+                let seen = unsafe {
+                    PeekMessageW(
+                        &mut message,
+                        window.hwnd,
+                        PRIVATE_CALLBACK,
+                        PRIVATE_CALLBACK,
+                        PM_REMOVE,
+                    ) != 0
+                };
+                drop(window);
+                seen && message.wParam == TRAY_ID as WPARAM
+                    && message.lParam == WM_RBUTTONUP as LPARAM
+            };
+            assert!(
+                observed,
+                "SendMessageW(TRAY_CALLBACK, WM_RBUTTONUP) must enqueue WM_APP+42"
+            );
+        }
+
+        #[test]
+        fn posted_tray_callback_reaches_private_message_through_dispatch() {
+            let observed = {
+                let window = TestWindow::new();
+                window.clear_private_messages();
+                let posted = unsafe {
+                    PostMessageW(
+                        window.hwnd,
+                        TRAY_CALLBACK,
+                        TRAY_ID as WPARAM,
+                        WM_RBUTTONUP as LPARAM,
+                    ) != 0
+                };
+                assert!(posted);
+                let deadline = Instant::now() + Duration::from_secs(2);
+                let mut message = unsafe { std::mem::zeroed::<MSG>() };
+                let mut seen = false;
+                while Instant::now() < deadline && !seen {
+                    while unsafe { PeekMessageW(&mut message, window.hwnd, 0, 0, PM_REMOVE) } != 0 {
+                        if message.message == PRIVATE_CALLBACK {
+                            seen = true;
+                            break;
+                        }
+                        unsafe {
+                            TranslateMessage(&message);
+                            DispatchMessageW(&message);
+                        }
+                    }
+                    if !seen {
+                        thread::sleep(Duration::from_millis(1));
+                    }
+                }
+                drop(window);
+                seen && message.wParam == TRAY_ID as WPARAM
+                    && message.lParam == WM_RBUTTONUP as LPARAM
+            };
+            assert!(
+                observed,
+                "posted TRAY_CALLBACK must reach WM_APP+42 through PeekMessageW/DispatchMessageW"
+            );
+        }
     }
 }
 

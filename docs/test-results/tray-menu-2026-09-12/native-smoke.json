@@ -1,0 +1,32 @@
+{
+  "fixture_pid": 29320,
+  "fixture_exe": "C:\\Users\\HYUNMO\\.config\\superpowers\\worktrees\\remotecodex\\windows-baseline\\target\\debug\\examples\\tray-fixture.exe",
+  "checks": [
+    "sent right-click callback displays real native five-item menu",
+    "menu cancel closes popup",
+    "second menu open works",
+    "native menu selection invokes OpenDesktop recording callback",
+    "double-click invokes OpenDesktop once",
+    "Exit opens confirmation; cancelling leaves fixture running and no shutdown callback"
+  ],
+  "errors": [],
+  "menu_items": [
+    "Open RemoteCodex",
+    "Block remote access",
+    "Resume remote access",
+    "Stop GUI control",
+    "Exit Agent (0 terminals running)"
+  ],
+  "status": "PASS",
+  "fixture_exit_code": 0,
+  "actions": [
+    {
+      "action": "OpenDesktop",
+      "selected_at_unix_ms": 1789173710421
+    },
+    {
+      "action": "OpenDesktop",
+      "selected_at_unix_ms": 1789173710467
+    }
+  ]
+}

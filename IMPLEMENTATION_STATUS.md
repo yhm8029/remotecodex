@@ -18,6 +18,10 @@ samples over 600.071721 seconds, zero CPU at sampler resolution, and a constant
 Terminal latency ends at xterm parse/apply; the local media benchmark ends at an
 encoder fakesink. Neither boundary is remote viewer paint.
 
+## Tray repair follow-up
+
+The right-click tray callback delivery bug is fixed and tested in source; see [tray menu evidence](docs/test-results/tray-menu-2026-09-12/README.md). The running24-hour soak and previously built installers still use the earlier binary and have not received this repair.
+
 ## Evidence that currently passes
 
 | Area | Result | Evidence or scope |
