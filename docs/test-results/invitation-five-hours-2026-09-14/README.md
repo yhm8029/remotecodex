@@ -10,4 +10,12 @@ Validation: 9 Auth tests passed, including direct expired redemption and concurr
 
 The reviewer initially overlooked the existing expiry prune call chain and corrected that finding. M3 delegation problems are recorded candidly in m3-calls.json: two compact requests were incorrectly framed as guidance and repeated without narrowing, and one UI draft invented source context. These are delegation failures, not evidence of model coding inability. The parent subsequently gave M3 an actual single polling function and integrated the returned implementation with one missing lifetime guard. AGENTS.md now forbids those vague/repeated delegation patterns.
 
-Package and installed-runtime results will be appended after verification. No physical second-PC or phone authenticated connection is claimed by these automated checks.
+## Package and applied runtime
+
+Payload source commit: 8748c4b60b86af235f9c2cac328da37e56e59df1. Standard Windows NSIS build exited 0. Archive integrity passed; 61 inventory files and 1,064 license/SBOM files matched, and 637 SBOM components validated without schema errors. Native binary differs from the build output only by the expected Tauri NSIS marker.
+
+Installer: RemoteCodex-0.2.0-8748c4b-setup.exe, 16,659,451 bytes. SHA256: ba7a2812c2438b8cf34b7fc155fae3a9d9ee571e68a10e28d93e7a3b01df861a. A verified copy and checksum sidecar are in this PC Downloads. The verified extracted payload was applied directly with existing application files backed up; the installer itself was not executed.
+
+Agent and desktop were restarted with configuration preserved. The installed native UI actually requested an invitation and the real Agent returned expires_in18000; compact link length111 and pending status were verified without recording its secret. The final desktop is running normally, the temporary debug listener is closed, and the HTTPS root returns the installed HTML. There were zero active PTYs at replacement.
+
+No authenticated connection from a second physical PC or phone is claimed. Other PC apps must update to understand newly generated compact links. Existing registered device keys and sessions are separate from invitation expiry.

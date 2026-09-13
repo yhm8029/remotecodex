@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "verified_utc": "2026-09-13T16:13:37.1142999Z",
+  "https_root_status": 200,
+  "https_html_matches_installed_web": true,
+  "agent_sessions": 0,
+  "desktop_running": true,
+  "agent_running": true,
+  "debug_port_listening": false,
+  "config_preserved": true,
+  "payload_commit": "8748c4b60b86af235f9c2cac328da37e56e59df1",
+  "installer_sha256": "ba7a2812c2438b8cf34b7fc155fae3a9d9ee571e68a10e28d93e7a3b01df861a",
+  "note": "Installed native app and real local Agent five-hour issuance/status verified; HTTPS endpoint verified from this PC. Authenticated second physical PC/phone connection remains untested."
+}

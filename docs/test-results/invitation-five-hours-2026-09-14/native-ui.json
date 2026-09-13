@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "native_host_connected": true,
+  "server_expires_in": 18000,
+  "compact_v2": true,
+  "link_characters": 111,
+  "qr_visible": true,
+  "authenticated_status_pending": true,
+  "one_native_invitation_issued": true,
+  "secret_values_recorded": false
+}

@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "source_commit": "8748c4b60b86af235f9c2cac328da37e56e59df1",
+  "artifact": {
+    "kind": "standard",
+    "path": "runtime/artifacts/RemoteCodex-0.2.0-standard.exe",
+    "bytes": 16659451,
+    "sha256": "ba7a2812c2438b8cf34b7fc155fae3a9d9ee571e68a10e28d93e7a3b01df861a",
+    "unsigned": true
+  },
+  "archive_integrity": "7z t exit0",
+  "inventory_files": 61,
+  "license_and_sbom_files": 1064,
+  "desktop_sha256": "0e6af9cb4294c86cfacd69417e1b846cafac9143948804279cb946ce7f9b05fb",
+  "agent_sha256": "8d7e05a1f05a7e6ab9d892e6f2c96a0fd792b2705fd17b5741fdba3953d7c588",
+  "desktop_comparison": "Exact except Tauri UNK-to-NSS packaging marker",
+  "sbom_components": 637,
+  "sbom_schema_errors": [],
+  "installer_executed": false,
+  "native_application_launched": false
+}
