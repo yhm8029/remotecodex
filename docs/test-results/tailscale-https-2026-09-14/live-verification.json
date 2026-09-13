@@ -1,0 +1,10 @@
+﻿{
+    "https_root_status":  200,
+    "https_html_matches_installed_web":  true,
+    "agent_sessions":  0,
+    "agent_public_origin_configured":  true,
+    "pending_exists":  false,
+    "receipt_exists":  true,
+    "debug_port_listening":  false,
+    "note":  "HTTPS root on this PC; no second-device authenticated session tested"
+}

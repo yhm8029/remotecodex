@@ -58,3 +58,29 @@ References:
 - https://tailscale.com/docs/how-to/set-up-https-certificates
 - https://github.com/tailscale/tailscale/blob/v1.102.4/cmd/tailscale/cli/serve_legacy.go
 - https://github.com/tailscale/tailscale/blob/v1.102.4/tailcfg/tailcfg.go
+
+## Follow-up: explicitly requested live application
+
+After the initial packaging verification, the user requested applying the update
+also to the running desktop and Agent. With zero active terminal sessions,
+we closed the desktop, requested graceful Agent shutdown, preserved a local
+backup, and installed the hash-verified payload. The Agent web_dir now points to
+the installed web resources instead of an older development snapshot.
+
+During native verification the HTTPS capability changed to enabled and a matching
+Serve rule/receipt/public_origin appeared through the interactive app workflow.
+The desktop was closed during this interval; a stable approval-state screenshot
+was not obtained, so no screenshot claim is made. The Agent was restarted again
+with the new origin, and the desktop was launched normally without debugging.
+The earlier no-application statement above describes the pre-application stage.
+
+Final local checks: HTTPS root HTTP 200, HTML exactly matches installed web build,
+zero active sessions, public_origin configured, no pending journal, receipt exists,
+and temporary CDP port closed. This verifies this PC's HTTPS route and running
+payload; an authenticated second-device session is still separate verification.
+
+Installer: RemoteCodex-0.2.0-afb1efc-setup.exe, 16,618,017 bytes.
+SHA256: 85f1e721d9f1ec0234dcbe4841d70f10393d27e9d329a106299220576c0f19c0.
+Payload source commit: afb1efc09000fddc9b51120a26305a275542866f.
+Installed desktop SHA256: d775ed09ee5037b892162f5cc990e617bf803bd032d61999994696d791cde865.
+Agent binary remains unchanged from f40af80 and was restarted with updated config.
