@@ -1,0 +1,283 @@
+{
+  "scope": "Direct M3 API calls for this feature only, not full account/session billing; GPT tokens unavailable",
+  "total_tokens": 32582,
+  "calls": [
+    {
+      "task": "codec-tests",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 1099,
+        "total_characters": 0,
+        "prompt_tokens": 513,
+        "completion_tokens": 586,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "finish_reason": "stop",
+      "integration": "accepted with corrected Unicode/version fixtures on retry"
+    },
+    {
+      "task": "codec-tests-retry",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 681,
+        "total_characters": 0,
+        "prompt_tokens": 423,
+        "completion_tokens": 258
+      },
+      "finish_reason": "stop",
+      "integration": "accepted replacement tests"
+    },
+    {
+      "task": "codec",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 5742,
+        "total_characters": 0,
+        "prompt_tokens": 742,
+        "completion_tokens": 5000
+      },
+      "finish_reason": "length",
+      "integration": "rejected: completion length, no final code; delivery/budget failure"
+    },
+    {
+      "task": "codec-retry",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 3550,
+        "total_characters": 0,
+        "prompt_tokens": 729,
+        "completion_tokens": 2821
+      },
+      "finish_reason": "stop",
+      "integration": "rejected: noncanonical URL output and insufficient raw validation; Luna implemented codec after retry"
+    },
+    {
+      "task": "storage-tests",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 1358,
+        "total_characters": 0,
+        "prompt_tokens": 482,
+        "completion_tokens": 876,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "finish_reason": "stop",
+      "integration": "accepted"
+    },
+    {
+      "task": "ui-tests",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 2140,
+        "total_characters": 0,
+        "prompt_tokens": 740,
+        "completion_tokens": 1400,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "finish_reason": "stop",
+      "integration": "rejected: invented paths, fixture components and invalid serialization; narrowed to function with real harness"
+    },
+    {
+      "task": "ui-tests-retry",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 634,
+        "total_characters": 0,
+        "prompt_tokens": 454,
+        "completion_tokens": 180,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "finish_reason": "stop",
+      "integration": "accepted host test function; parent reused existing fixture harness"
+    },
+    {
+      "task": "storage",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 1342,
+        "total_characters": 0,
+        "prompt_tokens": 506,
+        "completion_tokens": 836,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "finish_reason": "stop",
+      "integration": "accepted; parent fixed TS config after incorrect import-extension guidance"
+    },
+    {
+      "task": "host-ui",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 2829,
+        "total_characters": 0,
+        "prompt_tokens": 901,
+        "completion_tokens": 1928,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "finish_reason": "stop",
+      "integration": "accepted with readiness predicate fixed in retry; parent product copy/integration edits"
+    },
+    {
+      "task": "client-ui",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 1425,
+        "total_characters": 0,
+        "prompt_tokens": 664,
+        "completion_tokens": 761,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "finish_reason": "stop",
+      "integration": "accepted with parent wording and aria labels"
+    },
+    {
+      "task": "app",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 1512,
+        "total_characters": 0,
+        "prompt_tokens": 857,
+        "completion_tokens": 655,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "finish_reason": "stop",
+      "integration": "state helpers accepted; connect rejected due invented storage signature and session field"
+    },
+    {
+      "task": "app-retry",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 1011,
+        "total_characters": 0,
+        "prompt_tokens": 654,
+        "completion_tokens": 357,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "finish_reason": "stop",
+      "integration": "connect accepted with parent actual history object/window.history and persistence failure integration"
+    },
+    {
+      "task": "host-ui-retry",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 484,
+        "total_characters": 0,
+        "prompt_tokens": 380,
+        "completion_tokens": 104,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "finish_reason": "stop",
+      "integration": "accepted exact readiness/origin checks"
+    },
+    {
+      "task": "mobile-test",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 763,
+        "total_characters": 0,
+        "prompt_tokens": 497,
+        "completion_tokens": 266,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "finish_reason": "stop",
+      "integration": "accepted integration assertions; incorporated into actual App harness"
+    },
+    {
+      "task": "local-pair-fix",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 1074,
+        "total_characters": 0,
+        "prompt_tokens": 721,
+        "completion_tokens": 353,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "finish_reason": "stop",
+      "integration": "accepted both functions; parent static error messages and disabled button binding"
+    },
+    {
+      "task": "expiry-ui",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 1214,
+        "total_characters": 0,
+        "prompt_tokens": 753,
+        "completion_tokens": 461,
+        "prompt_tokens_details": {
+          "cached_tokens": 203
+        }
+      },
+      "finish_reason": "stop",
+      "integration": "accepted markup replacement"
+    },
+    {
+      "task": "expiry-test",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 944,
+        "total_characters": 0,
+        "prompt_tokens": 450,
+        "completion_tokens": 494
+      },
+      "finish_reason": "stop",
+      "integration": "rejected: invented routing/navigation and wrong descendant selectors"
+    },
+    {
+      "task": "expiry-test-retry",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 849,
+        "total_characters": 0,
+        "prompt_tokens": 591,
+        "completion_tokens": 258
+      },
+      "finish_reason": "stop",
+      "integration": "accepted corrected assertions; parent corrected OWN clock instruction to install before navigation"
+    },
+    {
+      "task": "invitation-app-harness",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 3931,
+        "total_characters": 0,
+        "prompt_tokens": 680,
+        "completion_tokens": 3251,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "finish_reason": "stop",
+      "integration": "M3 starting harness; Luna corrected missing exports and routing after validation; parent added real 390px viewport, foreign-origin rejection and JSON evidence. Initial mobile-named screenshot was desktop viewport, caught in parent visual review."
+    }
+  ],
+  "call_count": 19
+}

@@ -1,0 +1,8 @@
+{
+  "status": "PASS",
+  "groups": [
+    "host readiness and scoped ticket",
+    "local QR clipboard and five-minute expiry without renewal",
+    "client imports without network"
+  ]
+}

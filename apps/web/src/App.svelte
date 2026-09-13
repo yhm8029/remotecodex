@@ -8,6 +8,10 @@
   import HostSettings from './HostSettings.svelte';
   import TailscaleSetup from './TailscaleSetup.svelte';
   import DeviceAdmin from './DeviceAdmin.svelte';
+  import HostInvite from './HostInvite.svelte';
+  import InvitationConnect from './InvitationConnect.svelte';
+  import { parseInvitation, normalizeHostOrigin, type Invitation } from './invitations';
+  import { saveHost, type SavedHost } from './saved-hosts';
   import SessionSidebar from './SessionSidebar.svelte';
   import { previewAdapter, type PreviewFramework } from './preview-adapters';
   const isNative = location.hostname === 'tauri.localhost' || location.protocol === 'tauri:';
@@ -52,17 +56,76 @@
       if (connected) scheduleHistoryRefresh();
     }
   }
-  async function connect(pair = false) {
-    busy = true; error = '';
-    try {
-      controller?.stop(); const api = new AgentApi(base);
-      if (pair) { await api.pair(ticket, label); ticket = ''; }
-      const next = new Controller(api); controller = next; next.addEventListener('change', change);
-      await next.connect(); profiles = await api.request('/profiles'); await refreshHistory();
-      const firstLive = sessions.find(session => session.state === 'starting' || session.state === 'running');
-      if (firstLive && !visible.length) { layout.show(firstLive.session_id); applyLayout(); }
-    } catch (e) { error = e instanceof Error ? e.message : '연결 실패'; } finally { busy = false; }
+let pendingInvite:Invitation|null=null;
+let hostAlias='회사 PC';
+
+function clearInvitation(){ticket='';pendingInvite=null;}
+function acceptInvitation(value:Invitation){if(busy)return;clearInvitation();base=value.origin;hostAlias=value.label;ticket=value.ticket;pendingInvite=value;setupMode='client';error='';}
+function selectSavedHost(host:SavedHost){if(busy)return;clearInvitation();base=host.origin;hostAlias=host.label;error='';}
+function addressChanged(){clearInvitation();hostAlias='회사 PC';}
+
+async function connect(pair = false) {
+ if (busy || !experimentalAccepted) return;
+ busy = true;
+ error = '';
+ const target = base;
+ const alias = hostAlias;
+ const pairingTicket = ticket;
+ const invite = pendingInvite;
+ try {
+  if (pair && invite && normalizeHostOrigin(target) !== invite.origin) {
+   throw new Error('invite origin mismatch');
   }
+  controller?.stop();
+  const api = new AgentApi(target);
+  if (pair) {
+   try {
+    await api.pair(pairingTicket, label);
+    ticket = '';
+   } finally {
+    clearInvitation();
+   }
+  }
+  const next = new Controller(api);
+  controller = next;
+  next.addEventListener('change', change);
+  await next.connect();
+  try {
+     if (target.startsWith('https://')) {
+      saveHost(localStorage, { origin: normalizeHostOrigin(target), label: alias });
+     }
+    } catch {
+     error = '연결은 됐지만 PC 이름을 저장하지 못했습니다.';
+    }
+  profiles = await api.request('/profiles');
+  await refreshHistory();
+  const firstLive = sessions.find(session => session.state === 'starting' || session.state === 'running');
+  if (firstLive && !visible.length) {
+   layout.show(firstLive.session_id);
+   applyLayout();
+  }
+ } catch (e) {
+  if (e instanceof Error && e.message === 'UNAUTHENTICATED') {
+   error = '초대가 이미 사용됐거나 만료되었습니다. 새 초대를 받아 주세요.';
+  } else {
+   error = '연결하지 못했습니다. Tailscale과 호스트 상태를 확인하세요.';
+  }
+ } finally {
+  busy = false;
+ }
+}
+function consumeInitialInvitation(){
+  if(!location.hash.startsWith('#rc-invite'))return;
+  const url=location.href;
+  window.history.replaceState(window.history.state,'',location.pathname+location.search);
+  clearInvitation();
+  try{
+    acceptInvitation(parseInvitation(url,isNative?undefined:location.origin));
+  }catch{
+    error='초대 링크가 올바르지 않습니다. 새 초대를 받아 주세요.';
+  }
+}
+consumeInitialInvitation();
   onMount(() => {
     const query = matchMedia('(max-width: 760px)');
     const size = () => { mobile = query.matches; layout.setMobile(mobile); applyLayout(); };
@@ -106,10 +169,28 @@
       else if (win) win.location.replace(result.url); else error = '팝업을 허용한 뒤 다시 열어 주세요.';
     } catch (e) { win?.close(); controller.fail(e); }
   }
-  async function localPair() { try { const { invoke } = await import('@tauri-apps/api/core'); const r = await invoke<{ ticket: string }>('local_admin', { operation: 'pair_owner' }); ticket = r.ticket; pairOutput = '회사 로컬 사용자 확인 완료. 이 브라우저 등록을 누르세요.'; } catch (e) { error = String(e); } }
+async function localPair() {
+    if (!isNative || busy || base !== 'http://127.0.0.1:3847') return;
+    busy = true;
+    error = '';
+    try {
+      clearInvitation();
+      const { invoke } = await import('@tauri-apps/api/core');
+      const r = await invoke<{ ticket: string }>('local_admin', { operation: 'pair_owner' });
+      ticket = r.ticket;
+      pairOutput = '회사 로컬 사용자 확인 완료. 이 브라우저 등록을 누르세요.';
+    } catch (e) {
+      error = '로컬 Agent에 연결하지 못했습니다. 상태를 확인한 뒤 다시 시도하세요.';
+    } finally {
+      busy = false;
+    }
+  }
   async function startHost() {
     if (!isNative || busy || !experimentalAccepted) return;
-    busy = true; error = ''; pairOutput = '';
+    clearInvitation();
+    busy = true;
+    error = '';
+    pairOutput = '';
     try {
       const { invoke } = await import('@tauri-apps/api/core');
       const result = await invoke<'attached' | 'started'>('ensure_host');
@@ -119,7 +200,7 @@
       busy = false;
       await connect(true);
       if (connected) pairOutput = result === 'started' ? '이 PC의 Agent를 시작하고 연결했습니다.' : '실행 중인 이 PC의 Agent에 연결했습니다.';
-    } catch (e) { error = e instanceof Error ? e.message : String(e); }
+    } catch (e) { error = '로컬 Agent에 연결하지 못했습니다. 상태를 확인한 뒤 다시 시도하세요.'; }
     finally { busy = false; }
   }
 </script>
@@ -140,25 +221,28 @@
         <TailscaleSetup native={isNative} role="host" />
         <label class="checkbox"><input type="checkbox" bind:checked={experimentalAccepted}> 소스 알파의 미검증 제한과 원격 셸 권한을 확인했습니다.</label>
         <button class="primary" on:click={startHost} disabled={busy || !experimentalAccepted}>{busy ? 'Agent 확인 중…' : '이 PC에서 Agent 시작 또는 연결'}</button>
-        <button on:click={() => setupMode = 'choose'} disabled={busy}>뒤로</button>
+        <button on:click={() => { clearInvitation(); setupMode = 'choose'; }} disabled={busy}>뒤로</button>
         {#if pairOutput}<p>{pairOutput}</p>{/if}
       {:else}
       <p>집 PC는 화면과 키보드입니다. 코드와 Codex는 회사 PC에서 계속 실행됩니다.</p>
-      <label>회사 Agent 주소 <input type="url" bind:value={base} placeholder="https://office-pc.your-tailnet.ts.net"></label>
+      <InvitationConnect native={isNative} disabled={busy} currentOrigin={isNative ? undefined : location.origin} oninvite={acceptInvitation} onselect={selectSavedHost} onclear={clearInvitation}/>
+      {#if pendingInvite}<p class="notice" data-testid="invite-target">{pendingInvite.label}에 이 기기를 등록합니다. 터미널 조작과 기기·설정 관리 권한이 포함됩니다.</p>{/if}
+      <label>저장할 PC 이름<input bind:value={hostAlias} maxlength="80" disabled={busy}></label>
+      <label>회사 Agent 주소 <input type="url" bind:value={base} on:input={addressChanged} disabled={busy} data-testid="host-address" placeholder="https://office-pc.your-tailnet.ts.net"></label>
       <div class="notice">이 소스는 Windows 실기기 검증 전 개발 버전입니다. 터미널 복원·IME·성능이 아직 출시 기준을 통과하지 않았습니다.</div>
       <TailscaleSetup native={isNative} role="client" />
       <label class="checkbox"><input type="checkbox" bind:checked={experimentalAccepted}> 개발 버전의 검증 제한을 확인했습니다.</label>
       <button class="primary" on:click={() => connect()} disabled={busy || !experimentalAccepted}>{busy ? '연결 중…' : '등록된 기기로 연결'}</button>
-      <details open><summary>처음 연결하는 기기 등록</summary><label>기기 이름<input bind:value={label}></label><label>회사 PC에서 발급한 일회용 티켓<input type="password" autocomplete="off" bind:value={ticket} placeholder="rc-agent pair 결과의 ticket"></label>
-        {#if isNative}<button on:click={localPair}>회사 로컬 사용자로 티켓 발급</button>{/if}
-        <button on:click={() => connect(true)} disabled={busy || !ticket || !experimentalAccepted}>이 브라우저 등록</button><p>{pairOutput}</p>
+      <details open><summary>처음 연결하는 기기 등록</summary><label>기기 이름<input bind:value={label}></label><label>회사 PC에서 발급한 일회용 티켓<input type="password" autocomplete="off" readonly={!!pendingInvite} disabled={busy} data-testid="pair-ticket" bind:value={ticket} placeholder="rc-agent pair 결과의 ticket"></label>
+        {#if isNative}<button on:click={localPair} disabled={busy || base !== 'http://127.0.0.1:3847'}>회사 로컬 사용자로 티켓 발급</button>{/if}
+        <button data-testid="pair-device" on:click={() => connect(true)} disabled={busy || !ticket || !experimentalAccepted}>이 기기 연결</button><p>{pairOutput}</p>
       </details><p class="hint">집/폰에 Codex를 설치할 필요는 없습니다. 회사 Agent와 Tailscale 연결은 먼저 실행되어 있어야 합니다.</p>
-      {#if isNative}<button on:click={() => setupMode = 'choose'} disabled={busy}>뒤로</button>{/if}
+      {#if isNative}<button on:click={() => { clearInvitation(); setupMode = 'choose'; }} disabled={busy}>뒤로</button>{/if}
       {/if}
     </section></main>
   {:else}
     <div class="workspace"><SessionSidebar activeSessions={sessions} historySessions={history} {focused} onselect={(id) => show(id)} onsplit={(id) => show(id, true)} onrename={renameSession} onrestart={restartSession} onclose={closeSession} oncreate={() => createOpen = !createOpen}/>
-      <main class="main-panel">{#if (isNative && setupMode === 'host') || controller?.host?.scopes.includes('admin.devices')}<details class="host-management" open><summary>호스트·기기 설정</summary><div class="host-management-content">{#if isNative && setupMode === 'host'}<HostSettings/><LocalMediaAdmin/>{/if}{#if controller?.host?.scopes.includes('admin.devices')}{#key controller.api}<DeviceAdmin api={controller.api} currentClientId={controller.host!.client_id} {onSelfRevoked}/>{/key}{/if}</div></details>{/if}<nav class="mode-tabs"><button class:selected={mode === 'terminal'} on:click={() => mode = 'terminal'}>Terminal</button><button class:selected={mode === 'web'} on:click={web}>Web Preview</button>
+      <main class="main-panel">{#if (isNative && setupMode === 'host') || controller?.host?.scopes.includes('admin.devices')}<details class="host-management" open><summary>호스트·기기 설정</summary><div class="host-management-content">{#if isNative && setupMode === 'host'}<HostSettings/>{#if controller?.host?.scopes.includes('admin.devices')}{#key controller.api}<HostInvite api={controller.api} scopes={controller.host.scopes}/>{/key}{/if}<LocalMediaAdmin/>{/if}{#if controller?.host?.scopes.includes('admin.devices')}{#key controller.api}<DeviceAdmin api={controller.api} currentClientId={controller.host!.client_id} {onSelfRevoked}/>{/key}{/if}</div></details>{/if}<nav class="mode-tabs"><button class:selected={mode === 'terminal'} on:click={() => mode = 'terminal'}>Terminal</button><button class:selected={mode === 'web'} on:click={web}>Web Preview</button>
         {#if !mobile}<button class:selected={mode === 'apps'} on:click={() => mode = 'apps'}>Apps <small>P4–P5</small></button><button class:selected={mode === 'desktop'} on:click={() => mode = 'desktop'}>Desktop <small>P6</small></button>{/if}</nav>
         {#if createOpen}<form class="create-form" on:submit|preventDefault={create}><label>이름<input bind:value={newLabel} placeholder="Sales / Codex" required></label><label>회사 PC 폴더<input bind:value={cwd} placeholder="C:\work\sales" required></label><label>셸<select bind:value={profile}>{#each profiles as p}<option value={p.id}>{p.label}</option>{/each}</select></label><button class="primary" type="submit">터미널 시작</button></form>{/if}
         {#if mode === 'terminal' && pageVisible}
