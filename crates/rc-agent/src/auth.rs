@@ -169,8 +169,16 @@ impl Auth {
     }
     /// Called only by the same-user local pipe or a scoped, authenticated owner API.
     pub fn issue_pair_ticket(&self, scopes: Vec<Scope>) -> Result<String, ErrorCode> {
+        self.issue_pair_ticket_for(scopes, 300)
+    }
+
+    pub fn issue_pair_ticket_for(
+        &self,
+        scopes: Vec<Scope>,
+        ttl_secs: u64,
+    ) -> Result<String, ErrorCode> {
         self.ensure_open()?;
-        if scopes.is_empty() {
+        if scopes.is_empty() || ttl_secs == 0 || ttl_secs > 18000 {
             return Err(ErrorCode::InvalidRequest);
         }
         let mut i = self.inner.lock();
@@ -183,10 +191,20 @@ impl Auth {
             key(&token),
             PairTicket {
                 scopes,
-                until: Instant::now() + Duration::from_secs(300),
+                until: Instant::now() + Duration::from_secs(ttl_secs),
             },
         );
         Ok(token)
+    }
+
+    pub fn pair_ticket_pending(&self, ticket: &str) -> Result<bool, ErrorCode> {
+        self.ensure_open()?;
+        if ticket.is_empty() || ticket.len() > 128 {
+            return Err(ErrorCode::InvalidRequest);
+        }
+        let mut i = self.inner.lock();
+        Self::prune(&mut i);
+        Ok(i.pairs.contains_key(&key(ticket)))
     }
     pub fn pair(&self, ticket: &str, public_key: &str, label: &str) -> Result<Device, ErrorCode> {
         self.ensure_open()?;
@@ -416,6 +434,93 @@ mod tests {
         let d = tempfile::tempdir().unwrap();
         let s = Arc::new(Store::open(&d.path().join("test.db")).unwrap());
         (Auth::new(s, "test-host".into()).unwrap(), d)
+    }
+    #[test]
+    fn five_hour_invitation_concurrent_redemption() {
+        let (a, _dir) = auth();
+        let t = a.issue_pair_ticket_for(Scope::owner(), 18000).unwrap();
+        let raw = SigningKey::random(&mut OsRng)
+            .verifying_key()
+            .to_encoded_point(false);
+        let pk = URL_SAFE_NO_PAD.encode(raw.as_bytes());
+        let barrier = std::sync::Barrier::new(2);
+        use std::thread;
+        thread::scope(|scope| {
+            let first = scope.spawn(|| {
+                barrier.wait();
+                a.pair(&t, &pk, "first").is_ok()
+            });
+            let second = scope.spawn(|| {
+                barrier.wait();
+                a.pair(&t, &pk, "second").is_ok()
+            });
+            assert_eq!(
+                usize::from(first.join().unwrap()) + usize::from(second.join().unwrap()),
+                1
+            );
+        });
+        assert!(!a.pair_ticket_pending(&t).unwrap());
+    }
+    #[test]
+    fn five_hour_invitation_defaults_bounds_and_status() {
+        let (a, _dir) = auth();
+        let t = a.issue_pair_ticket_for(Scope::owner(), 18000).unwrap();
+        let until = a.inner.lock().pairs.get(&key(&t)).unwrap().until;
+        let rem = until.saturating_duration_since(Instant::now()).as_secs();
+        assert!(rem >= 17995 && rem <= 18000);
+        assert!(matches!(a.pair_ticket_pending(&t), Ok(true)));
+        assert!(matches!(
+            a.issue_pair_ticket_for(vec![], 18000),
+            Err(ErrorCode::InvalidRequest)
+        ));
+        let t2 = a.issue_pair_ticket(Scope::owner()).unwrap();
+        let u2 = a.inner.lock().pairs.get(&key(&t2)).unwrap().until;
+        let rem2 = u2.saturating_duration_since(Instant::now()).as_secs();
+        assert!(rem2 >= 295 && rem2 <= 300);
+        assert!(matches!(
+            a.issue_pair_ticket_for(Scope::owner(), 0),
+            Err(ErrorCode::InvalidRequest)
+        ));
+        assert!(matches!(
+            a.issue_pair_ticket_for(Scope::owner(), 18001),
+            Err(ErrorCode::InvalidRequest)
+        ));
+    }
+
+    #[test]
+    fn five_hour_invitation_redemption_is_once() {
+        let (a, _dir) = auth();
+        let t = a.issue_pair_ticket_for(Scope::owner(), 18000).unwrap();
+        let raw = SigningKey::random(&mut OsRng)
+            .verifying_key()
+            .to_encoded_point(false);
+        let pk = URL_SAFE_NO_PAD.encode(raw.as_bytes());
+        let _dev = a.pair(&t, &pk, "home").unwrap();
+        assert!(matches!(a.pair_ticket_pending(&t), Ok(false)));
+        assert!(matches!(
+            a.pair(&t, &pk, "home"),
+            Err(ErrorCode::Unauthenticated)
+        ));
+    }
+
+    #[test]
+    fn expired_invitation_cannot_redeem_without_status_poll() {
+        let (a, _dir) = auth();
+        let t = a.issue_pair_ticket_for(Scope::owner(), 18000).unwrap();
+        {
+            let mut g = a.inner.lock();
+            let e = g.pairs.get_mut(&key(&t)).unwrap();
+            e.until = Instant::now() - Duration::from_secs(1);
+        }
+        let raw = SigningKey::random(&mut OsRng)
+            .verifying_key()
+            .to_encoded_point(false);
+        let pk = URL_SAFE_NO_PAD.encode(raw.as_bytes());
+        assert!(matches!(
+            a.pair(&t, &pk, "home"),
+            Err(ErrorCode::Unauthenticated)
+        ));
+        assert!(matches!(a.pair_ticket_pending(&t), Ok(false)));
     }
     #[test]
     fn signed_pair_token_replay_and_revocation() {

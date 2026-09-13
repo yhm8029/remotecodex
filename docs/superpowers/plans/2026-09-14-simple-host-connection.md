@@ -35,3 +35,10 @@ Files: apps/web/src/InvitationConnect.svelte, apps/web/src/App.svelte, tests/e2e
 - [ ] Commit/push source, build Windows NSIS with scripts/package-windows.ps1. Verify archive/inventory/license/SBOM hashes and copy installer to Downloads.
 - [ ] User already authorized live replacement/restart. Check processidentities and active sessions, preservebackup, gracefullystop, replaceverifiedpayload, restart. Verify currentnativeUI and HTTPSweb route, no realinvitations/tokens inreports.
 - [ ] Record actualPC/mobile vsautomatedvalidation limits and updateprojectmemory.
+
+## 5. 사용자 변경 요청: 5시간·사용 후 제거·짧은 링크
+- [x] M3 Auth/HTTP: 기존 티켓 기본값 유지, 18000초 상한, 인증된 상태 조회, 만료/동시 재사용 테스트.
+- [x] M3 compact codec 시도 후 출력 길이 초과 두 번에 Luna fallback, v1 호환·v2 엄격 검증 테스트.
+- [x] M3 HostInvite: 5시간 요청, 시/분/초 표시, 상태 폴링과 비동기 수명 보호, 가상 시계 및 소비/장애 테스트.
+- [ ] 타입·Node·브라우저·인증 테스트와 보안 리뷰 후 다시 커밋/푸시·패키징.
+- [ ] 새 Agent와 UI를 현재 설치에 반영하고 최신 EXE 및 실제 적용 결과 기록.

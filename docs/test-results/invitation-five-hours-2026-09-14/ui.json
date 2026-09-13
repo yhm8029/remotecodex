@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "groups": [
+    "host readiness and scoped five-hour ticket",
+    "local QR clipboard and five-hour expiry without renewal",
+    "one-use status polling and transient retention",
+    "dispose stops status polling",
+    "disposed unauthenticated response never triggers fresh authentication",
+    "client imports without network"
+  ]
+}

@@ -135,6 +135,7 @@ pub fn router(state: Shared) -> Router {
         .route("/devices", get(devices))
         .route("/devices/{id}", delete(revoke_device))
         .route("/pair-tickets", post(pair_ticket))
+        .route("/pair-tickets/status", post(pair_ticket_status))
         .route("/block-remote", post(block_remote))
         .route(
             "/previews",
@@ -409,6 +410,7 @@ async fn revoke_device(
 #[serde(deny_unknown_fields)]
 struct PairScopes {
     scopes: Vec<Scope>,
+    expires_in: Option<u64>,
 }
 async fn pair_ticket(
     State(s): State<Shared>,
@@ -419,8 +421,26 @@ async fn pair_ticket(
     if body.scopes.iter().any(|v| !p.scopes.contains(v)) {
         return Err(ErrorCode::Forbidden.into());
     }
-    let t = s.auth.issue_pair_ticket(body.scopes)?;
-    Ok(Json(serde_json::json!({"ticket":t,"expires_in":300})))
+    let expires_in = body.expires_in.unwrap_or(300);
+    let t = s.auth.issue_pair_ticket_for(body.scopes, expires_in)?;
+    Ok(Json(
+        serde_json::json!({"ticket":t,"expires_in":expires_in}),
+    ))
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct PairTicketStatusRequest {
+    ticket: String,
+}
+async fn pair_ticket_status(
+    State(s): State<Shared>,
+    h: HeaderMap,
+    Json(body): Json<PairTicketStatusRequest>,
+) -> Result<Json<serde_json::Value>, Failure> {
+    let _p = principal(&s, &h, Scope::AdminDevices)?;
+    let pending = s.auth.pair_ticket_pending(&body.ticket)?;
+    Ok(Json(serde_json::json!({"pending":pending})))
 }
 async fn block_remote(State(s): State<Shared>, h: HeaderMap) -> Result<StatusCode, Failure> {
     principal(&s, &h, Scope::AdminSettings)?;

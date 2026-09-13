@@ -10,7 +10,7 @@ const webRoot = path.join(root, 'apps', 'web');
 const ticket = 'a'.repeat(43);
 const origin = 'https://office.ts.net';
 const label = 'Office';
-const invite = `${origin}/#rc-invite=${Buffer.from(JSON.stringify({ v: 1, origin, label, ticket })).toString('base64url')}`;
+const invite = `${origin}/#rc-invite=2.${ticket}.${Buffer.from(label).toString('base64url')}`;
 
 const mockTerminal = `
 export class AgentApi {

@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "groups": [
+    "mobile invitation",
+    "address edit and invalid invitation clear ticket",
+    "native local pairing guard and host start",
+    "foreign-origin fragment scrubbed and rejected without API"
+  ],
+  "mobile_viewport": {
+    "width": 390,
+    "height": 844
+  }
+}

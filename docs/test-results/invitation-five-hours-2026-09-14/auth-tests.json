@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "command": "cargo test -p rc-agent auth::tests -- --nocapture",
+  "passed": 9,
+  "failed": 0,
+  "new_regressions": [
+    "default300/max18000/bounds",
+    "single redemption and pending false",
+    "expired direct redemption without status polling",
+    "concurrent redemption exactly once"
+  ],
+  "red": "Before implementation compiler E0599 for missing issue_pair_ticket_for and pair_ticket_pending methods"
+}

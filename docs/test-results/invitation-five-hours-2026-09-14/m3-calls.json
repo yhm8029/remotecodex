@@ -1,0 +1,136 @@
+{
+  "scope": "Direct observed calls for 5-hour/compact amendment only. Earlier simple-connection calls separate. Not full account/session usage. GPT tokens unavailable.",
+  "call_count": 9,
+  "total_tokens": 17112,
+  "calls": [
+    {
+      "task": "auth-tests",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 1598,
+        "total_characters": 0,
+        "prompt_tokens": 614,
+        "completion_tokens": 984,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "finish_reason": "stop",
+      "integration": "Initial draft rejected: invented Scope::default/hash and wrong Rust references; retried with actual test source"
+    },
+    {
+      "task": "auth-tests-retry",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 1961,
+        "total_characters": 0,
+        "prompt_tokens": 1373,
+        "completion_tokens": 588,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "finish_reason": "stop",
+      "integration": "Accepted tests; parent separated independent empty-scope and zero-TTL assertions"
+    },
+    {
+      "task": "auth",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 939,
+        "total_characters": 0,
+        "prompt_tokens": 633,
+        "completion_tokens": 306,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "finish_reason": "stop",
+      "integration": "Accepted methods; parent added missing mut binding for prune"
+    },
+    {
+      "task": "http",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 932,
+        "total_characters": 0,
+        "prompt_tokens": 634,
+        "completion_tokens": 298,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "finish_reason": "stop",
+      "integration": "Accepted typed handlers; parent registered route"
+    },
+    {
+      "task": "race-test",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 679,
+        "total_characters": 0,
+        "prompt_tokens": 461,
+        "completion_tokens": 218
+      },
+      "finish_reason": "stop",
+      "integration": "Accepted scoped concurrent redemption test"
+    },
+    {
+      "task": "m3-invite-long-response",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 3447,
+        "total_characters": 0,
+        "prompt_tokens": 447,
+        "completion_tokens": 3000
+      },
+      "finish_reason": "length",
+      "integration": "Truncated. Delegated prompt incorrectly asked design guidance instead of concrete implementation; not a model coding failure"
+    },
+    {
+      "task": "m3-invite-long-response-retry",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 3447,
+        "total_characters": 0,
+        "prompt_tokens": 447,
+        "completion_tokens": 3000,
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        }
+      },
+      "finish_reason": "length",
+      "integration": "Truncated repeated prompt/budget. Not a corrected retry. Luna implemented working codec; future delegation rules corrected"
+    },
+    {
+      "task": "m3-ui-response",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 3022,
+        "total_characters": 0,
+        "prompt_tokens": 476,
+        "completion_tokens": 2546,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "finish_reason": "stop",
+      "integration": "Rejected invented imports/readiness placeholders from underspecified guidance prompt. Luna integrated UI against actual source"
+    },
+    {
+      "task": "status-function",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 1087,
+        "total_characters": 0,
+        "prompt_tokens": 787,
+        "completion_tokens": 300,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "finish_reason": "stop",
+      "integration": "Accepted concrete M3 polling function; parent added omitted guard before authenticate and targeted disposed-request regression"
+    }
+  ]
+}

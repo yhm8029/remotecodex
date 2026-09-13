@@ -75,3 +75,23 @@ test('requires canonical raw invitation envelope and valid UTF-8', () => {
   const malformedUtf8 = Buffer.from([0xc3, 0x28]).toString('base64url');
   assert.throws(() => parseInvitation(input.origin + '/#rc-invite=' + malformedUtf8));
 });
+
+test('compact v2 invitations round-trip and are shorter than legacy v1', () => {
+  const value = { origin: input.origin, label: '\ud68c\ud68c Remote', ticket: input.ticket };
+  const compact = createInvitation(value);
+  const legacy = encoded({ v: 1, ...value });
+  assert.ok(compact.length < legacy.length);
+  assert.deepEqual(parseInvitation(compact), { v: 1, ...value });
+});
+
+test('compact v2 rejects malformed fields and foreign origins', () => {
+  const label = Buffer.from('Office').toString('base64url');
+  const base = `${input.origin}/#rc-invite=2.${input.ticket}.${label}`;
+  for (const bad of [
+    base + '.extra',
+    `${input.origin}/#rc-invite=2.${input.ticket}.`,
+    `${input.origin}/#rc-invite=2.${input.ticket}.${Buffer.from([0xc3, 0x28]).toString('base64url')}`,
+    `${input.origin}/#rc-invite=2.${input.ticket}.${Buffer.from('   ').toString('base64url')}`,
+  ]) assert.throws(() => parseInvitation(bad));
+  assert.throws(() => parseInvitation(base, 'https://other.ts.net'));
+});

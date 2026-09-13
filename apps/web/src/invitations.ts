@@ -57,9 +57,8 @@ function decodeBase64Url(value: string): Uint8Array {
 
 export function createInvitation(fields: InvitationFields): string {
   const validated = validateFields(fields);
-  const payload: Invitation = { v: 1, ...validated };
-  const token = encodeBase64Url(new TextEncoder().encode(JSON.stringify(payload)));
-  const link = `${validated.origin}/#rc-invite=${token}`;
+  const label = encodeBase64Url(new TextEncoder().encode(validated.label));
+  const link = `${validated.origin}/#rc-invite=2.${validated.ticket}.${label}`;
   if (link.length > 2048) invalid();
   return link;
 }
@@ -71,6 +70,20 @@ export function parseInvitation(link: string, currentOrigin?: string): Invitatio
   const envelopeOrigin = normalizeHostOrigin(parts[0]);
   if (parts[0] !== envelopeOrigin) invalid();
   const token = parts[1];
+  if (token.startsWith('2.')) {
+    const compact = token.split('.');
+    if (compact.length !== 3 || compact[0] !== '2' || !TICKET.test(compact[1]) || compact[1].length < 32 || compact[1].length > 128 || !compact[2]) invalid();
+    let label: string;
+    try {
+      const bytes = decodeBase64Url(compact[2]);
+      label = new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+      if (encodeBase64Url(bytes) !== compact[2]) invalid();
+    } catch { invalid(); }
+    if (label !== label.trim()) invalid();
+    const fields = validateFields({ origin: envelopeOrigin, label, ticket: compact[1] });
+    if (currentOrigin !== undefined && normalizeHostOrigin(currentOrigin) !== envelopeOrigin) invalid();
+    return { v: 1, ...fields };
+  }
   let decoded: string;
   try { decoded = new TextDecoder('utf-8', { fatal: true }).decode(decodeBase64Url(token)); } catch { invalid(); }
   let payload: unknown;

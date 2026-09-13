@@ -12,11 +12,15 @@
   let error = '';
   let message = '';
   let link = '';
+  let ticket = '';
   let qr = '';
   let remaining = 0;
   let deadline = 0;
   let generation = 0;
   let disposed = false;
+  let statusTimer: ReturnType<typeof setInterval> | null = null;
+  let statusBusy = false;
+  let statusError = '';
 
   let timer: ReturnType<typeof setInterval> | null = null;
 
@@ -32,9 +36,15 @@
 
   $: isAdminDeviceScope = scopes.includes('admin.devices');
   $: isLinkValid = link !== '' && remaining > 0;
+  $: remainingHours = Math.floor(remaining / 3600);
+  $: remainingMinutes = Math.floor((remaining % 3600) / 60);
+  $: remainingSeconds = remaining % 60;
 
   function clearLink() {
+    generation += 1;
+    stopStatusTimer();
     link = '';
+    ticket = '';
     qr = '';
     remaining = 0;
     deadline = 0;
@@ -45,6 +55,62 @@
       clearInterval(timer);
       timer = null;
     }
+  }
+
+  function stopStatusTimer() {
+    if (statusTimer !== null) {
+      clearInterval(statusTimer);
+      statusTimer = null;
+    }
+  }
+
+  function isCurrent(id: number, snapshotTicket: string): boolean {
+    return !disposed && id === generation && ticket === snapshotTicket;
+  }
+
+  function isUnauthenticated(errorValue: unknown): boolean {
+    return typeof errorValue === 'object' && errorValue !== null &&
+      ((errorValue as { code?: unknown }).code === 'UNAUTHENTICATED' || (errorValue as Error).message === 'UNAUTHENTICATED');
+  }
+
+async function pollStatus(snapshotApi: AgentApi, snapshotTicket: string, id: number): Promise<void> {
+  if (!isCurrent(id, snapshotTicket) || statusBusy || Date.now() >= deadline) return;
+  statusBusy = true;
+  try {
+    let retried = false;
+    let result: { pending: boolean };
+    while (true) {
+      if (!isCurrent(id, snapshotTicket) || Date.now() >= deadline) return;
+      try {
+        result = await snapshotApi.request<{ pending: boolean }>('/pair-tickets/status', { ticket: snapshotTicket });
+        break;
+      } catch (errorValue) {
+        if (!retried && isUnauthenticated(errorValue)) {
+          if (!isCurrent(id, snapshotTicket) || Date.now() >= deadline) return;
+          retried = true;
+          await snapshotApi.authenticate();
+          if (!isCurrent(id, snapshotTicket) || Date.now() >= deadline) return;
+          continue;
+        }
+        throw errorValue;
+      }
+    }
+    if (!isCurrent(id, snapshotTicket)) return;
+    statusError = '';
+    if (result.pending === false) {
+      clearLink();
+      message = '사용됐거나 만료된 초대입니다. 새 초대를 만들어 주세요.';
+    }
+  } catch (errorValue) {
+    if (isCurrent(id, snapshotTicket)) statusError = '초대 상태를 일시적으로 확인하지 못했습니다.';
+  } finally {
+    statusBusy = false;
+  }
+}
+
+  function startStatusTimer(snapshotApi: AgentApi, snapshotTicket: string, id: number) {
+    stopStatusTimer();
+    statusTimer = setInterval(() => { void pollStatus(snapshotApi, snapshotTicket, id); }, 3000);
   }
 
   onMount(() => {
@@ -68,6 +134,7 @@
     disposed = true;
     generation += 1;
     stopTimer();
+    stopStatusTimer();
     clearLink();
   });
 
@@ -111,10 +178,10 @@
       }
 
       const issuedAt = Date.now();
-      const result = await snapshotApi.request<{ ticket: string; expires_in: number }>('/pair-tickets', { scopes: allowed });
+      const result = await snapshotApi.request<{ ticket: string; expires_in: number }>('/pair-tickets', { scopes: allowed, expires_in: 18000 });
       if (disposed || id !== generation) return;
 
-      if (!Number.isInteger(result.expires_in) || result.expires_in < 1 || result.expires_in > 300) {
+      if (!Number.isInteger(result.expires_in) || result.expires_in < 1 || result.expires_in > 18000) {
         throw new Error('expires');
       }
 
@@ -123,9 +190,12 @@
       if (disposed || id !== generation) return;
 
       link = url;
+      ticket = result.ticket;
       qr = data;
       deadline = issuedAt + result.expires_in * 1000;
       remaining = Math.ceil((deadline - Date.now()) / 1000);
+      statusError = '';
+      startStatusTimer(snapshotApi, result.ticket, id);
     } catch (e) {
       if (disposed || id !== generation) return;
       link = '';
@@ -158,7 +228,7 @@
 
 <section aria-label="다른 기기 연결" class="host-invite">
   <h3>다른 기기 연결</h3>
-  <p class="hint">PC에서는 초대 링크를 복사해 사용하고, 모바일에서는 QR을 스캔해 연결하세요. 두 기기 모두 Tailscale에 연결되어 있어야 합니다.</p>
+  <p class="hint">링크를 카카오톡 나와의 채팅에 보내고, 두 기기 모두 Tailscale에 연결해 주세요.</p>
 
   <label class="row">
     <span>호스트 이름</span>
@@ -193,10 +263,11 @@
   {#if isLinkValid}
     <div class="qr">
       <img data-testid="invite-qr" src={qr} alt="다른 기기 연결 QR 코드" />
-      <p class="remaining" data-testid="invite-remaining">남은 시간 {remaining}초</p>
+      <p class="remaining" data-testid="invite-remaining">남은 시간 {remainingHours}시간 {remainingMinutes}분 {remainingSeconds}초</p>
       <button type="button" on:click={copy} data-testid="invite-copy">초대 링크 복사</button>
       <textarea aria-label="초대 링크" readonly on:focus={onTextFocus} value={link}></textarea>
-      <p class="hint">모바일에서 QR을 스캔하거나 PC에서 붙여넣어 1회용 5분짜리 초대를 사용하세요.</p>
+      <p class="hint">QR을 스캔하거나 링크를 붙여 넣어 초대를 사용하세요.</p>
+      {#if statusError}<p class="error" data-testid="invite-status-error">초대 상태를 확인하지 못했지만 유효한 링크는 유지됩니다.</p>{/if}
     </div>
   {/if}
 </section>
