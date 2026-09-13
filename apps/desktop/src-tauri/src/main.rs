@@ -216,8 +216,22 @@ async fn tailscale_status() -> Result<tailscale::ServeInspection, String> {
             }
             match tailscale::inspect_with_receipt(&tailscale::SystemRunner, receipt.as_ref()) {
                 Ok(mut value) => {
+                    let https_ready = tailscale::https_ready(&tailscale::SystemRunner)?;
                     if let Some(p) = pending {
                         if p.enabled {
+                            let stored = tailscale::read_public_origin(&paths.config)?;
+                            let dns = tailscale::expected_dns_name(&tailscale::SystemRunner)?;
+                            // The transaction guard excludes another RemoteCodex settings change.
+                            // SystemRunner reaps its child before returning from a failed command.
+                            if tailscale::can_discard_unapplied(
+                                &p,
+                                &value,
+                                receipt.as_ref(),
+                                stored.as_deref(),
+                                &dns,
+                            ) {
+                                tailscale::remove_pending(&pending_file)?;
+                            }
                             let candidate = p.receipt.or_else(|| {
                                 (value.proxy.as_deref() == Some(p.expected_proxy.as_str())
                                     && value.dns_name.as_deref() == p.expected_dns_name.as_deref())
@@ -260,6 +274,10 @@ async fn tailscale_status() -> Result<tailscale::ServeInspection, String> {
                     });
                     value.restart_required =
                         tailscale::restart_required(stored.as_deref(), running.as_deref());
+                    value.https_ready = Some(https_ready);
+                    if !https_ready && value.ownership == tailscale::ServeOwnership::Absent {
+                        value.detail = "Tailscale HTTPS approval is required".into();
+                    }
                     let _ = receipt;
                     Ok(value)
                 }
@@ -274,6 +292,13 @@ async fn tailscale_status() -> Result<tailscale::ServeInspection, String> {
     {
         Err("Tailscale Serve administration is available only on Windows".into())
     }
+}
+
+#[tauri::command]
+fn tailscale_https_settings(app: tauri::AppHandle) -> Result<(), String> {
+    app.opener()
+        .open_url("https://login.tailscale.com/admin/dns", None::<&str>)
+        .map_err(|error| error.to_string())
 }
 
 #[tauri::command]
@@ -303,6 +328,9 @@ async fn set_tailscale_serve(
                     "A previous settings transaction requires recovery before a new change".into(),
                 );
             }
+            if request.enabled && !tailscale::https_ready(&tailscale::SystemRunner)? {
+                return Err("Tailscale HTTPS approval is required".into());
+            }
             let receipt = tailscale::load_receipt(&receipt_path)?;
             let runner = tailscale::SystemRunner;
             let current = tailscale::inspect_with_receipt(&runner, receipt.as_ref())
@@ -327,10 +355,6 @@ async fn set_tailscale_serve(
                 )?;
                 let after = match tailscale::apply(&runner, tailscale::ServePlan::Apply, &current) {
                     Ok(value) => value,
-                    Err(tailscale::ServeError::CommandFailed) => {
-                        tailscale::remove_pending(&pending_path)?;
-                        return Err(tailscale::ServeError::CommandFailed.to_string());
-                    }
                     Err(error) => return Err(error.to_string()),
                 };
                 let new_receipt = tailscale::receipt_from(&after)?;
@@ -379,10 +403,6 @@ async fn set_tailscale_serve(
                 let after = match tailscale::apply(&runner, tailscale::ServePlan::Remove, &current)
                 {
                     Ok(value) => value,
-                    Err(tailscale::ServeError::CommandFailed) => {
-                        tailscale::remove_pending(&pending_path)?;
-                        return Err(tailscale::ServeError::CommandFailed.to_string());
-                    }
                     Err(error) => return Err(error.to_string()),
                 };
                 tailscale::remove_receipt(&receipt_path)?;
@@ -814,6 +834,7 @@ fn main() {
             tailscale_setup_login,
             tailscale_status,
             set_tailscale_serve,
+            tailscale_https_settings,
             open_preview
         ])
         .run(tauri::generate_context!())

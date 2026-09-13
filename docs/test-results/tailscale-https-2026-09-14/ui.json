@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "groups": [
+    "fresh host connected before Agent never reads Serve",
+    "login deadline stops and connected poll checks host address",
+    "browser0IPC",
+    "both roles bootstrap automatically and never show an install button",
+    "host consent, conflict, client no serve",
+    "ready requires origin and no restart",
+    "HTTPS approval gates serve and settings can recover it",
+    "client never reads or enables host serve",
+    "poll cleanup close and destroy",
+    "bootstrap failure shows explicit retry and reboot remains latched",
+    "refresh failure clears stale ready"
+  ]
+}

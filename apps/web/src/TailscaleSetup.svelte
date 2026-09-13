@@ -4,7 +4,7 @@
   export let role: 'host' | 'client' = 'client';
   export let canConfigureHost = false;
   type Setup = { state: string; detail: string };
-  type Serve = { ownership: 'absent' | 'owned' | 'conflict'; public_origin?: string; restart_required?: boolean; detail: string };
+  type Serve = { ownership: 'absent' | 'owned' | 'conflict'; public_origin?: string; restart_required?: boolean; https_ready?: boolean | null; detail: string };
   let open = false, busy = false, installing = false, disposed = false;
   let setup: Setup | null = null, serve: Serve | null = null;
   let error = '', message = '', consent = false, installBlocked = false, rebootRequired = false, bootstrapAttempted = false, retryAvailable = false;
@@ -30,9 +30,13 @@
       setup = next; installBlocked = next.state === 'installing';
       bootstrap = next.state === 'not_installed' && !bootstrapAttempted && !installBlocked && !rebootRequired;
       if (role === 'host' && canConfigureHost && next.state === 'connected' && !rebootRequired) {
-        const nextServe = await invoke<Serve>('tailscale_status');
-        if (!current(id)) return;
-        serve = nextServe;
+        try {
+          const nextServe = await invoke<Serve>('tailscale_status');
+          if (!current(id)) return;
+          serve = nextServe;
+        } catch (e) {
+          if (current(id)) { serve = null; error = String(e); }
+        }
       }
     } catch (e) { if (current(id)) { setup = null; serve = null; error = String(e); } }
     finally {
@@ -86,12 +90,22 @@
     finally { if (current(id)) busy = false; }
   }
   async function enable() {
-    if (!native || busy || !open || disposed || !consent || rebootRequired || role !== 'host' || !canConfigureHost || setup?.state !== 'connected' || serve?.ownership !== 'absent') return;
+    if (!native || busy || !open || disposed || !consent || rebootRequired || role !== 'host' || !canConfigureHost || setup?.state !== 'connected' || serve?.ownership !== 'absent' || serve?.https_ready === false) return;
     stopPoll(); const id = ++epoch; busy = true; error = ''; message = '';
     try {
       const next = await invoke<Serve>('set_tailscale_serve', { request: { enabled: true, consent: true } });
       if (current(id)) serve = next;
     } catch (e) { if (current(id)) { serve = null; message = '원격 연결 설정을 완료하지 못했습니다.'; error = String(e); } }
+    finally { if (current(id)) busy = false; }
+  }
+  async function openHttpsSettings() {
+    if (!native || busy || !open || disposed || rebootRequired || role !== 'host' || !canConfigureHost || serve?.https_ready !== false) return;
+    const id = epoch;
+    busy = true; error = '';
+    try {
+      await invoke('tailscale_https_settings');
+      if (current(id)) message = 'Tailscale HTTPS 인증서를 먼저 활성화한 뒤 새로 고침을 눌러 주세요.';
+    } catch (e) { if (current(id)) error = String(e); }
     finally { if (current(id)) busy = false; }
   }
   function openPanel() { if (!open && !disposed) { open = true; busy = false; bootstrapAttempted = false; retryAvailable = false; epoch++; void refresh(epoch); } }
@@ -101,7 +115,7 @@
   onMount(() => { if (native) openPanel(); });
   onDestroy(() => { disposed = true; epoch++; stopPoll(); });
   $: host = role === 'host' && setup?.state === 'connected';
-  $: ready = host && canConfigureHost && serve?.ownership === 'owned' && !!serve.public_origin && !serve.restart_required && !rebootRequired && !busy && !error;
+  $: ready = host && canConfigureHost && serve?.ownership === 'owned' && !!serve.public_origin && !serve.restart_required && serve?.https_ready !== false && !rebootRequired && !busy && !error;
 </script>
 
 {#if !open}
@@ -127,8 +141,14 @@
       {#if role === 'client' && setup?.state === 'connected'}<p>이 PC의 연결이 준비됐습니다. 접속하려는 호스트 PC 주소를 입력하세요.</p>{/if}
       {#if host && canConfigureHost && serve?.ownership === 'conflict'}<p role="alert">기존 다른 서비스의 연결 설정을 보존했습니다. 고급 진단에서 충돌을 확인하세요.</p>{/if}
       {#if host && canConfigureHost && serve?.ownership === 'absent' && !rebootRequired}
+        {#if serve?.https_ready === false}
+          <p data-testid="https-approval">Tailscale HTTPS 인증서를 먼저 활성화해야 원격 연결을 켤 수 있습니다.</p>
+          <button type="button" on:click={openHttpsSettings} disabled={busy} data-testid="https-settings">Tailscale HTTPS 설정 열기</button>
+        {/if}
+        {#if serve?.https_ready !== false}
         <label><input type="checkbox" bind:checked={consent} disabled={busy}> 승인된 Tailscale 기기에서 이 PC에 원격 접속할 수 있도록 허용합니다.</label>
         <button type="button" on:click={enable} disabled={!consent || busy} data-testid="serve">원격 연결 활성화</button>
+        {/if}
       {/if}
       {#if ready}<p role="status" data-testid="ready">원격 연결 준비가 완료되었습니다.</p>{/if}
       {#if serve?.public_origin}<label>호스트 접속 주소<input readonly value={serve.public_origin} on:focus={(event) => event.currentTarget.select()}></label>{/if}

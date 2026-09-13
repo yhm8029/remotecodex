@@ -1,0 +1,133 @@
+{
+  "calls": [
+    {
+      "task": "ping",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 222,
+        "total_characters": 0,
+        "prompt_tokens": 217,
+        "completion_tokens": 5,
+        "prompt_tokens_details": {
+          "cached_tokens": 148
+        }
+      },
+      "finish_reason": "stop",
+      "result": "connectivity verified"
+    },
+    {
+      "task": "tests",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 1436,
+        "total_characters": 0,
+        "prompt_tokens": 581,
+        "completion_tokens": 855,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "finish_reason": "stop",
+      "result": "rejected: invented fields and invalid null expectation"
+    },
+    {
+      "task": "tests-retry",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 729,
+        "total_characters": 0,
+        "prompt_tokens": 404,
+        "completion_tokens": 325,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "finish_reason": "stop",
+      "result": "rejected: invented JSON schema"
+    },
+    {
+      "task": "helper",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 3114,
+        "total_characters": 0,
+        "prompt_tokens": 515,
+        "completion_tokens": 2599,
+        "completion_tokens_details": {
+          "reasoning_tokens": 2599
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "finish_reason": "length",
+      "result": "rejected: completion limit exhausted with no code"
+    },
+    {
+      "task": "helper-retry",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 1129,
+        "total_characters": 0,
+        "prompt_tokens": 502,
+        "completion_tokens": 627,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "finish_reason": "stop",
+      "result": "applied: HTTPS capability probe"
+    },
+    {
+      "task": "recovery",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 673,
+        "total_characters": 0,
+        "prompt_tokens": 417,
+        "completion_tokens": 256,
+        "prompt_tokens_details": {
+          "cached_tokens": 148
+        }
+      },
+      "finish_reason": "stop",
+      "result": "applied function; discarded inaccurate generated comments"
+    },
+    {
+      "task": "ui-test",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 889,
+        "total_characters": 0,
+        "prompt_tokens": 477,
+        "completion_tokens": 412
+      },
+      "finish_reason": "stop",
+      "result": "rejected: invented mock and missing consent action"
+    },
+    {
+      "task": "ui-test-retry",
+      "model": "MiniMax-M3",
+      "usage": {
+        "total_tokens": 733,
+        "total_characters": 0,
+        "prompt_tokens": 411,
+        "completion_tokens": 322,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "finish_reason": "stop",
+      "result": "rejected: invented mock API and selectors"
+    }
+  ],
+  "total_calls": 8,
+  "total_tokens": 8925,
+  "scope": "Only directly observed M3 calls for this fix; GPT tokens not measured."
+}

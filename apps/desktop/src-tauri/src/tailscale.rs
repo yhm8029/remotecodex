@@ -31,6 +31,7 @@ pub struct ServeInspection {
     pub proxy: Option<String>,
     pub public_origin: Option<String>,
     pub restart_required: bool,
+    pub https_ready: Option<bool>,
     pub preview_ports: BTreeMap<u16, u16>,
 }
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -130,9 +131,17 @@ impl CliRunner for SystemRunner {
                 Ok(None) => {
                     let _ = child.kill();
                     let _ = child.wait();
+                    let _ = out.join();
+                    let _ = err.join();
                     return Err("Tailscale CLI timed out".into());
                 }
-                Err(_) => return Err("Could not wait for Tailscale CLI".into()),
+                Err(_) => {
+                    let _ = child.kill();
+                    let _ = child.wait();
+                    let _ = out.join();
+                    let _ = err.join();
+                    return Err("Could not wait for Tailscale CLI".into());
+                }
             }
         };
         Ok(CommandOutput {
@@ -172,6 +181,7 @@ pub fn not_installed() -> ServeInspection {
         proxy: None,
         public_origin: None,
         restart_required: false,
+        https_ready: None,
         preview_ports: preview_ports(),
     }
 }
@@ -343,6 +353,7 @@ fn inspection_from(
         proxy: None,
         public_origin: None,
         restart_required: false,
+        https_ready: None,
         preview_ports: preview_ports(),
     };
     if !observed.occupied {
@@ -415,6 +426,95 @@ pub fn inspect_with_receipt(
 pub fn inspect(r: &impl CliRunner) -> Result<ServeInspection, ServeError> {
     inspect_with_receipt(r, None)
 }
+pub fn https_ready(r: &impl CliRunner) -> Result<bool, String> {
+    let out = r.run(&["status", "--json"])?;
+    if !out.success {
+        return Err("tailscale status command failed".to_string());
+    }
+    let v: serde_json::Value = serde_json::from_str(&out.stdout)
+        .map_err(|_| "tailscale status output is not valid JSON".to_string())?;
+    let obj = v
+        .as_object()
+        .ok_or("tailscale status JSON is not an object")?;
+
+    let backend_state = obj.get("BackendState").ok_or("missing BackendState")?;
+    if backend_state.as_str() != Some("Running") {
+        return Err("BackendState is not Running".to_string());
+    }
+
+    let self_node = obj.get("Self").ok_or("missing Self node")?;
+    let self_obj = self_node.as_object().ok_or("Self is not an object")?;
+
+    let dns_name = self_obj.get("DNSName").ok_or("missing Self.DNSName")?;
+    let dns_str = dns_name.as_str().ok_or("Self.DNSName is not a string")?;
+    let stripped = dns_str.strip_suffix('.').unwrap_or(dns_str);
+    if !valid_dns_name(stripped) {
+        return Err("invalid DNS name".to_string());
+    }
+
+    let mut map_present = false;
+    let mut map_has_https = false;
+    if let Some(cap_map) = self_obj.get("CapMap") {
+        if cap_map.is_null() {
+            // null counts as not present
+        } else {
+            let map = cap_map.as_object().ok_or("Self.CapMap is not an object")?;
+            map_present = true;
+            if let Some(https_val) = map.get("https") {
+                if https_val.is_null() || https_val.is_array() {
+                    map_has_https = true;
+                } else {
+                    return Err("Self.CapMap.https has wrong type".to_string());
+                }
+            }
+        }
+    }
+
+    let mut arr_present = false;
+    let mut arr_has_https = false;
+    if let Some(caps) = self_obj.get("Capabilities") {
+        if caps.is_null() {
+            // null counts as not present
+        } else {
+            let arr = caps.as_array().ok_or("Self.Capabilities is not an array")?;
+            arr_present = true;
+            for item in arr {
+                if !item.is_string() {
+                    return Err("Self.Capabilities contains non-string item".to_string());
+                }
+                if item.as_str() == Some("https") {
+                    arr_has_https = true;
+                }
+            }
+        }
+    }
+
+    if map_has_https || arr_has_https {
+        return Ok(true);
+    }
+    if map_present || arr_present {
+        return Ok(false);
+    }
+    Err("Tailscale HTTPS capability status is unavailable".to_string())
+}
+
+pub fn can_discard_unapplied(
+    p: &PendingServe,
+    current: &ServeInspection,
+    receipt: Option<&ServeReceipt>,
+    stored_origin: Option<&str>,
+    dns: &str,
+) -> bool {
+    p.enabled
+        && p.receipt.is_none()
+        && receipt.is_none()
+        && stored_origin.is_none()
+        && current.ownership == ServeOwnership::Absent
+        && p.expected_proxy == BACKEND
+        && valid_dns_name(dns)
+        && p.expected_dns_name.as_deref() == Some(dns)
+}
+
 pub fn expected_dns_name(r: &impl CliRunner) -> Result<String, String> {
     let output = r.run(&["status", "--json"])?;
     if !output.success {
@@ -827,6 +927,166 @@ mod tests {
         remove_pending(&path).unwrap();
         let _ = std::fs::remove_dir_all(root);
     }
+
+    fn https_status(body: &str) -> String {
+        body.to_owned()
+    }
+
+    #[test]
+    fn https_ready_uses_only_running_json_status_and_valid_dns_name() {
+        let m = Mock::new(vec![out(&https_status(
+            r#"{"BackendState":"Running","Self":{"DNSName":"host.ts.net.","CapMap":{"https":null}}}"#,
+        ))]);
+
+        assert_eq!(https_ready(&m), Ok(true));
+        assert_eq!(
+            *m.calls.lock().unwrap(),
+            vec![vec!["status".to_string(), "--json".to_string()]]
+        );
+    }
+
+    #[test]
+    fn https_ready_falls_back_to_capabilities_and_reports_false_when_empty() {
+        let fallback = Mock::new(vec![out(
+            r#"{"BackendState":"Running","Self":{"DNSName":"host.ts.net.","Capabilities":["funnel","https"]}}"#,
+        )]);
+        assert_eq!(https_ready(&fallback), Ok(true));
+
+        let empty = Mock::new(vec![out(
+            r#"{"BackendState":"Running","Self":{"DNSName":"host.ts.net.","CapMap":{},"Capabilities":[]}}"#,
+        )]);
+        assert_eq!(https_ready(&empty), Ok(false));
+    }
+
+    #[test]
+    fn https_ready_rejects_failed_or_malformed_status_shapes() {
+        let failed = Mock::new(vec![Ok(CommandOutput {
+            success: false,
+            stdout: String::new(),
+            stderr: String::new(),
+        })]);
+        assert!(https_ready(&failed).is_err());
+
+        for body in [
+            r#"[]"#,
+            r#"{"BackendState":"Stopped","Self":{"DNSName":"host.ts.net.","CapMap":{"https":null}}}"#,
+            r#"{"BackendState":"Running","Self":null}"#,
+            r#"{"BackendState":"Running","Self":{"DNSName":"host.example.","CapMap":{"https":null}}}"#,
+            r#"{"BackendState":"Running","Self":{"DNSName":"host.ts.net.","CapMap":{"https":true}}}"#,
+            r#"{"BackendState":"Running","Self":{"DNSName":"host.ts.net.","Capabilities":["https",3]}}"#,
+            r#"{"BackendState":"Running","Self":{"DNSName":"host.ts.net."}}"#,
+        ] {
+            let m = Mock::new(vec![out(body)]);
+            assert!(https_ready(&m).is_err(), "unexpectedly accepted {body}");
+        }
+    }
+
+    #[test]
+    fn https_can_discard_unapplied_requires_unambiguous_pending_backend_state() {
+        fn pending() -> PendingServe {
+            PendingServe {
+                enabled: true,
+                receipt: None,
+                expected_dns_name: Some("host.ts.net".into()),
+                expected_proxy: BACKEND.into(),
+            }
+        }
+        fn absent() -> ServeInspection {
+            inspection_from(&serde_json::json!({}), None).unwrap()
+        }
+
+        assert!(can_discard_unapplied(
+            &pending(),
+            &absent(),
+            None,
+            None,
+            "host.ts.net",
+        ));
+
+        let mut p = pending();
+        p.enabled = false;
+        assert!(!can_discard_unapplied(
+            &p,
+            &absent(),
+            None,
+            None,
+            "host.ts.net"
+        ));
+
+        let mut p = pending();
+        p.receipt = Some(rec("host.ts.net"));
+        assert!(!can_discard_unapplied(
+            &p,
+            &absent(),
+            None,
+            None,
+            "host.ts.net"
+        ));
+
+        let p = pending();
+        let external = rec("host.ts.net");
+        assert!(!can_discard_unapplied(
+            &p,
+            &absent(),
+            Some(&external),
+            None,
+            "host.ts.net",
+        ));
+        assert!(!can_discard_unapplied(
+            &p,
+            &absent(),
+            None,
+            Some("https://host.ts.net"),
+            "host.ts.net",
+        ));
+
+        let mut current = absent();
+        current.ownership = ServeOwnership::Owned;
+        assert!(!can_discard_unapplied(
+            &p,
+            &current,
+            None,
+            None,
+            "host.ts.net"
+        ));
+
+        let mut p = pending();
+        p.expected_proxy = "http://127.0.0.1:9999".into();
+        assert!(!can_discard_unapplied(
+            &p,
+            &absent(),
+            None,
+            None,
+            "host.ts.net"
+        ));
+
+        let mut p = pending();
+        p.expected_dns_name = None;
+        assert!(!can_discard_unapplied(
+            &p,
+            &absent(),
+            None,
+            None,
+            "host.ts.net"
+        ));
+
+        let p = pending();
+        assert!(!can_discard_unapplied(
+            &p,
+            &absent(),
+            None,
+            None,
+            "other.ts.net"
+        ));
+        assert!(!can_discard_unapplied(
+            &p,
+            &absent(),
+            None,
+            None,
+            "host.example"
+        ));
+    }
+
     #[test]
     fn receipt_roundtrip_and_config_preservation() {
         let root = std::env::temp_dir().join(format!("rc-serve-test-{}", std::process::id()));
