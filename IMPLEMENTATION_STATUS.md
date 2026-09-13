@@ -82,7 +82,7 @@ and raw output in actual Chrome.
 
 ## 2026-09-13 automatic Tailscale bootstrap
 
-Commits `50151a0` and `49515dd` replace the pinned MSI with a latest-stable selection from the
+Commits `50151a0`, `49515dd`, and `6b9bf62` replace the pinned MSI with a latest-stable selection from the
 official Tailscale stable index. The installer accepts only a matching local
 filename, checks the adjacent SHA-256 response, the downloaded hash, and the
 `Tailscale Inc.` Authenticode signer. New installations pass
@@ -93,8 +93,9 @@ and host Serve remains consent-gated.
 
 Bounded evidence is in `docs/test-results/tailscale-onboarding-2026-09-13/`:
 19 mocked installer cases, 58 Rust tests, zero Svelte diagnostics, web build,
-and Tauri no-bundle build. Real download, UAC, installer execution, update,
-login, and two-PC checks are NOT_RUN on the active soak PC.
+and Tauri no-bundle build. A fresh-profile native host-role check also displayed
+the already connected client without privileged actions. Real download, UAC,
+installer execution, update, login, and two-PC checks remain NOT_RUN.
 
 ## Mandatory gates still open
 

@@ -1,0 +1,12 @@
+{
+  "status": "PASS_BOUNDED",
+  "scope": "fresh isolated WebView2 profile; host role selection only",
+  "observed": {
+    "tailscale_panel_opened_automatically": true,
+    "state": "connected",
+    "install_button_count": 0,
+    "login_button_count": 0,
+    "retry_button_count": 0
+  },
+  "not_performed": ["Tailscale installation", "Tailscale login", "Agent start", "Serve configuration", "pairing"]
+}
