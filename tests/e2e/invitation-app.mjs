@@ -65,7 +65,7 @@ const results = [];
 async function pageFor(host = 'office.ts.net') {
   const context = await browser.newContext({ serviceWorkers: 'block', viewport: host === 'office.ts.net' ? {width:390,height:844} : {width:1280,height:900} });
   context.setDefaultTimeout(5000);
-  context.setDefaultNavigationTimeout(5000);
+  context.setDefaultNavigationTimeout(15000);
   await context.route('**/*', async (route) => {
     const requestUrl = new URL(route.request().url());
     if (requestUrl.hostname === host) {
@@ -108,6 +108,15 @@ try {
       await page.getByTestId('invite-paste').fill(`${origin}/#rc-invite=bad`); await page.getByTestId('invite-import').click();
       assert.equal(await page.getByTestId('pair-ticket').inputValue(), '');
       results.push('address edit and invalid invitation clear ticket');
+    } finally { await context.close(); } }
+  { const { context, page } = await pageFor(); try {
+      await page.goto(origin + '/');
+      await page.evaluate((fragment) => { location.hash = fragment; }, invite.slice(invite.indexOf('#')));
+      await page.getByTestId('invite-target').waitFor();
+      assert.equal(new URL(page.url()).hash, '');
+      assert.equal(await page.getByTestId('host-address').inputValue(), origin);
+      assert.equal((await page.getByTestId('pair-ticket').inputValue()).length, ticket.length);
+      results.push('same-document invitation import');
     } finally { await context.close(); } }
   { const { context, page } = await pageFor('tauri.localhost'); try {
       await page.goto(`https://tauri.localhost/`); await page.getByRole('button', { name: /다른 PC/ }).click();

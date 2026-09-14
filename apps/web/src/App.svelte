@@ -131,8 +131,8 @@ consumeInitialInvitation();
     const size = () => { mobile = query.matches; layout.setMobile(mobile); applyLayout(); };
     const viewport = () => document.documentElement.style.setProperty('--visual-height', `${visualViewport?.height ?? innerHeight}px`);
     const visibility = () => { pageVisible = document.visibilityState === 'visible'; if (!pageVisible) controller?.stop(); else if (controller && experimentalAccepted) void controller.connect().catch(e => controller?.fail(e)); };
-    size(); viewport(); query.addEventListener('change', size); visualViewport?.addEventListener('resize', viewport); document.addEventListener('visibilitychange', visibility);
-    return () => { controller?.stop(); clearTimeout(historyTimer); query.removeEventListener('change', size); visualViewport?.removeEventListener('resize', viewport); document.removeEventListener('visibilitychange', visibility); };
+    size(); viewport(); query.addEventListener('change', size); visualViewport?.addEventListener('resize', viewport); document.addEventListener('visibilitychange', visibility); window.addEventListener('hashchange', consumeInitialInvitation);
+    return () => { controller?.stop(); clearTimeout(historyTimer); query.removeEventListener('change', size); visualViewport?.removeEventListener('resize', viewport); document.removeEventListener('visibilitychange', visibility); window.removeEventListener('hashchange', consumeInitialInvitation); };
   });
   function show(id: string, split = false) { layout.show(id, split); applyLayout(); mode = 'terminal'; }
   function focus(id: string) { layout.focus(id); applyLayout(); }
